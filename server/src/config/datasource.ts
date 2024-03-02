@@ -7,6 +7,9 @@ import ProjectView from "../entities/projectView";
 import ProjectViewCategory from "../entities/projectViewCategory";
 import ProjectMember from "../entities/projectMember";
 import BoardColumn from "../entities/boardColumn";
+import InternalUserLogin from "../entities/internalUserLogin";
+import ExternalUserLogin from "../entities/externalUserLogin";
+import ExternalProvider from "../entities/externalProvider";
 dotenv.config()
 
 const mysqlConfig: DataSourceOptions = {
@@ -23,7 +26,10 @@ const mysqlConfig: DataSourceOptions = {
         ProjectView, 
         ProjectViewCategory,
         ProjectMember,
-        BoardColumn
+        BoardColumn,
+        ExternalProvider,
+        InternalUserLogin,
+        ExternalUserLogin
     ],
     synchronize: true,
     dropSchema: true,
