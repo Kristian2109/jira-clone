@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm"
-import reflectMetadata from 'reflect-metadata'
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Unique } from "typeorm"
 import BaseEntity from "./baseEntity"
 import UserAddress from "./address";
 
 @Entity()
+@Unique("unique_email", ["email"])
 export default class UserAccount extends BaseEntity {
     @Column()
     name!: string;
@@ -18,9 +18,12 @@ export default class UserAccount extends BaseEntity {
     dateOfBirth!: Date;
 
     @Column()
+    displayName?: string;
+
+    @Column()
     position!: string;
 
-    @OneToOne(() => UserAddress)
+    @OneToOne(() => UserAddress, {cascade: true})
     @JoinColumn()
     address!: UserAddress
 }

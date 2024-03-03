@@ -1,18 +1,24 @@
+import "reflect-metadata"
+import container from "./inversify.config";
 import express, { Application, Request, Response } from "express";
+import { InversifyExpressServer } from "inversify-express-utils";
 import bodyParser from "body-parser";
 import cors from "cors"
 import dotenv from 'dotenv'
 
 import { AppDataSource } from "./config/datasource";
+import "./controllers/user"
 
 dotenv.config()
 const PORT = process.env.PORT || 8080;
 
-const app: Application = express();
+const myApp = express();
+myApp.use(bodyParser.urlencoded({extended: true}));
+myApp.use(express.json());
+myApp.use(cors());
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.json());
-app.use(cors());
+const config = new InversifyExpressServer(container, myApp)
+const app: Application = config.build();
 
 app.listen(PORT, async () => {
     try {
@@ -23,5 +29,5 @@ app.listen(PORT, async () => {
         console.error(error);
     }
 
-    console.log("Server is listening on port: " + PORT);
+    console.log(`Server is listening on port: ${PORT}`);
 });

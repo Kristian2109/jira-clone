@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, Unique, ManyToMany, ManyToOne } from "typeorm";
+import { Entity, Column, JoinColumn, OneToOne} from "typeorm";
 import UserAccount from "./userAccount";
 import BaseEntity from "./baseEntity";
 
@@ -10,4 +10,10 @@ export default class InternalUserLogin extends BaseEntity {
 
     @Column({type: "varchar", length: 512})
     passwordHash!: string;
+
+    constructor(user: UserAccount, passwordHash: string) {
+        super();
+        this.user = user;
+        this.passwordHash = passwordHash;
+    }
 }

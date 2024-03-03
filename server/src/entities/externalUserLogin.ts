@@ -14,5 +14,8 @@ export default class ExternalUserLogin extends BaseEntity {
     provider!: ExternalProvider;
 
     @Column({type: "varchar", length: 256})
-    token!: string
+    token!: string;
+
+    @Column()
+    expiryDate!: Date;
 }

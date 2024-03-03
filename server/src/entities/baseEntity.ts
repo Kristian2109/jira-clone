@@ -1,9 +1,9 @@
 import { PrimaryGeneratedColumn, CreateDateColumn } from "typeorm"
 
 export default abstract class BaseEntity {
-    @PrimaryGeneratedColumn("identity")
+    @PrimaryGeneratedColumn()
     id!: number
 
     @CreateDateColumn()
-    createdAt!: string
+    createdAt!: Date
 }
