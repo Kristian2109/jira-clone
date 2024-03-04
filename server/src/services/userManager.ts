@@ -18,6 +18,10 @@ class UserManager{
         const userToCreate = UserMapper.toUser(registerInfo);
         return this._userRepository.save(userToCreate);
     } 
+
+    public async getUserByEmail(email: string) {
+        return this._userRepository.findOneBy({email});
+    }
 }
 
 export default UserManager;

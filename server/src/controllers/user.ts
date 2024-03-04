@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import InternalAuthManager from "../services/internalAuthManager";
 import { controller, httpGet, httpPost } from "inversify-express-utils";
-import { UserAccountSchema, UserAccountSchemaWithPass } from "../types/zodTypes";
+import { LoginSchema, UserAccountSchema, UserAccountSchemaWithPass } from "../types/zodTypes";
 import ExternalAuthManager from "../services/externalAuthManager";
 
 @controller("/users")
@@ -38,7 +38,17 @@ class UserController {
     public async googleCallback(req: Request, res: Response) {
         try {
             const authCode = String(req.query.code);
-            return await this._oAuthManager.saveProfileAndAuth(authCode);
+            return await this._oAuthManager.authenticate(authCode);
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
+
+    @httpPost("/auth/login")
+    public async loginInternal(req: Request, res: Response) {
+        try {
+            const loginForm = LoginSchema.parse(req.body);
+            return await this._authManager.login(loginForm);
         } catch (error) {
             return res.status(500).json(error)
         }

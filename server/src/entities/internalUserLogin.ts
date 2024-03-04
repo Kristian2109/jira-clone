@@ -4,7 +4,7 @@ import BaseEntity from "./baseEntity";
 
 @Entity()
 export default class InternalUserLogin extends BaseEntity {
-    @OneToOne(() => UserAccount)
+    @OneToOne(() => UserAccount, {eager: true})
     @JoinColumn()
     user!: UserAccount;
 

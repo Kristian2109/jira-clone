@@ -7,6 +7,7 @@ import { AppDataSource } from "../config/datasource";
 import ExternalUserLogin from "../entities/externalUserLogin";
 import { Repository } from "typeorm";
 import UserManager from "./userManager";
+import { GetTokenResponse } from "google-auth-library/build/src/auth/oauth2client";
 
 dotenv.config()
 
@@ -39,8 +40,37 @@ class ExternalAuthManager {
         })
     }
 
-    public async saveProfileAndAuth(authCode: string) {
+    public async authenticate(authCode: string) {
         const response = await this._oauth2Client.getToken(authCode);
+        const extractedData  = await this.extractDataFromResponse(response)
+
+        let externalUserLogin = await this._externalUserLogin.findOneBy({externalId: extractedData.externalId})
+        if (!externalUserLogin) {
+            const userWithSameEmail = await this._userManager.getUserByEmail(extractedData.email);
+            if (userWithSameEmail) {
+                throw new Error("The user with this email is already authenticated!")
+            }
+            
+            const userAccount = await this._userManager.createUser({
+                email: extractedData.email,
+                name: extractedData.name,
+                displayName: extractedData.name
+            })
+            externalUserLogin = new ExternalUserLogin();
+            externalUserLogin.user = userAccount;
+            externalUserLogin.externalId = extractedData.externalId;
+        }
+        externalUserLogin.expiryDate = new Date(extractedData.expiryDate);
+        externalUserLogin.token = extractedData.accessToken;
+        this._externalUserLogin.save(externalUserLogin);
+
+        const token = jwt.sign({
+            userId: externalUserLogin.user.id
+        }, "private key")
+        return token;
+    }
+
+    private async extractDataFromResponse(response: GetTokenResponse) {
         const { access_token: accessToken, expiry_date: expiryDate, id_token: idToken } = response.tokens;
         if (!idToken) {
             throw new Error("No id token");
@@ -53,26 +83,17 @@ class ExternalAuthManager {
             throw new Error("Invalid type!");
         }
 
-        if (!expiryDate || !accessToken || !payload.sub) {
+        if (!expiryDate || !accessToken || !payload.sub || !payload.email) {
             throw new Error("Error loading the expiry date and access token!");
         }
 
-        let externalUserLogin = await this._externalUserLogin.findOneBy({externalId: payload.sub})
-        if (!externalUserLogin) {
-            const userAccount = await this._userManager.createUser({
-                email: payload.email,
-                name: payload.name,
-                displayName: payload.name
-            })
-            externalUserLogin = new ExternalUserLogin();
-            externalUserLogin.user = userAccount;
-            externalUserLogin.externalId = payload.sub;
+        return {
+            email: payload.email,
+            name: payload.name,
+            externalId: payload.sub,
+            accessToken,
+            expiryDate
         }
-        externalUserLogin.expiryDate = new Date(expiryDate);
-        externalUserLogin.token = accessToken;
-        this._externalUserLogin.save(externalUserLogin);
-
-        return accessToken;
     }
 }
 

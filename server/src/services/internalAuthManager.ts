@@ -7,8 +7,9 @@ import DuplicateResourceException from "../exceptions/duplicateResourceException
 import UserMapper from "../mappers/userMapper";
 import InternalUserLogin from "../entities/internalUserLogin";
 import { injectable } from "inversify";
-import { RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/zodTypes";
+import { Login, RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/zodTypes";
 import UserManager from "./userManager";
+import jwt from "jsonwebtoken"
 
 @injectable()
 export default class InternalAuthManager {
@@ -36,6 +37,25 @@ export default class InternalAuthManager {
         const createdUser = await this.userManager.createUser(registerInfo);
         await this.saveInternalLoginData(registerInfo.password, createdUser);
         return UserMapper.toFullUserDetails(createdUser);
+    }
+
+    public async login(loginForm: Login) {
+        const userToLogin = await this.userRepository.findOneBy({email: loginForm.email});
+        if (!userToLogin) {
+            throw new Error("Invalid email");
+        }
+        const loginData = await this.internalLoginRepository.createQueryBuilder(`select * from internal_user_login where userId = ${userToLogin.id}`).getOne();
+        if (!loginData) {
+            throw new Error("Not login information");
+        }
+        const isPasswordValid = bcrypt.compareSync(loginForm.password, loginData.passwordHash);
+        if (!isPasswordValid) {
+            throw new Error("Invalid password");
+        }
+        const token = jwt.sign({
+            userId: userToLogin.id
+        }, "private key")
+        return token;
     }
 
     private async saveInternalLoginData(password: string,  user: UserAccount): Promise<void> {

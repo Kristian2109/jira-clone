@@ -23,6 +23,13 @@ export const UserAccountSchemaWithPass = UserAccountSchema.extend({
     password: z.string()
 })
 
+
+export const LoginSchema = z.object({
+    email: z.string(),
+    password: z.string()
+})
+
 export type RegisterUserSchema = z.infer<typeof UserAccountSchema>;
 export type RegisterAddressSchema = z.infer<typeof AddressSchema>;
 export type RegisterUserSchemaWIthPass = z.infer<typeof UserAccountSchemaWithPass>;
+export type Login = z.infer<typeof LoginSchema>;
