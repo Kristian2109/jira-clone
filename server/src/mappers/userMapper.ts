@@ -1,6 +1,6 @@
 import UserAccount from "../entities/userAccount";
 import { FullUserDetails, RegisterUser } from "../types/auth";
-import { RegisterUserSchema } from "../types/zodTypes";
+import { RegisterUserSchema } from "../types/account";
 import AddressMapper from "./addressMapper";
 
 export default class UserMapper {

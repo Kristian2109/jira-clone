@@ -1,5 +1,5 @@
 import Address from "../entities/address";
-import { RegisterAddressSchema } from "../types/zodTypes";
+import { RegisterAddressSchema } from "../types/account";
 
 export default class AddressMapper {
     public static toAddress(address: RegisterAddressSchema): Address {

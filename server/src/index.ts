@@ -7,7 +7,7 @@ import cors from "cors"
 import dotenv from 'dotenv'
 
 import { AppDataSource } from "./config/datasource";
-import "./controllers/auth"
+import ErrorHandler from "./middleware/errorHandler";
 
 dotenv.config()
 const PORT = process.env.PORT || 8080;
@@ -19,6 +19,7 @@ myApp.use(cors());
 
 const config = new InversifyExpressServer(container, myApp)
 const app: Application = config.build();
+app.use(ErrorHandler.handleError);
 
 app.listen(PORT, async () => {
     try {

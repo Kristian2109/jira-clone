@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Unique } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Unique, OneToMany } from "typeorm"
 import BaseEntity from "./baseEntity"
 import UserAddress from "./address";
+import ProjectMember from "./projectMember";
 
 @Entity()
 @Unique("unique_email", ["email"])
@@ -25,5 +26,8 @@ export default class UserAccount extends BaseEntity {
 
     @OneToOne(() => UserAddress, {cascade: true, nullable: true})
     @JoinColumn()
-    address?: UserAddress
+    address?: UserAddress;
+
+    @OneToMany(() => ProjectMember, projectMember => projectMember.project, {lazy: true})
+    memberships!: ProjectMember[];
 }

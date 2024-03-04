@@ -1,4 +1,4 @@
-import {  Column, Unique, Entity, ManyToOne, JoinColumn } from "typeorm"
+import {  Column, Unique, Entity, ManyToOne, JoinColumn, GeoJSON } from "typeorm"
 import BaseEntity from "./baseEntity"
 import NameAndDescription from "./nameAndDescription";
 import UserAccount from "./userAccount";
@@ -12,9 +12,12 @@ export default class ProjectView extends BaseEntity {
 
     @ManyToOne(() => Project)
     @JoinColumn()
-    project!: Project
+    project!: Project;
 
     @ManyToOne(() => ProjectViewCategory)
     @JoinColumn()
-    viewCategory!: ProjectViewCategory
+    viewCategory!: ProjectViewCategory;
+
+    @Column("json")
+    viewModel!: string;
 }

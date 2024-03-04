@@ -3,13 +3,14 @@ import bcrypt from "bcrypt"
 import { FullUserDetails, RegisterUser } from "../types/auth";
 import { AppDataSource } from "../config/datasource";
 import UserAccount from "../entities/userAccount";
-import DuplicateResourceException from "../exceptions/duplicateResourceException";
+import DuplicateResourceException from "../exceptions/genericException";
 import UserMapper from "../mappers/userMapper";
 import InternalUserLogin from "../entities/internalUserLogin";
 import { injectable } from "inversify";
-import { Login, RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/zodTypes";
+import { Login, RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/account";
 import UserManager from "./userManager";
 import { signToken } from "../utils/jwt";
+import GenericException from "../exceptions/genericException";
 
 @injectable()
 export default class InternalAuthManager {
@@ -30,7 +31,7 @@ export default class InternalAuthManager {
         })
 
         if (userWithEmail) {
-            throw new DuplicateResourceException("Duplicate Email!");
+            throw new GenericException("Duplicate Email!", 401);
         }
 
         const createdUser = await this.userManager.createUser(registerInfo);

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import InternalAuthManager from "../services/internalAuthManager";
 import { controller, httpGet, httpPost } from "inversify-express-utils";
-import { LoginSchema, UserAccountSchema, UserAccountSchemaWithPass } from "../types/zodTypes";
+import { LoginSchema, UserAccountSchema, UserAccountSchemaWithPass } from "../types/account";
 import ExternalAuthManager from "../services/externalAuthManager";
 
 @controller("/auth")
@@ -16,26 +16,18 @@ class AuthController {
     
     @httpPost("/register")
     public async register(req: Request, res: Response) {
-        try {
-            const registerData = UserAccountSchemaWithPass.parse(req.body);
-            const tokenAndId = await this._authManager.register(registerData)
-            return res.status(200).json({
+        const registerData = UserAccountSchemaWithPass.parse(req.body);
+        const tokenAndId = await this._authManager.register(registerData)
+        return res.status(200).json({
                 data: tokenAndId,
                 message: "success"
             })
-        } catch (error) {
-            return res.status(500).json(error)
-        }
     }
 
     @httpGet("/external")
     public async registerGoogle(req: Request, res: Response) {
-        try {
-            const authUrl = this._oAuthManager.generateRedirectUrl()
-            return res.status(200).json(authUrl);
-        } catch (error) {
-            return res.status(500).json(error)
-        }
+        const authUrl = this._oAuthManager.generateRedirectUrl()
+        return res.status(200).json(authUrl);
     }
 
     @httpGet("/google/callback")

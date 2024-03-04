@@ -2,12 +2,14 @@ import {  Column, Unique, Entity, ManyToOne, JoinColumn } from "typeorm"
 import BaseEntity from "./baseEntity"
 import UserAccount from "./userAccount";
 import Project from "./project";
+import { Exclude, classToPlain, instanceToPlain } from "class-transformer";
 
 @Entity()
 export default class ProjectMember extends BaseEntity {
     @ManyToOne(() => Project)
     @JoinColumn()
-    project!: Project
+    @Exclude({toClassOnly: true})
+    project!: Project;
 
     @ManyToOne(() => UserAccount)
     @JoinColumn()
@@ -18,4 +20,8 @@ export default class ProjectMember extends BaseEntity {
 
     @Column()
     role!: "Owner" | "Worker"
+
+    toJSON() {
+        return instanceToPlain(this);
+    }
 }
