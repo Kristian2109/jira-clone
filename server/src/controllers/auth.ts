@@ -4,8 +4,8 @@ import { controller, httpGet, httpPost } from "inversify-express-utils";
 import { LoginSchema, UserAccountSchema, UserAccountSchemaWithPass } from "../types/zodTypes";
 import ExternalAuthManager from "../services/externalAuthManager";
 
-@controller("/users")
-class UserController {
+@controller("/auth")
+class AuthController {
     private _authManager: InternalAuthManager;
     private _oAuthManager: ExternalAuthManager;
 
@@ -28,7 +28,7 @@ class UserController {
         }
     }
 
-    @httpPost("/register/google")
+    @httpGet("/external")
     public async registerGoogle(req: Request, res: Response) {
         try {
             const authUrl = this._oAuthManager.generateRedirectUrl()
@@ -38,7 +38,7 @@ class UserController {
         }
     }
 
-    @httpGet("/auth/google/callback")
+    @httpGet("/google/callback")
     public async googleCallback(req: Request, res: Response) {
         try {
             const authCode = String(req.query.code);
@@ -48,7 +48,7 @@ class UserController {
         }
     }
 
-    @httpPost("/auth/login")
+    @httpPost("/login")
     public async loginInternal(req: Request, res: Response) {
         try {
             const loginForm = LoginSchema.parse(req.body);
@@ -65,4 +65,4 @@ class UserController {
 
 }
 
-export default UserController;
+export default AuthController;

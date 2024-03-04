@@ -7,7 +7,7 @@ import cors from "cors"
 import dotenv from 'dotenv'
 
 import { AppDataSource } from "./config/datasource";
-import "./controllers/user"
+import "./controllers/auth"
 
 dotenv.config()
 const PORT = process.env.PORT || 8080;
