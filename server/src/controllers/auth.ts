@@ -19,40 +19,30 @@ class AuthController {
         const registerData = UserAccountSchemaWithPass.parse(req.body);
         const tokenAndId = await this._authManager.register(registerData)
         return res.status(200).json({
-                data: tokenAndId,
-                message: "success"
+                data: {tokenAndId}
             })
     }
 
     @httpGet("/external")
     public async registerGoogle(req: Request, res: Response) {
         const authUrl = this._oAuthManager.generateRedirectUrl()
-        return res.status(200).json(authUrl);
+        return res.status(200).json({data: {authUrl}});
     }
 
     @httpGet("/google/callback")
     public async googleCallback(req: Request, res: Response) {
-        try {
-            const authCode = String(req.query.code);
-            return await this._oAuthManager.authenticate(authCode);
-        } catch (error) {
-            return res.status(500).json(error)
-        }
+        const authCode = String(req.query.code);
+        const tokenAndId = await this._oAuthManager.authenticate(authCode)
+        return res.status(200).json({data: {tokenAndId}});
     }
 
     @httpPost("/login")
     public async loginInternal(req: Request, res: Response) {
-        try {
-            const loginForm = LoginSchema.parse(req.body);
+        const loginForm = LoginSchema.parse(req.body);
             const jwtToken = await this._authManager.login(loginForm);;
             return res.status(200).json({
-                data: jwtToken,
-                message: "success"
+                data: { jsonWebToken: jwtToken }
             })
-        } catch (error) {
-            console.log(error)
-            return res.status(500).json(error)
-        }
     }
 
 }
