@@ -49,26 +49,29 @@ class ExternalAuthManager {
         if (!payload) {
             throw new Error("Error decoding!")
         }
-        let userAccount: UserAccount;
-        if (typeof payload !== "string") {
-            userAccount = await this._userManager.createUser({
+        if (typeof payload === "string") {
+            throw new Error("Invalid type!");
+        }
+
+        if (!expiryDate || !accessToken || !payload.sub) {
+            throw new Error("Error loading the expiry date and access token!");
+        }
+
+        let externalUserLogin = await this._externalUserLogin.findOneBy({externalId: payload.sub})
+        if (!externalUserLogin) {
+            const userAccount = await this._userManager.createUser({
                 email: payload.email,
                 name: payload.name,
                 displayName: payload.name
             })
-        } else {
-            throw new Error("Invalid type!");
-        }
-
-        const externalUserLogin = new ExternalUserLogin();
-        if (!expiryDate || !accessToken || !payload.sub) {
-            throw new Error("Error loading the expiry date and access token!");
+            externalUserLogin = new ExternalUserLogin();
+            externalUserLogin.user = userAccount;
+            externalUserLogin.externalId = payload.sub;
         }
         externalUserLogin.expiryDate = new Date(expiryDate);
         externalUserLogin.token = accessToken;
-        externalUserLogin.user = userAccount;
-        externalUserLogin.externalId = payload.sub;
-        await this._externalUserLogin.save(externalUserLogin);
+        this._externalUserLogin.save(externalUserLogin);
+
         return accessToken;
     }
 }
