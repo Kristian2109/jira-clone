@@ -12,13 +12,17 @@ export const AddressSchema = z.object({
 export const UserAccountSchema = z.object({
     name: z.string(),
     email: z.string(),
-    displayName: z.string(),
-    dateOfBirth: z.string(),
-    position: z.string(),
-    organization: z.string(),
-    password: z.string(),
-    address: AddressSchema
+    displayName: z.string().optional(),
+    dateOfBirth: z.string().optional(),
+    position: z.string().optional(),
+    organization: z.string().optional(),
+    address: AddressSchema.optional()
+})
+
+export const UserAccountSchemaWithPass = UserAccountSchema.extend({
+    password: z.string()
 })
 
 export type RegisterUserSchema = z.infer<typeof UserAccountSchema>;
 export type RegisterAddressSchema = z.infer<typeof AddressSchema>;
+export type RegisterUserSchemaWIthPass = z.infer<typeof UserAccountSchemaWithPass>;

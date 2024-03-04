@@ -17,9 +17,9 @@ export type FullUserDetails = {
     name: string;
     email: string;
     displayName?: string;
-    dateOfBirth: Date;
-    position: string;
-    organization: string;
+    dateOfBirth?: Date;
+    position?: string;
+    organization?: string;
     createdAt: Date;
-    address: Address;
+    address?: Address;
 }

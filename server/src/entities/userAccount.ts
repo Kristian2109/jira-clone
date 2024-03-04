@@ -11,19 +11,19 @@ export default class UserAccount extends BaseEntity {
     @Column()
     email!: string;
 
-    @Column()
-    organization!: string;
+    @Column({default: "None"})
+    organization?: string;
 
-    @Column()
-    dateOfBirth!: Date;
+    @Column({default: "1970-01-01"})
+    dateOfBirth?: Date;
 
-    @Column()
+    @Column({default: "None"})
     displayName?: string;
 
-    @Column()
-    position!: string;
+    @Column({default: "None"})
+    position?: string;
 
-    @OneToOne(() => UserAddress, {cascade: true})
+    @OneToOne(() => UserAddress, {cascade: true, nullable: true})
     @JoinColumn()
-    address!: UserAddress
+    address?: UserAddress
 }

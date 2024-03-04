@@ -9,13 +9,16 @@ export default class ExternalUserLogin extends BaseEntity {
     @JoinColumn()
     user!: UserAccount;
 
-    @ManyToOne(() => ExternalProvider)
-    @JoinColumn()
-    provider!: ExternalProvider;
+    // @ManyToOne(() => ExternalProvider)
+    // @JoinColumn()
+    // provider!: ExternalProvider;
 
     @Column({type: "varchar", length: 256})
     token!: string;
 
     @Column()
     expiryDate!: Date;
+
+    @Column()
+    externalId!: string;
 }

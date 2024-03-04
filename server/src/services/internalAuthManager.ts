@@ -7,19 +7,22 @@ import DuplicateResourceException from "../exceptions/duplicateResourceException
 import UserMapper from "../mappers/userMapper";
 import InternalUserLogin from "../entities/internalUserLogin";
 import { injectable } from "inversify";
-import { RegisterUserSchema } from "../types/zodTypes";
+import { RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/zodTypes";
+import UserManager from "./userManager";
 
 @injectable()
-export default class AuthManager {
+export default class InternalAuthManager {
     protected userRepository: Repository<UserAccount>;
     protected internalLoginRepository: Repository<InternalUserLogin>; 
+    protected userManager: UserManager;
 
-    constructor() {
+    constructor(userManager: UserManager) {
         this.userRepository = AppDataSource.getRepository(UserAccount);
         this.internalLoginRepository = AppDataSource.getRepository(InternalUserLogin);
+        this.userManager = userManager;
     }
 
-    public async register (registerInfo: RegisterUserSchema): Promise<FullUserDetails> {
+    public async register (registerInfo: RegisterUserSchemaWIthPass): Promise<FullUserDetails> {
 
         const email = registerInfo.email;
         const userWithEmail = await this.userRepository.findOneBy({
@@ -30,12 +33,9 @@ export default class AuthManager {
             throw new DuplicateResourceException("Duplicate Email!");
         }
 
-        const userToCreate = UserMapper.toUser(registerInfo);
-        console.log(userToCreate)
-        const User = await this.userRepository.save(userToCreate);
-        console.log(User)
-        await this.saveInternalLoginData(registerInfo.password, userToCreate);
-        return UserMapper.toFullUserDetails(User);
+        const createdUser = await this.userManager.createUser(registerInfo);
+        await this.saveInternalLoginData(registerInfo.password, createdUser);
+        return UserMapper.toFullUserDetails(createdUser);
     }
 
     private async saveInternalLoginData(password: string,  user: UserAccount): Promise<void> {

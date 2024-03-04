@@ -8,11 +8,11 @@ export default class UserMapper {
         let userToCreate = new UserAccount();
 
         userToCreate.name = userToRegister.name;
-        userToCreate.dateOfBirth = new Date(userToRegister.dateOfBirth);
+        userToCreate.dateOfBirth = (userToRegister.dateOfBirth) ? new Date(userToRegister.dateOfBirth) : undefined;
         userToCreate.organization = userToRegister.organization;
         userToCreate.position = userToRegister.position;
         userToCreate.email = userToRegister.email;
-        userToCreate.address = AddressMapper.toAddress(userToRegister.address);
+        userToCreate.address = userToRegister.address && AddressMapper.toAddress(userToRegister.address);
         userToCreate.displayName = userToRegister.displayName;
         
         return userToCreate;

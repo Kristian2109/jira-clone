@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import AuthManager from "../services/authManager";
+import InternalAuthManager from "../services/internalAuthManager";
 import { controller, httpGet, httpPost } from "inversify-express-utils";
-import { UserAccountSchema } from "../types/zodTypes";
-import OAuthManager from "../services/oAuthManager";
+import { UserAccountSchema, UserAccountSchemaWithPass } from "../types/zodTypes";
+import ExternalAuthManager from "../services/externalAuthManager";
 
 @controller("/users")
 class UserController {
-    private _authManager: AuthManager;
-    private _oAuthManager: OAuthManager;
+    private _authManager: InternalAuthManager;
+    private _oAuthManager: ExternalAuthManager;
 
-    constructor(authManager: AuthManager, oAuthManager: OAuthManager) {
+    constructor(authManager: InternalAuthManager, oAuthManager: ExternalAuthManager) {
         this._authManager = authManager;
         this._oAuthManager = oAuthManager;
     }
@@ -17,7 +17,7 @@ class UserController {
     @httpPost("/register")
     public async register(req: Request, res: Response) {
         try {
-            const registerData = UserAccountSchema.parse(req.body);
+            const registerData = UserAccountSchemaWithPass.parse(req.body);
             return res.status(200).json(await this._authManager.register(registerData));
         } catch (error) {
             return res.status(500).json(error)
@@ -38,7 +38,7 @@ class UserController {
     public async googleCallback(req: Request, res: Response) {
         try {
             const authCode = String(req.query.code);
-            return await this._oAuthManager.getToken(authCode);
+            return await this._oAuthManager.saveProfileAndAuth(authCode);
         } catch (error) {
             return res.status(500).json(error)
         }
