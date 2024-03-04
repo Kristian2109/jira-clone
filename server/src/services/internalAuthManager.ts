@@ -9,7 +9,7 @@ import InternalUserLogin from "../entities/internalUserLogin";
 import { injectable } from "inversify";
 import { Login, RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/zodTypes";
 import UserManager from "./userManager";
-import jwt from "jsonwebtoken"
+import { signToken } from "../utils/jwt";
 
 @injectable()
 export default class InternalAuthManager {
@@ -23,8 +23,7 @@ export default class InternalAuthManager {
         this.userManager = userManager;
     }
 
-    public async register (registerInfo: RegisterUserSchemaWIthPass): Promise<FullUserDetails> {
-
+    public async register (registerInfo: RegisterUserSchemaWIthPass): Promise<{token: string, userId: IntegerType}> {
         const email = registerInfo.email;
         const userWithEmail = await this.userRepository.findOneBy({
             email
@@ -36,10 +35,13 @@ export default class InternalAuthManager {
 
         const createdUser = await this.userManager.createUser(registerInfo);
         await this.saveInternalLoginData(registerInfo.password, createdUser);
-        return UserMapper.toFullUserDetails(createdUser);
+        return {
+            token: signToken({userId: createdUser.id}),
+            userId: createdUser.id
+        }
     }
 
-    public async login(loginForm: Login) {
+    public async login(loginForm: Login): Promise<{token: string, userId: IntegerType}> {
         const userToLogin = await this.userRepository.findOneBy({email: loginForm.email});
         if (!userToLogin) {
             throw new Error("Invalid email");
@@ -52,10 +54,10 @@ export default class InternalAuthManager {
         if (!isPasswordValid) {
             throw new Error("Invalid password");
         }
-        const token = jwt.sign({
+        return {
+            token: signToken({userId: userToLogin.id}),
             userId: userToLogin.id
-        }, "private key")
-        return token;
+        }
     }
 
     private async saveInternalLoginData(password: string,  user: UserAccount): Promise<void> {

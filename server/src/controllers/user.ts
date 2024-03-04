@@ -18,7 +18,11 @@ class UserController {
     public async register(req: Request, res: Response) {
         try {
             const registerData = UserAccountSchemaWithPass.parse(req.body);
-            return res.status(200).json(await this._authManager.register(registerData));
+            const tokenAndId = await this._authManager.register(registerData)
+            return res.status(200).json({
+                data: tokenAndId,
+                message: "success"
+            })
         } catch (error) {
             return res.status(500).json(error)
         }
@@ -48,8 +52,13 @@ class UserController {
     public async loginInternal(req: Request, res: Response) {
         try {
             const loginForm = LoginSchema.parse(req.body);
-            return await this._authManager.login(loginForm);
+            const jwtToken = await this._authManager.login(loginForm);;
+            return res.status(200).json({
+                data: jwtToken,
+                message: "success"
+            })
         } catch (error) {
+            console.log(error)
             return res.status(500).json(error)
         }
     }

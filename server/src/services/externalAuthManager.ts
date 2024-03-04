@@ -5,9 +5,10 @@ import jwt from "jsonwebtoken"
 import UserAccount from "../entities/userAccount";
 import { AppDataSource } from "../config/datasource";
 import ExternalUserLogin from "../entities/externalUserLogin";
-import { Repository } from "typeorm";
+import { IntegerType, Repository } from "typeorm";
 import UserManager from "./userManager";
 import { GetTokenResponse } from "google-auth-library/build/src/auth/oauth2client";
+import { signToken } from "../utils/jwt";
 
 dotenv.config()
 
@@ -40,7 +41,7 @@ class ExternalAuthManager {
         })
     }
 
-    public async authenticate(authCode: string) {
+    public async authenticate(authCode: string): Promise<{token: string, userId: IntegerType}> {
         const response = await this._oauth2Client.getToken(authCode);
         const extractedData  = await this.extractDataFromResponse(response)
 
@@ -50,7 +51,7 @@ class ExternalAuthManager {
             if (userWithSameEmail) {
                 throw new Error("The user with this email is already authenticated!")
             }
-            
+
             const userAccount = await this._userManager.createUser({
                 email: extractedData.email,
                 name: extractedData.name,
@@ -64,10 +65,11 @@ class ExternalAuthManager {
         externalUserLogin.token = extractedData.accessToken;
         this._externalUserLogin.save(externalUserLogin);
 
-        const token = jwt.sign({
+        const token = signToken({userId: externalUserLogin.user.id});
+        return {
+            token,
             userId: externalUserLogin.user.id
-        }, "private key")
-        return token;
+        };
     }
 
     private async extractDataFromResponse(response: GetTokenResponse) {

@@ -5,7 +5,7 @@ import ExternalProvider from "./externalProvider";
 
 @Entity()
 export default class ExternalUserLogin extends BaseEntity {
-    @OneToOne(() => UserAccount)
+    @OneToOne(() => UserAccount, {eager: true})
     @JoinColumn()
     user!: UserAccount;
 
