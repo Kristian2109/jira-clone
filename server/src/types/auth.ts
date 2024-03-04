@@ -1,5 +1,6 @@
 import { IntegerType } from "typeorm";
 import Address from "../entities/address";
+import { Request } from "express";
 
 export type RegisterUser = {
     name: string;
@@ -22,4 +23,10 @@ export type FullUserDetails = {
     organization?: string;
     createdAt: Date;
     address?: Address;
+}
+
+export interface AuthenticatedRequest extends Request {
+    user: {
+        id: number;
+    }
 }
