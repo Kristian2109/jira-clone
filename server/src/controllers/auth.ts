@@ -39,9 +39,10 @@ class AuthController {
     @httpPost("/login")
     public async loginInternal(req: Request, res: Response) {
         const loginForm = LoginSchema.parse(req.body);
-            const jwtToken = await this._authManager.login(loginForm);;
-            return res.status(200).json({
-                data: { jsonWebToken: jwtToken }
+        const jwtToken = await this._authManager.login(loginForm);;
+        return res.status(200).json({
+                data: { jsonWebToken: jwtToken.token,
+                        userId: jwtToken.userId}
             })
     }
 

@@ -4,4 +4,5 @@ export default class GenericException extends Error {
         super(message);
         this.statusCode = statusCode || 500;
     }
+
 }
