@@ -4,13 +4,17 @@ import { ProjectCreateSchema, ViewCreateSchema } from "../types/project";
 import ProjectManager from "../services/projectManager";
 import { AuthenticatedRequest } from "../types/auth";
 import JwtResolver from "../middleware/jwtResolver";
+import BoardManager from "../services/boardManager";
 
 @controller("/projects", JwtResolver.resolve)
 class ProjectController {
     private _projectManager: ProjectManager;
+    private _boardManager: BoardManager;
 
-    constructor(projectManager: ProjectManager) {
+    constructor(projectManager: ProjectManager, boardManager: BoardManager) {
         this._projectManager = projectManager;
+        this._boardManager = boardManager;
+
     }
 
     @httpPost("/", JwtResolver.resolve)
@@ -41,7 +45,7 @@ class ProjectController {
     @httpGet("/:projectId/views") 
     public async getViews(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
-        const views = await this._projectManager.getProjectViews(projectId);
+        const views = await this._boardManager.getProjectViews(projectId);
         return res.status(200).json({data: {views}});
     }
 
@@ -49,14 +53,14 @@ class ProjectController {
     public async addView(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
         const board = ViewCreateSchema.parse(req.body);
-        await this._projectManager.createBoardView({ projectId, boardMetadata: board});
+        await this._boardManager.createBoardView({ projectId, boardMetadata: board});
         return res.sendStatus(201);
     }
 
     @httpGet("/:projectId/views/:viewId") 
     public async getView(req: AuthenticatedRequest, res: Response) {
         const {projectId, viewId} = req.params;
-        const projectView = await this._projectManager.getProjectView({projectId: Number(projectId), viewId: Number(viewId)});
+        const projectView = await this._boardManager.getProjectView({projectId: Number(projectId), viewId: Number(viewId)});
         return res.status(200).json({data: {projectView}})
     }
 
@@ -68,7 +72,7 @@ class ProjectController {
     @httpDelete("/:projectId/views/:viewId") 
     public deleteView(req: AuthenticatedRequest, res: Response) {
         const {viewId, projectId } = req.params;
-        const result = this._projectManager.deleteView({projectId: Number(projectId), viewId: Number(viewId)});
+        const result = this._boardManager.deleteView({projectId: Number(projectId), viewId: Number(viewId)});
         return res.status(201).json({data: {result}})
     }
 

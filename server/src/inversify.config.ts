@@ -7,12 +7,14 @@ import ProjectController from "./controllers/project";
 import AuthController from "./controllers/auth";
 import AccountController from "./controllers/account";
 import ProjectRepository from "./repositories/projectRepository";
+import BoardManager from "./services/boardManager";
 
 const container = new Container()
 container.bind(InternalAuthManager).toSelf();
 container.bind(ExternalAuthManager).toSelf();
 container.bind(UserManager).toSelf();
 container.bind(ProjectManager).toSelf();
+container.bind(BoardManager).toSelf();
 container.bind(ProjectController).toSelf();
 container.bind(AuthController).toSelf();
 container.bind(AccountController).toSelf();
