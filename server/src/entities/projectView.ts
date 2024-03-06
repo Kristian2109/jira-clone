@@ -1,14 +1,14 @@
-import {  Column, Unique, Entity, ManyToOne, JoinColumn, GeoJSON } from "typeorm"
+import {  Column, Unique, Entity, ManyToOne, JoinColumn, GeoJSON, OneToMany } from "typeorm"
 import BaseEntity from "./baseEntity"
 import NameAndDescription from "./nameAndDescription";
 import UserAccount from "./userAccount";
 import Project from "./project";
 import ProjectViewCategory from "./projectViewCategory";
-
+import BoardColumn from "./boardColumn";
 @Entity()
 export default class ProjectView extends BaseEntity {
     @Column(() => NameAndDescription)
-    view!: NameAndDescription
+    details!: NameAndDescription
 
     @ManyToOne(() => Project)
     @JoinColumn()
@@ -18,6 +18,6 @@ export default class ProjectView extends BaseEntity {
     @JoinColumn()
     viewCategory!: ProjectViewCategory;
 
-    @Column("json")
-    viewModel!: string;
+    @OneToMany(() => BoardColumn, boardColumn => boardColumn.board, {cascade: true && ["insert", "update", "remove", "soft-remove", "recover"]})
+    boardColumns!: BoardColumn[];
 }

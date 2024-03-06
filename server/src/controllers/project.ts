@@ -1,6 +1,6 @@
 import { controller, httpDelete, httpGet, httpPatch, httpPost } from "inversify-express-utils";
 import { NextFunction, Request, Response } from "express";
-import { ProjectCreateSchema } from "../types/project";
+import { ProjectCreateSchema, ViewCreateSchema } from "../types/project";
 import ProjectManager from "../services/projectManaget";
 import { AuthenticatedRequest } from "../types/auth";
 import JwtResolver from "../middleware/jwtResolver";
@@ -32,33 +32,44 @@ class ProjectController {
     }
 
     @httpGet("/:projectId")
-    public getProject(req: Request, res: Response) {
-        const projectId = req.params.projectId;
+    public async getProject(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const project = await this._projectManager.getProjectByIdWithException(projectId);
+        return res.status(200).json({data: {project}});
     }
 
     @httpGet("/:projectId/views") 
-    public getViews(req: Request, res: Response) {
-
+    public async getViews(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const views = await this._projectManager.getProjectViews(projectId);
+        return res.status(200).json({data: {views}});
     }
 
-    @httpPost("/:projectId/views")
-    public addView(req: Request, res: Response) {
-
+    @httpPost("/:projectId/views/board")
+    public async addView(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const board = ViewCreateSchema.parse(req.body);
+        await this._projectManager.createBoardView({ projectId, boardMetadata: board});
+        return res.sendStatus(201);
     }
 
     @httpGet("/:projectId/views/:viewId") 
-    public getView(req: Request, res: Response) {
-
+    public async getView(req: AuthenticatedRequest, res: Response) {
+        const {projectId, viewId} = req.params;
+        const projectView = await this._projectManager.getProjectView({projectId: Number(projectId), viewId: Number(viewId)});
+        return res.status(200).json({data: {projectView}})
     }
 
-    @httpPatch("/:projectId/views/:viewId") 
-    public updateView(req: Request, res: Response) {
+    @httpPatch("/:projectId/views/:viewId/addIssues") 
+    public addIssueToView(req: AuthenticatedRequest, res: Response) {
 
     }
 
     @httpDelete("/:projectId/views/:viewId") 
-    public deleteView(req: Request, res: Response) {
-
+    public deleteView(req: AuthenticatedRequest, res: Response) {
+        const {viewId, projectId } = req.params;
+        const result = this._projectManager.deleteView({projectId: Number(projectId), viewId: Number(viewId)});
+        return res.status(201).json({data: {result}})
     }
 
     @httpGet("/:projectId/issueTypes")

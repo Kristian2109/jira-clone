@@ -8,6 +8,7 @@ import dotenv from 'dotenv'
 
 import { AppDataSource } from "./config/datasource";
 import ErrorHandler from "./middleware/errorHandler";
+import ViewCategoriesInserted from "./bootstrap/categoriesInserter";
 
 dotenv.config()
 const PORT = process.env.PORT || 8080;
@@ -25,6 +26,7 @@ app.listen(PORT, async () => {
     try {
         await AppDataSource.initialize();
         console.log("Data Source running on port: " + process.env.MYSQL_PORT);
+        await ViewCategoriesInserted.setUpViewCategories();
     } catch (error) {
         console.error("Data Source cannot be loaded!")
         console.error(error);
