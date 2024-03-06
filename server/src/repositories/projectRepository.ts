@@ -33,8 +33,7 @@ export default class ProjectRepository {
                 id: projectId
             },
             relations: {
-                "members": true,
-                "views": true
+                "members": true
             }
         });
     }

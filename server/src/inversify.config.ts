@@ -2,7 +2,7 @@ import { Container } from "inversify";
 import InternalAuthManager from "./services/internalAuthManager";
 import ExternalAuthManager from "./services/externalAuthManager";
 import UserManager from "./services/userManager";
-import ProjectManager from "./services/projectManaget";
+import ProjectManager from "./services/projectManager";
 import ProjectController from "./controllers/project";
 import AuthController from "./controllers/auth";
 import AccountController from "./controllers/account";

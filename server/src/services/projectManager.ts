@@ -37,16 +37,12 @@ class ProjectManager {
         return await this._projectCustomRepository.save(project);
     }
 
-    public async getProjectByIdWithException(id: number): Promise<Project> {
-        const foundProject = await this._projectRepository.findOneBy({id});
-        if (!foundProject) {
-            throw new Error("User not found!");
-        }
-        return foundProject;
+    public async getProjectById(id: number): Promise<Project> {
+        return this._projectCustomRepository.findByIdWithException(id);
     }
 
     public async getUserProjects(userId: number) {
-        return await this._projectCustomRepository.findProjectsWhereUserIsMember(userId);
+        return this._projectCustomRepository.findProjectsWhereUserIsMember(userId);
     }
 
     private createInitialBoardColumns() {
@@ -59,7 +55,7 @@ class ProjectManager {
 
     public async createBoardView(params: {projectId: number, boardMetadata: ViewCreate}) {
         const {projectId, boardMetadata} = params;
-        const project = await this.getProjectByIdWithException(projectId);
+        const project = await this.getProjectById(projectId);
         const boardView = new ProjectView();
         boardView.project = project;
         boardView.details = {
@@ -72,7 +68,6 @@ class ProjectManager {
             throw new GenericException("Categories not initialized", 500);
         }
         boardView.viewCategory = boardCategory;
-        project.views = [boardView];
         await this._projectRepository.save(project);
     }
 
@@ -92,7 +87,7 @@ class ProjectManager {
     }
 
     public async getProjectViews(projectId: number) {
-        const project = await this.getProjectByIdWithException(projectId);
+        const project = await this.getProjectById(projectId);
         const projectViews = await AppDataSource.getRepository(ProjectView).find({
             where: {
                 project : {id: projectId}

@@ -1,7 +1,7 @@
 import { controller, httpDelete, httpGet, httpPatch, httpPost } from "inversify-express-utils";
 import { NextFunction, Request, Response } from "express";
 import { ProjectCreateSchema, ViewCreateSchema } from "../types/project";
-import ProjectManager from "../services/projectManaget";
+import ProjectManager from "../services/projectManager";
 import { AuthenticatedRequest } from "../types/auth";
 import JwtResolver from "../middleware/jwtResolver";
 
@@ -34,7 +34,7 @@ class ProjectController {
     @httpGet("/:projectId")
     public async getProject(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
-        const project = await this._projectManager.getProjectByIdWithException(projectId);
+        const project = await this._projectManager.getProjectById(projectId);
         return res.status(200).json({data: {project}});
     }
 
