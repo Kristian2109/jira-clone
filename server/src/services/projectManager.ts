@@ -7,15 +7,18 @@ import ProjectMapper from "../mappers/projectMapper";
 import ProjectMember from "../entities/projectMember";
 import UserManager from "./userManager";
 import ProjectRepository from "../repositories/projectRepository";
+import BoardRepository from "../repositories/boardRepository";
 
 @injectable()
 class ProjectManager {
     protected _userManager: UserManager;
     protected _projectCustomRepository: ProjectRepository;
+    protected _boardRepository: BoardRepository;
 
-    constructor(userManager: UserManager, projectRepository: ProjectRepository) {
+    constructor(userManager: UserManager, projectRepository: ProjectRepository, boardRepository: BoardRepository) {
         this._userManager = userManager;
         this._projectCustomRepository = projectRepository;
+        this._boardRepository = boardRepository;
     }
 
     public async createProject(projectToCreate: ProjectCreate, ownerId: number) {
@@ -36,6 +39,11 @@ class ProjectManager {
 
     public async getUserProjects(userId: number) {
         return this._projectCustomRepository.findProjectsWhereUserIsMember(userId);
+    }
+
+    public async getProjectViews(projectId: number) {
+        const project = await this._projectCustomRepository.findWithBoard(projectId);
+        return project;
     }
 }
 

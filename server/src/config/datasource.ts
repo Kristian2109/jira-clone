@@ -3,8 +3,7 @@ import UserAccount from "../entities/userAccount";
 import dotenv from "dotenv"
 import UserAddress from "../entities/address";
 import Project from "../entities/project";
-import ProjectView from "../entities/projectView";
-import ProjectViewCategory from "../entities/projectViewCategory";
+import Board from "../entities/board";
 import ProjectMember from "../entities/projectMember";
 import BoardColumn from "../entities/boardColumn";
 import InternalUserLogin from "../entities/internalUserLogin";
@@ -23,15 +22,14 @@ const mysqlConfig: DataSourceOptions = {
         UserAccount,
         UserAddress, 
         Project, 
-        ProjectView, 
-        ProjectViewCategory,
+        Board, 
         ProjectMember,
         BoardColumn,
         ExternalProvider,
         InternalUserLogin,
         ExternalUserLogin
     ],
-    synchronize: true,
+    synchronize: true
 }
 
 export const AppDataSource = new DataSource(mysqlConfig);

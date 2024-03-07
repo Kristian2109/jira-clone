@@ -1,26 +1,20 @@
 import {  Column, Unique, Entity, ManyToOne, JoinColumn } from "typeorm"
-import BaseEntity from "./baseEntity"
-import NameAndDescription from "./nameAndDescription";
-import ProjectView from "./projectView";
+import Board from "./board";
+import BaseEntityWithDetails from "./baseEntityWithDetails";
 
 @Entity()
-export default class BoardColumn extends BaseEntity {
-    @Column(() => NameAndDescription)
-    details!: NameAndDescription
-
-    @ManyToOne(() => ProjectView)
+export default class BoardColumn extends BaseEntityWithDetails {
+    @ManyToOne(() => Board)
     @JoinColumn()
-    board!: ProjectView
+    board!: Board
 
     @Column("int")
     orderNumber!: number
 
     constructor(name?: string, description?: string, order?: number) {
         super()
-        this.details = {
-            name: name || "",
-            description: description || ""
-        }
+        this.name = name || "";
+        this.description = description || "";
         this.orderNumber = order || 0;
     }
 }

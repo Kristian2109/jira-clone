@@ -42,10 +42,10 @@ class ProjectController {
         return res.status(200).json({data: {project}});
     }
 
-    @httpGet("/:projectId/views") 
+    @httpGet("/:projectId/board") 
     public async getViews(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
-        const views = await this._boardManager.getProjectViews(projectId);
+        const views = await this._boardManager.getBoard({projectId});
         return res.status(200).json({data: {views}});
     }
 
@@ -53,14 +53,14 @@ class ProjectController {
     public async addView(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
         const board = ViewCreateSchema.parse(req.body);
-        await this._boardManager.createBoardView({ projectId, boardMetadata: board});
+        await this._boardManager.createBoard({ projectId, boardMetadata: board});
         return res.sendStatus(201);
     }
 
     @httpGet("/:projectId/views/:viewId") 
     public async getView(req: AuthenticatedRequest, res: Response) {
         const {projectId, viewId} = req.params;
-        const projectView = await this._boardManager.getProjectView({projectId: Number(projectId), viewId: Number(viewId)});
+        const projectView = await this._boardManager.getBoard({projectId: Number(projectId)});
         return res.status(200).json({data: {projectView}})
     }
 
@@ -71,9 +71,6 @@ class ProjectController {
 
     @httpDelete("/:projectId/views/:viewId") 
     public deleteView(req: AuthenticatedRequest, res: Response) {
-        const {viewId, projectId } = req.params;
-        const result = this._boardManager.deleteView({projectId: Number(projectId), viewId: Number(viewId)});
-        return res.status(201).json({data: {result}})
     }
 
     @httpGet("/:projectId/issueTypes")

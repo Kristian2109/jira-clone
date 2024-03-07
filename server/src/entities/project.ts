@@ -1,10 +1,8 @@
-import {  Column, Unique, Entity, OneToMany, AfterLoad, AfterRecover } from "typeorm"
-import BaseEntity from "./baseEntity"
-import NameAndDescription from "./nameAndDescription";
+import {  Column, Unique, Entity, OneToMany, AfterLoad, AfterRecover, OneToOne, JoinColumn } from "typeorm"
 import ProjectMember from "./projectMember";
-import { Exclude, classToPlain, classToPlainFromExist, instanceToPlain } from "class-transformer";
-import ProjectView from "./projectView";
+import { Exclude, instanceToPlain } from "class-transformer";
 import BaseEntityWithDetails from "./baseEntityWithDetails";
+import Board from "./board";
 
 @Entity()
 @Unique("unique_key", ["key"])
@@ -22,6 +20,10 @@ export default class Project extends BaseEntityWithDetails {
         this.members = [];
       } 
     }
+
+    @JoinColumn()
+    @OneToOne(() => Board, {cascade: true}) 
+    board!: Board
 
     toJSON() {
         return instanceToPlain(this);

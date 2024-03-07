@@ -1,8 +1,9 @@
-import { Repository } from "typeorm";
+import { FindOptions, FindOptionsRelations, Repository } from "typeorm";
 import Project from "../entities/project";
 import { AppDataSource } from "../config/datasource";
 import { injectable } from "inversify";
 import BadRequestError from "../exceptions/badRequestError";
+import Board from "../entities/board";
 
 @injectable()
 export default class ProjectRepository {
@@ -27,18 +28,19 @@ export default class ProjectRepository {
         return foundProject;
     }
 
-    public async findByIdWithMembersAndViews(projectId: number) {
-        return this._nativeRepo.findOne({
+    public async findByIdWithMembersAndViews(projectId: number): Promise<Project> {
+        return this._nativeRepo.findOneOrFail({
             where: {
                 id: projectId
             },
             relations: {
-                "members": true
+                "members": true,
+                "board": true
             }
         });
     }
 
-    public async findProjectsWhereUserIsMember(userId: number) {
+    public async findProjectsWhereUserIsMember(userId: number): Promise<Project[]> {
         return this._nativeRepo.find({
             where: {
                 "members": {
@@ -48,5 +50,18 @@ export default class ProjectRepository {
                 }
             }
         })
+    }
+
+    public async findWithBoard(projectId: number): Promise<Project> {
+        const foundProject = await this._nativeRepo.findOne({
+            where: {
+                id: projectId
+            },
+            relations: ["board", "board.boardColumns"]
+        })
+        if (!foundProject) {
+            throw new BadRequestError({message: `No ${this._nativeRepo.target.toString()} with id: ${projectId}!`, statusCode: 400});
+        }
+        return foundProject;
     }
 }
