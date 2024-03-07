@@ -6,10 +6,17 @@ export const ProjectCreateSchema = z.object({
     key: z.string().optional()
 })
 
-export const ViewCreateSchema = z.object({
+export const NameAndDescriptionSchema = z.object({
     name: z.string(),
     description: z.string()
 })
 
+export const BoardColumnCreateSchema = z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    orderNumber: z.number().gt(0)
+})
+
 export type ProjectCreate = z.infer<typeof ProjectCreateSchema>;
-export type ViewCreate = z.infer<typeof ViewCreateSchema>;
+export type NameAndDescription = z.infer<typeof NameAndDescriptionSchema>;
+export type BorderColumnCreate = z.infer<typeof BoardColumnCreateSchema>;

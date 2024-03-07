@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import { Repository } from "typeorm";
 import Project from "../entities/project";
 import { AppDataSource } from "../config/datasource";
-import { ProjectCreate, ViewCreate } from "../types/project";
+import { ProjectCreate, NameAndDescription } from "../types/project";
 import ProjectMapper from "../mappers/projectMapper";
 import ProjectMember from "../entities/projectMember";
 import UserManager from "./userManager";
@@ -41,7 +41,7 @@ class ProjectManager {
         return this._projectCustomRepository.findProjectsWhereUserIsMember(userId);
     }
 
-    public async getProjectViews(projectId: number) {
+    public async getProjectBoard(projectId: number) {
         const project = await this._projectCustomRepository.findWithBoard(projectId);
         return project;
     }

@@ -1,6 +1,6 @@
 import { controller, httpDelete, httpGet, httpPatch, httpPost } from "inversify-express-utils";
 import { NextFunction, Request, Response } from "express";
-import { ProjectCreateSchema, ViewCreateSchema } from "../types/project";
+import { ProjectCreateSchema, NameAndDescriptionSchema, BoardColumnCreateSchema } from "../types/project";
 import ProjectManager from "../services/projectManager";
 import { AuthenticatedRequest } from "../types/auth";
 import JwtResolver from "../middleware/jwtResolver";
@@ -43,34 +43,36 @@ class ProjectController {
     }
 
     @httpGet("/:projectId/board") 
-    public async getViews(req: AuthenticatedRequest, res: Response) {
+    public async getProjectBoard(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
-        const views = await this._boardManager.getBoard({projectId});
-        return res.status(200).json({data: {views}});
+        const board = await this._boardManager.getBoard({projectId});
+        return res.status(200).json({data: {board}});
     }
 
-    @httpPost("/:projectId/views/board")
-    public async addView(req: AuthenticatedRequest, res: Response) {
+    @httpPost("/:projectId/board")
+    public async createBoard(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
-        const board = ViewCreateSchema.parse(req.body);
+        const board = NameAndDescriptionSchema.parse(req.body);
         await this._boardManager.createBoard({ projectId, boardMetadata: board});
         return res.sendStatus(201);
     }
 
-    @httpGet("/:projectId/views/:viewId") 
-    public async getView(req: AuthenticatedRequest, res: Response) {
-        const {projectId, viewId} = req.params;
-        const projectView = await this._boardManager.getBoard({projectId: Number(projectId)});
-        return res.status(200).json({data: {projectView}})
+    @httpPost("/:projectId/board/columns") 
+    public async addBoardColumn(req: AuthenticatedRequest, res: Response) {
+        const columnToAdd = BoardColumnCreateSchema.parse(req.body);
+        const projectId = Number(req.params.projectId);
+        await this._boardManager.addBoardColumn({columnDTO: columnToAdd, projectId});
+        return res.sendStatus(201);
     }
 
-    @httpPatch("/:projectId/views/:viewId/addIssues") 
-    public addIssueToView(req: AuthenticatedRequest, res: Response) {
-
+    @httpDelete("/:projectId/board/columns/:columnId") 
+    public deleteBoardColumn(req: AuthenticatedRequest, res: Response) {
+        
     }
 
-    @httpDelete("/:projectId/views/:viewId") 
-    public deleteView(req: AuthenticatedRequest, res: Response) {
+    @httpPost("/:projectId/board/issues") 
+    public addIssueToBoard(req: AuthenticatedRequest, res: Response) {
+        
     }
 
     @httpGet("/:projectId/issueTypes")

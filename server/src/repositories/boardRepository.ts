@@ -22,7 +22,7 @@ export default class BoardRepository {
     public async findByIdWithException(projectId: number): Promise<Board> {
         const foundProject = await this.findById(projectId);
         if (!foundProject) {
-            throw new BadRequestError({message: `No ${this._nativeRepo.target.toString()} with id: ${projectId}!`, statusCode: 400});
+            throw new BadRequestError({message: `No Project with id: ${projectId}!`, statusCode: 400});
         }
         return foundProject;
     }

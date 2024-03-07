@@ -8,8 +8,9 @@ import { AppDataSource } from "../config/datasource";
 import Board from "../entities/board";
 import GenericException from "../exceptions/genericException";
 import BadRequestError from "../exceptions/badRequestError";
-import { ViewCreate } from "../types/project";
+import { BorderColumnCreate, NameAndDescription } from "../types/project";
 import BoardRepository from "../repositories/boardRepository";
+import BoardColumnMapper from "../mappers/boardMapper";
 
 @injectable()
 export default class BoardManager {
@@ -21,7 +22,7 @@ export default class BoardManager {
         this._boardRepository = boardRepository;
     }
 
-    public async createBoard(params: {projectId: number, boardMetadata: ViewCreate}) {
+    public async createBoard(params: {projectId: number, boardMetadata: NameAndDescription}) {
         const {projectId, boardMetadata} = params;
         const project = await this._projectCustomRepository.findByIdWithException(projectId);
         const boardView = new Board();
@@ -37,6 +38,17 @@ export default class BoardManager {
         return (await this._projectCustomRepository.findWithBoard(projectId)).board;
     }
 
+    public async addBoardColumn(params: {columnDTO: BorderColumnCreate, projectId: number}) {
+        const {columnDTO, projectId} = params;
+        const project = await this._projectCustomRepository.findWithBoard(projectId)
+        const board = project.board;
+
+        const newColumn = BoardColumnMapper.toColumn(columnDTO);
+        newColumn.board = board;
+        this.addNewColumnAndSetOrder(board.boardColumns, newColumn);
+        this._boardRepository.save(board);
+    }
+
     private createInitialBoardColumns() {
         return [
             new BoardColumn("To Do", "Tasks to be done.", 1),
@@ -44,4 +56,18 @@ export default class BoardManager {
             new BoardColumn("Done", "Done tasks.", 3)
         ]
     } 
+
+    private addNewColumnAndSetOrder(columns: BoardColumn[], newColumn: BoardColumn) {
+        const currentColumnsCount = columns.length;
+        if (currentColumnsCount < newColumn.orderNumber) {
+            newColumn.orderNumber = currentColumnsCount;
+        } else {
+            columns.forEach(column => {
+                if (column.orderNumber >= newColumn.orderNumber) {
+                    column.orderNumber++;
+                }
+            })
+        }
+        columns.push(newColumn);
+    }
 }

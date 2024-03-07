@@ -8,14 +8,12 @@ export default class ErrorHandler {
             console.error(err.toString(), err.statusCode);
             return res.status(err.statusCode).json({error: err.message});
         } else if (err instanceof CustomError) {
-            if (err.logging()) {
-                console.error(JSON.stringify({
-                    code: err.statusCode(),
-                    context: err.errors(),
-                    stack: err.stack
-                }));
-            } 
-            return res.status(err.statusCode()).json({error: err.errors()});
+            console.error(JSON.stringify({
+                code: err.statusCode,
+                context: err.errors,
+                stack: err.stack
+            }));
+            return res.status(err.statusCode).json({error: err.errors});
         }
 
         console.error(err.message, "\n");

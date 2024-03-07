@@ -60,7 +60,7 @@ export default class ProjectRepository {
             relations: ["board", "board.boardColumns"]
         })
         if (!foundProject) {
-            throw new BadRequestError({message: `No ${this._nativeRepo.target.toString()} with id: ${projectId}!`, statusCode: 400});
+            throw new BadRequestError({message: `No Project with id: ${projectId}!`, statusCode: 400});
         }
         return foundProject;
     }
