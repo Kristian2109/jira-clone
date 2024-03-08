@@ -17,11 +17,6 @@ class AccountController {
         
     }
 
-    @httpGet("/me/projects") 
-    public async getUserProjects(req: AuthenticatedRequest, res: Response) {
-        const projects = await this._userManager.getUserProjects(req.user.id);
-        return res.status(200).json({data: {projects}});
-    }
 }
 
 export default AccountController;

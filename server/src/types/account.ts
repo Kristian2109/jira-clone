@@ -29,6 +29,9 @@ export const LoginSchema = z.object({
     password: z.string()
 })
 
+export type MemberStatus = "Accepted" | "Rejected" | "Pending";
+export type MemberRole = "Owner" | "Worker";
+
 export type RegisterUserSchema = z.infer<typeof UserAccountSchema>;
 export type RegisterAddressSchema = z.infer<typeof AddressSchema>;
 export type RegisterUserSchemaWIthPass = z.infer<typeof UserAccountSchemaWithPass>;

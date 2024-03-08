@@ -3,6 +3,7 @@ import BaseEntity from "./baseEntity"
 import UserAccount from "./userAccount";
 import Project from "./project";
 import { Exclude, classToPlain, instanceToPlain } from "class-transformer";
+import { MemberRole, MemberStatus } from "../types/account";
 
 @Entity()
 export default class ProjectMember extends BaseEntity {
@@ -16,12 +17,20 @@ export default class ProjectMember extends BaseEntity {
     user!: UserAccount;
 
     @Column()
-    status!: "Accepted" | "Rejected" | "Pending"
+    status!: MemberStatus;
 
     @Column()
-    role!: "Owner" | "Worker"
+    role!: MemberRole;
 
     toJSON() {
         return instanceToPlain(this);
+    }
+
+    constructor(project: Project, user: UserAccount, status: MemberStatus, role: MemberRole) {
+        super();
+        this.project = project;
+        this.user = user;
+        this.status = status;
+        this.role = role;
     }
 }

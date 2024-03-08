@@ -73,6 +73,28 @@ class ProjectController {
         return res.sendStatus(204);
     }
 
+    @httpPost("/:projectId/members") 
+    public async inviteUser(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const userEmail = req.body.userEmail;
+        await this._projectManager.inviteUser(projectId, userEmail);
+        return res.sendStatus(201);
+    }
+
+    @httpPatch("/:projectId/members/accept") 
+    public async acceptInvitation(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        await this._projectManager.acceptInvitation(projectId, req.user.id);
+        return res.sendStatus(201);
+    }
+
+    @httpPatch("/:projectId/members/decline") 
+    public async declineInvitation(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        await this._projectManager.declineInvitation(projectId, req.user.id);
+        return res.sendStatus(204);
+    }
+
     @httpPost("/:projectId/board/issues") 
     public addIssueToBoard(req: AuthenticatedRequest, res: Response) {
         

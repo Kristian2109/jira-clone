@@ -20,7 +20,7 @@ class UserManager{
     } 
 
     public async getUserByEmail(email: string) {
-        return this._userRepository.findOneBy({email});
+        return this._userRepository.findOneByOrFail({email});
     }
 
     public async getUserByIdWithException(id: number): Promise<UserAccount> {
@@ -29,11 +29,6 @@ class UserManager{
             throw new Error("User not found!");
         }
         return foundUser;
-    }
-
-    public async getUserProjects(userId: number) {
-        const memberships = await (await this.getUserByIdWithException(userId)).memberships;
-        return memberships.map(membership => membership.project);
     }
 }
 

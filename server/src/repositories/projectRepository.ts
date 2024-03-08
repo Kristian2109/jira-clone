@@ -3,45 +3,44 @@ import Project from "../entities/project";
 import { AppDataSource } from "../config/datasource";
 import { injectable } from "inversify";
 import BadRequestError from "../exceptions/badRequestError";
-import Board from "../entities/board";
-
+import ProjectMember from "../entities/projectMember";
 @injectable()
 export default class ProjectRepository {
-    protected _nativeRepo: Repository<Project>;
+    protected _projectRepo: Repository<Project>;
+    protected _memberRepo: Repository<ProjectMember>;
+
     constructor() {
-        this._nativeRepo = AppDataSource.getRepository(Project);
+        this._projectRepo = AppDataSource.getRepository(Project);
+        this._memberRepo = AppDataSource.getRepository(ProjectMember);
     }
 
     public async save(project: Project) {
-        return this._nativeRepo.save(project);
+        return this._projectRepo.save(project);
     }
 
     public async findById(projectId: number) {
-        return this._nativeRepo.findOneBy({id: projectId});
+        return this._projectRepo.findOneBy({id: projectId});
     }
 
     public async findByIdWithException(projectId: number): Promise<Project> {
         const foundProject = await this.findById(projectId);
         if (!foundProject) {
-            throw new BadRequestError({message: `No ${this._nativeRepo.target.toString()} with id: ${projectId}!`, statusCode: 400});
+            throw new BadRequestError({message: `No Project with id: ${projectId}!`, statusCode: 400});
         }
         return foundProject;
     }
 
     public async findByIdWithMembersAndViews(projectId: number): Promise<Project> {
-        return this._nativeRepo.findOneOrFail({
+        return this._projectRepo.findOneOrFail({
             where: {
                 id: projectId
             },
-            relations: {
-                "members": true,
-                "board": true
-            }
+            relations: ["members", "board", "members.user"]
         });
     }
 
     public async findProjectsWhereUserIsMember(userId: number): Promise<Project[]> {
-        return this._nativeRepo.find({
+        return this._projectRepo.find({
             where: {
                 "members": {
                     "user": {
@@ -53,7 +52,7 @@ export default class ProjectRepository {
     }
 
     public async findWithBoard(projectId: number): Promise<Project> {
-        const foundProject = await this._nativeRepo.findOne({
+        const foundProject = await this._projectRepo.findOne({
             where: {
                 id: projectId
             },
@@ -63,5 +62,26 @@ export default class ProjectRepository {
             throw new BadRequestError({message: `No Project with id: ${projectId}!`, statusCode: 400});
         }
         return foundProject;
+    }
+
+    public async findMembership(projectId: number, userId: number) {
+        return this._memberRepo.findOneOrFail({
+            where: {
+                project: {
+                    id: projectId
+                },
+                user: {
+                    id: userId
+                }
+            }
+        })
+    }
+
+    public async saveMembership(projectMember: ProjectMember) {
+        this._memberRepo.save(projectMember);
+    }
+
+    public async deleteMembership(projectMember: ProjectMember) {
+        this._memberRepo.remove(projectMember);
     }
 }

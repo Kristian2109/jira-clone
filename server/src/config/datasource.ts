@@ -29,8 +29,7 @@ const mysqlConfig: DataSourceOptions = {
         InternalUserLogin,
         ExternalUserLogin
     ],
-    synchronize: true,
-    dropSchema: true
+    synchronize: true
 }
 
 export const AppDataSource = new DataSource(mysqlConfig);
