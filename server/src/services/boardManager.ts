@@ -1,11 +1,11 @@
 import { injectable } from "inversify";
-import BoardColumn from "../entities/boardColumn";
+import BoardColumn from "../entities/project/boardColumn";
 import ProjectRepository from "../repositories/projectRepository";
 import { Repository } from "typeorm";
-import Project from "../entities/project";
+import Project from "../entities/project/project";
 import UserManager from "./userManager";
 import { AppDataSource } from "../config/datasource";
-import Board from "../entities/board";
+import Board from "../entities/project/board";
 import GenericException from "../exceptions/genericException";
 import BadRequestError from "../exceptions/badRequestError";
 import { BorderColumnCreate, NameAndDescription } from "../types/project";

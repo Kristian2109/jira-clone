@@ -1,4 +1,4 @@
-import UserAccount from "../entities/userAccount";
+import UserAccount from "../entities/account/userAccount";
 import { FullUserDetails, RegisterUser } from "../types/auth";
 import { RegisterUserSchema } from "../types/account";
 import AddressMapper from "./addressMapper";

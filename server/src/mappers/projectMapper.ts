@@ -1,4 +1,4 @@
-import Project from "../entities/project";
+import Project from "../entities/project/project";
 import { ProjectCreate } from "../types/project";
 
 export default class ProjectMapper {

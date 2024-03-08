@@ -1,5 +1,5 @@
 import {  PrimaryColumn, Entity, OneToOne, JoinColumn, ManyToOne, Column } from "typeorm"
-import BaseEntity from "./baseEntity"
+import BaseEntity from "../baseEntity"
 import UserAccount from "./userAccount";
 import ExternalProvider from "./externalProvider";
 

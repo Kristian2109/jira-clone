@@ -1,14 +1,14 @@
 import { DataSource, DataSourceOptions } from "typeorm";
-import UserAccount from "../entities/userAccount";
+import UserAccount from "../entities/account/userAccount";
 import dotenv from "dotenv"
-import UserAddress from "../entities/address";
-import Project from "../entities/project";
-import Board from "../entities/board";
-import ProjectMember from "../entities/projectMember";
-import BoardColumn from "../entities/boardColumn";
-import InternalUserLogin from "../entities/internalUserLogin";
-import ExternalUserLogin from "../entities/externalUserLogin";
-import ExternalProvider from "../entities/externalProvider";
+import UserAddress from "../entities/account/address";
+import Project from "../entities/project/project";
+import Board from "../entities/project/board";
+import ProjectMember from "../entities/project/projectMember";
+import BoardColumn from "../entities/project/boardColumn";
+import InternalUserLogin from "../entities/account/internalUserLogin";
+import ExternalUserLogin from "../entities/account/externalUserLogin";
+import ExternalProvider from "../entities/account/externalProvider";
 dotenv.config()
 
 const mysqlConfig: DataSourceOptions = {

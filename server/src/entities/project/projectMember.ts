@@ -1,9 +1,9 @@
 import {  Column, Unique, Entity, ManyToOne, JoinColumn } from "typeorm"
-import BaseEntity from "./baseEntity"
-import UserAccount from "./userAccount";
+import BaseEntity from "../baseEntity"
+import UserAccount from "../account/userAccount";
 import Project from "./project";
 import { Exclude, classToPlain, instanceToPlain } from "class-transformer";
-import { MemberRole, MemberStatus } from "../types/account";
+import { MemberRole, MemberStatus } from "../../types/account";
 
 @Entity()
 export default class ProjectMember extends BaseEntity {

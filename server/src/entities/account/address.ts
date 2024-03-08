@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import BaseEntity from "./baseEntity";
+import BaseEntity from "../baseEntity";
 
 @Entity()
 export default class Address extends BaseEntity{

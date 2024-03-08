@@ -1,6 +1,6 @@
 import { Entity, Column, JoinColumn, OneToOne} from "typeorm";
 import UserAccount from "./userAccount";
-import BaseEntity from "./baseEntity";
+import BaseEntity from "../baseEntity";
 
 @Entity()
 export default class InternalUserLogin extends BaseEntity {

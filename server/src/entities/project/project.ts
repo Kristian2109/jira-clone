@@ -1,7 +1,7 @@
 import {  Column, Unique, Entity, OneToMany, AfterLoad, AfterRecover, OneToOne, JoinColumn } from "typeorm"
 import ProjectMember from "./projectMember";
 import { Exclude, instanceToPlain } from "class-transformer";
-import BaseEntityWithDetails from "./baseEntityWithDetails";
+import BaseEntityWithDetails from "../baseEntityWithDetails";
 import Board from "./board";
 
 @Entity()

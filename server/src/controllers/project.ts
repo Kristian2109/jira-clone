@@ -106,8 +106,9 @@ class ProjectController {
     }
 
     @httpPost("/:projectId/issueTypes")
-    public createIssueType(req: Request, res: Response) {
-
+    public createIssueType(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        
     }
 
     @httpDelete("/:projectId/issueTypes/:issueTypeId")

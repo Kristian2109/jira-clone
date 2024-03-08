@@ -1,4 +1,4 @@
-import BoardColumn from "../entities/boardColumn";
+import BoardColumn from "../entities/project/boardColumn";
 import { BorderColumnCreate } from "../types/project";
 
 export default class BoardColumnMapper {

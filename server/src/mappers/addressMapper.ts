@@ -1,4 +1,4 @@
-import Address from "../entities/address";
+import Address from "../entities/account/address";
 import { RegisterAddressSchema } from "../types/account";
 
 export default class AddressMapper {

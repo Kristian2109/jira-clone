@@ -2,9 +2,9 @@ import dotenv from "dotenv"
 import { injectable } from "inversify";
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken"
-import UserAccount from "../entities/userAccount";
+import UserAccount from "../entities/account/userAccount";
 import { AppDataSource } from "../config/datasource";
-import ExternalUserLogin from "../entities/externalUserLogin";
+import ExternalUserLogin from "../entities/account/externalUserLogin";
 import { IntegerType, Repository } from "typeorm";
 import UserManager from "./userManager";
 import { GetTokenResponse } from "google-auth-library/build/src/auth/oauth2client";

@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { Repository } from "typeorm";
-import Board from "../entities/board";
+import Board from "../entities/project/board";
 import { AppDataSource } from "../config/datasource";
 import BadRequestError from "../exceptions/badRequestError";
 

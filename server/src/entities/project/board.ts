@@ -1,9 +1,9 @@
 import {  Column, Unique, Entity, ManyToOne, JoinColumn, GeoJSON, OneToMany } from "typeorm"
-import BaseEntity from "./baseEntity"
-import UserAccount from "./userAccount";
+import BaseEntity from "../baseEntity"
+import UserAccount from "../account/userAccount";
 import Project from "./project";
 import BoardColumn from "./boardColumn";
-import BaseEntityWithDetails from "./baseEntityWithDetails";
+import BaseEntityWithDetails from "../baseEntityWithDetails";
 
 @Entity()
 export default class Board extends BaseEntityWithDetails {

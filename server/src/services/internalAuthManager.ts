@@ -2,10 +2,10 @@ import { IntegerType, Repository } from "typeorm";
 import bcrypt from "bcrypt"
 import { FullUserDetails, RegisterUser } from "../types/auth";
 import { AppDataSource } from "../config/datasource";
-import UserAccount from "../entities/userAccount";
+import UserAccount from "../entities/account/userAccount";
 import DuplicateResourceException from "../exceptions/genericException";
 import UserMapper from "../mappers/userMapper";
-import InternalUserLogin from "../entities/internalUserLogin";
+import InternalUserLogin from "../entities/account/internalUserLogin";
 import { injectable } from "inversify";
 import { Login, RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/account";
 import UserManager from "./userManager";

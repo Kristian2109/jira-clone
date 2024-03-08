@@ -1,9 +1,9 @@
 import { FindOptions, FindOptionsRelations, Repository } from "typeorm";
-import Project from "../entities/project";
+import Project from "../entities/project/project";
 import { AppDataSource } from "../config/datasource";
 import { injectable } from "inversify";
 import BadRequestError from "../exceptions/badRequestError";
-import ProjectMember from "../entities/projectMember";
+import ProjectMember from "../entities/project/projectMember";
 @injectable()
 export default class ProjectRepository {
     protected _projectRepo: Repository<Project>;

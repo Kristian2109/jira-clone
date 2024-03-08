@@ -1,5 +1,5 @@
 import { IntegerType } from "typeorm";
-import Address from "../entities/address";
+import Address from "../entities/account/address";
 import { Request } from "express";
 
 export type RegisterUser = {

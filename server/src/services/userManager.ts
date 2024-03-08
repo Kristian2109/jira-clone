@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { IntegerType, Repository } from "typeorm";
-import UserAccount from "../entities/userAccount";
+import UserAccount from "../entities/account/userAccount";
 import { AppDataSource } from "../config/datasource";
 import { RegisterUser } from "../types/auth";
 import UserMapper from "../mappers/userMapper";

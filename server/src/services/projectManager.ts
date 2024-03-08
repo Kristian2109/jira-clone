@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
 import { Repository } from "typeorm";
-import Project from "../entities/project";
+import Project from "../entities/project/project";
 import { AppDataSource } from "../config/datasource";
 import { ProjectCreate, NameAndDescription } from "../types/project";
 import ProjectMapper from "../mappers/projectMapper";
-import ProjectMember from "../entities/projectMember";
+import ProjectMember from "../entities/project/projectMember";
 import UserManager from "./userManager";
 import ProjectRepository from "../repositories/projectRepository";
 import BoardRepository from "../repositories/boardRepository";
@@ -73,7 +73,7 @@ class ProjectManager {
         if (invitation.status != "Pending") {
             throw new BadRequestError({message: "Invitation already accepted!", statusCode: 400});
         }
-        
+
         this._projectCustomRepository.deleteMembership(invitation);
     }
 }

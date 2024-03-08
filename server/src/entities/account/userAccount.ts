@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Unique, OneToMany } from "typeorm"
-import BaseEntity from "./baseEntity"
+import BaseEntity from "../baseEntity"
 import UserAddress from "./address";
-import ProjectMember from "./projectMember";
+import ProjectMember from "../project/projectMember";
 
 @Entity()
 @Unique("unique_email", ["email"])
