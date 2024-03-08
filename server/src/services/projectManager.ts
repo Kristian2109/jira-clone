@@ -34,7 +34,7 @@ class ProjectManager {
     }
 
     public async getProjectById(id: number): Promise<Project> {
-        return this._projectCustomRepository.findByIdWithException(id);
+        return this._projectCustomRepository.findByIdWithMembersAndViews(id);
     }
 
     public async getUserProjects(userId: number) {

@@ -10,19 +10,11 @@ export default class Project extends BaseEntityWithDetails {
     @Column()
     key?: string;
 
-    @Exclude()
     @OneToMany(() => ProjectMember, projectMember => projectMember.project, {cascade: true})
     members!: ProjectMember[];
 
-    @AfterLoad()
-    async nullChecks() {
-      if (!this.members) {
-        this.members = [];
-      } 
-    }
-
     @JoinColumn()
-    @OneToOne(() => Board, {cascade: true}) 
+    @OneToOne(() => Board, {cascade: ["insert", "update"]}) 
     board!: Board
 
     toJSON() {

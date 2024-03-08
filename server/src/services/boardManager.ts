@@ -49,6 +49,20 @@ export default class BoardManager {
         this._boardRepository.save(board);
     }
 
+    public async deleteBoardColumn(params: {columnId: number, projectId: number}) {
+        const {columnId, projectId} = params;
+        const project = await this._projectCustomRepository.findWithBoard(projectId);
+        const board = project.board;
+        const columnToDeleteIndex = board.boardColumns.findIndex((column) => column.id === columnId)
+
+        if (columnToDeleteIndex === -1) {
+            throw new BadRequestError({message: "Not column with id: " + columnId + " found!", statusCode: 400})
+        }
+        this.deleteColumnAndSetOrder(board.boardColumns, columnToDeleteIndex);
+        this._projectCustomRepository.save(project);
+
+    }
+
     private createInitialBoardColumns() {
         return [
             new BoardColumn("To Do", "Tasks to be done.", 1),
@@ -60,7 +74,7 @@ export default class BoardManager {
     private addNewColumnAndSetOrder(columns: BoardColumn[], newColumn: BoardColumn) {
         const currentColumnsCount = columns.length;
         if (currentColumnsCount < newColumn.orderNumber) {
-            newColumn.orderNumber = currentColumnsCount;
+            newColumn.orderNumber = currentColumnsCount + 1;
         } else {
             columns.forEach(column => {
                 if (column.orderNumber >= newColumn.orderNumber) {
@@ -69,5 +83,16 @@ export default class BoardManager {
             })
         }
         columns.push(newColumn);
+    }
+
+    private deleteColumnAndSetOrder(columns: BoardColumn[], columnToDeleteIndex: number) {
+        const toDeleteOrder = columns[columnToDeleteIndex].orderNumber;
+        columns.forEach(column => {
+            if (column.orderNumber > toDeleteOrder) {
+                column.orderNumber--;
+            }
+        })
+
+        columns.splice(columnToDeleteIndex, 1);
     }
 }

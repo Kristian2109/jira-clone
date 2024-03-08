@@ -8,7 +8,7 @@ import { Exclude, classToPlain, instanceToPlain } from "class-transformer";
 export default class ProjectMember extends BaseEntity {
     @ManyToOne(() => Project)
     @JoinColumn()
-    @Exclude({toClassOnly: true})
+    @Exclude()
     project!: Project;
 
     @ManyToOne(() => UserAccount)

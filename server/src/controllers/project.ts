@@ -66,8 +66,11 @@ class ProjectController {
     }
 
     @httpDelete("/:projectId/board/columns/:columnId") 
-    public deleteBoardColumn(req: AuthenticatedRequest, res: Response) {
-        
+    public async deleteBoardColumn(req: AuthenticatedRequest, res: Response) {
+        const columnToDeleteId = Number(req.params.columnId);
+        const projectId = Number(req.params.projectId);
+        await this._boardManager.deleteBoardColumn({columnId: columnToDeleteId, projectId});
+        return res.sendStatus(204);
     }
 
     @httpPost("/:projectId/board/issues") 
