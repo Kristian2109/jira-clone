@@ -1,16 +1,17 @@
-import {  Column, Unique, Entity, ManyToOne, JoinColumn } from "typeorm"
+import { Entity, ManyToOne, JoinColumn, OneToMany } from "typeorm"
 import Board from "./board";
-import BaseEntityWithDetails from "../baseEntityWithDetails";
 import { OrderNumber } from "../../types/project";
+import BaseEntityWithDetailsAndOrder from "../baseEntityWIthDetailsAndOrder";
+import Issue from "../issue/issue";
 
 @Entity()
-export default class BoardColumn extends BaseEntityWithDetails {
+export default class BoardColumn extends BaseEntityWithDetailsAndOrder {
     @ManyToOne(() => Board)
-    @JoinColumn()
-    board!: Board
+    board!: Board;
 
-    @Column("int")
-    orderNumber!: OrderNumber;
+    @JoinColumn()
+    @OneToMany(() => Issue, issue => issue.boardColumn)
+    issues!: Issue[];
 
     constructor(name?: string, description?: string, order?: OrderNumber) {
         super()

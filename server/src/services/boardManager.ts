@@ -11,15 +11,18 @@ import BadRequestError from "../exceptions/badRequestError";
 import { BorderColumnCreate, NameAndDescription } from "../types/project";
 import BoardRepository from "../repositories/boardRepository";
 import BoardColumnMapper from "../mappers/boardMapper";
+import OrderNumberManager from "./orderManager";
 
 @injectable()
 export default class BoardManager {
     protected _projectCustomRepository: ProjectRepository;
     protected _boardRepository: BoardRepository;
+    protected _orderNumberManager: OrderNumberManager<BoardColumn>;
 
-    constructor(projectRepository: ProjectRepository, boardRepository: BoardRepository) {
+    constructor(projectRepository: ProjectRepository, boardRepository: BoardRepository, orderNumberManager: OrderNumberManager<BoardColumn>) {
         this._projectCustomRepository = projectRepository;
         this._boardRepository = boardRepository;
+        this._orderNumberManager = orderNumberManager;
     }
 
     public async createBoard(params: {projectId: number, boardMetadata: NameAndDescription}) {
@@ -45,7 +48,7 @@ export default class BoardManager {
 
         const newColumn = BoardColumnMapper.toColumn(columnDTO);
         newColumn.board = board;
-        this.addNewColumnAndSetOrder(board.boardColumns, newColumn);
+        this._orderNumberManager.addNewColumnAndSetOrder(board.boardColumns, newColumn);
         this._boardRepository.save(board);
     }
 
@@ -58,7 +61,7 @@ export default class BoardManager {
         if (columnToDeleteIndex === -1) {
             throw new BadRequestError({message: "Not column with id: " + columnId + " found!", statusCode: 400})
         }
-        this.deleteColumnAndSetOrder(board.boardColumns, columnToDeleteIndex);
+        this._orderNumberManager.deleteColumnAndSetOrder(board.boardColumns, columnToDeleteIndex);
         this._projectCustomRepository.save(project);
 
     }
@@ -70,29 +73,4 @@ export default class BoardManager {
             new BoardColumn("Done", "Done tasks.", 3)
         ]
     } 
-
-    private addNewColumnAndSetOrder(columns: BoardColumn[], newColumn: BoardColumn) {
-        const currentColumnsCount = columns.length;
-        if (currentColumnsCount < newColumn.orderNumber) {
-            newColumn.orderNumber = currentColumnsCount + 1;
-        } else {
-            columns.forEach(column => {
-                if (column.orderNumber >= newColumn.orderNumber) {
-                    column.orderNumber++;
-                }
-            })
-        }
-        columns.push(newColumn);
-    }
-
-    private deleteColumnAndSetOrder(columns: BoardColumn[], columnToDeleteIndex: number) {
-        const toDeleteOrder = columns[columnToDeleteIndex].orderNumber;
-        columns.forEach(column => {
-            if (column.orderNumber > toDeleteOrder) {
-                column.orderNumber--;
-            }
-        })
-
-        columns.splice(columnToDeleteIndex, 1);
-    }
 }

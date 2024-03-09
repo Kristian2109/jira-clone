@@ -9,6 +9,10 @@ import BoardColumn from "../entities/project/boardColumn";
 import InternalUserLogin from "../entities/account/internalUserLogin";
 import ExternalUserLogin from "../entities/account/externalUserLogin";
 import ExternalProvider from "../entities/account/externalProvider";
+import Issue from "../entities/issue/issue"
+import IssueType from "../entities/issue/issueType";
+import IssueField from "../entities/issue/issueField";
+import IssueFieldContent from "../entities/issue/issueFieldContent";
 dotenv.config()
 
 const mysqlConfig: DataSourceOptions = {
@@ -27,7 +31,11 @@ const mysqlConfig: DataSourceOptions = {
         BoardColumn,
         ExternalProvider,
         InternalUserLogin,
-        ExternalUserLogin
+        ExternalUserLogin,
+        IssueType,
+        IssueField,
+        Issue,
+        IssueFieldContent
     ],
     synchronize: true
 }

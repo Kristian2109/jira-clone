@@ -5,19 +5,28 @@ import ProjectManager from "../services/projectManager";
 import { AuthenticatedRequest } from "../types/auth";
 import JwtResolver from "../middleware/jwtResolver";
 import BoardManager from "../services/boardManager";
+import IssueManager from "../services/issueManager";
+import { IssueCreateSchema, IssueFieldCreateSchema } from "../types/issue";
 
 @controller("/projects", JwtResolver.resolve)
 class ProjectController {
     private _projectManager: ProjectManager;
     private _boardManager: BoardManager;
+    private _issueManager: IssueManager;
 
-    constructor(projectManager: ProjectManager, boardManager: BoardManager) {
-        this._projectManager = projectManager;
-        this._boardManager = boardManager;
+    constructor(
+        projectManager: ProjectManager, 
+        boardManager: BoardManager,
+        issueManager: IssueManager
+        ) 
+        {
+            this._projectManager = projectManager;
+            this._boardManager = boardManager;
+            this._issueManager = issueManager;
 
-    }
+        }
 
-    @httpPost("/", JwtResolver.resolve)
+    @httpPost("/")
     public async createProject(req: AuthenticatedRequest, res: Response) {
         const projectToCreate = ProjectCreateSchema.parse(req.body);
         const project = await this._projectManager.createProject(projectToCreate, req.user.id);
@@ -100,15 +109,16 @@ class ProjectController {
         
     }
 
-    @httpGet("/:projectId/issueTypes")
-    public getIssueTypes(req: Request, res: Response) {
-
-    }
-
     @httpPost("/:projectId/issueTypes")
-    public createIssueType(req: AuthenticatedRequest, res: Response) {
+    public async createIssueType(req: AuthenticatedRequest, res: Response) {
         const projectId = Number(req.params.projectId);
-        
+        const issueDetails = NameAndDescriptionSchema.parse(req.body);
+        const newIssueType = await this._issueManager.createIssueType(projectId, issueDetails);
+        return res.status(201).json({
+            data: {
+                newIssueType
+            }
+        })
     }
 
     @httpDelete("/:projectId/issueTypes/:issueTypeId")
@@ -122,23 +132,68 @@ class ProjectController {
     }
 
     @httpGet("/:projectId/issueTypes/:issueTypeId")
-    public getIssueType(req: Request, res: Response) {
+    public async getIssueType(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const issueTypeId = Number(req.params.issueTypeId);
+        const issueType = await this._issueManager.findIssueType(projectId, issueTypeId);
 
+        return res.status(200).json({
+            data: {
+                issueType
+            }
+        })
     }
 
     @httpPost("/:projectId/issueTypes/:issueTypeId/fields")
-    public addIssueField(req: Request, res: Response) {
+    public async addIssueField(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const issueTypeId = Number(req.params.issueTypeId);
+        const fieldToCreate = IssueFieldCreateSchema.parse(req.body)
 
+        const updatedIssueType = await this._issueManager.createIssueField({projectId, issueTypeId, issueField: fieldToCreate});
+
+        return res.status(201).json({
+            data: {
+                issueType: updatedIssueType
+            }
+        })
     }
 
     @httpDelete("/:projectId/issueTypes/:issueTypeId/fields")
     public deleteIssueField(req: Request, res: Response) {
-
+        
     }
 
     @httpPatch("/:projectId/issueTypes/:issueTypeId/fields")
     public updateIssueField(req: Request, res: Response) {
 
+    }
+
+    @httpPost("/:projectId/issues")
+    public async createIssue(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const issueToCreate = IssueCreateSchema.parse(req.body);
+        
+        const createdIssue = await this._issueManager.createIssue({projectId, createdById: req.user.id, issueToCreate});
+        
+        return res.status(201).json({
+            data: {
+                createdIssue
+            }
+        })
+    }
+
+    @httpGet("/:projectId/issues/:issueId")
+    public async getIssue(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const issueId = Number(req.params.issueId);
+        const foundIssue = await this._issueManager.findIssue(projectId, issueId);
+
+        return res.status(200).json({
+            data: {
+                issue: foundIssue
+            }
+        })
     }
 }
 
