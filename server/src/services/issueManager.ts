@@ -3,7 +3,7 @@ import { NameAndDescription, OrderNumber } from "../types/project";
 import IssueTypeRepository from "../repositories/issueTypeRepository";
 import IssueTypeMapper from "../mappers/issueTypeMapper";
 import ProjectRepository from "../repositories/projectRepository";
-import { IssueCreate, IssueFieldCreate, IssueUpdate } from "../types/issue";
+import { IssueCreate, IssueFieldContentCreate, IssueFieldCreate, IssueUpdate } from "../types/issue";
 import IssueFieldMapper from "../mappers/issueFieldMapper";
 import OrderNumberManager from "./orderManager";
 import IssueField from "../entities/issue/issueField";
@@ -16,6 +16,7 @@ import { Id } from "../types/genericTypes";
 import Issue from "../entities/issue/issue";
 import BadRequestError from "../exceptions/badRequestError";
 import IssueFieldContent from "../entities/issue/issueFieldContent";
+import IssueType from "../entities/issue/issueType";
 
 @injectable()
 export default class IssueManager {
@@ -63,7 +64,7 @@ export default class IssueManager {
         const {projectId, issueId, boardColumnId} = params;
 
         const issue = await this._issueRepository.find(projectId, issueId);
-        this.setBoardColumnToIssue(issue, projectId, boardColumnId);
+        await this.setBoardColumnToIssue(issue, projectId, boardColumnId);
         return this._issueRepository.save(issue);
     }
 
@@ -112,14 +113,23 @@ export default class IssueManager {
 
         const newIssue = IssueMapper.toEntity(issueToCreate);
         newIssue.createdBy = createdBy;
-        newIssue.issueType = issueType;
         newIssue.key = await this.generateIssueKey(project);
+        newIssue.fields = this.getIssueFieldsContent(issueType, issueToCreate.fields);
+        newIssue.issueType = issueType;
 
         if (issueToCreate.boardColumnId) {
             await this.setBoardColumnToIssue(newIssue, projectId, issueToCreate.boardColumnId)
         }
 
         return this._issueRepository.save(newIssue);
+    }
+
+    private getIssueFieldsContent(issueType: IssueType, issueFieldsContent?: IssueFieldContentCreate[]): IssueFieldContent[] {
+        return issueType.issueFields.map(fieldType => {
+            const fieldToAdd = issueFieldsContent?.find((field) => field.issueFieldId === fieldType.id);
+            const fieldContent = (fieldToAdd) ? fieldToAdd.content : "";
+            return new IssueFieldContent(fieldType, fieldContent);
+        });
     }
 
     private async generateIssueKey(project: Project) {

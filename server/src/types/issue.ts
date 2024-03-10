@@ -29,6 +29,6 @@ export const IssueUpdateSchema = z.object({
 
 export type IssueFieldCreate = z.infer<typeof IssueFieldCreateSchema>
 export type IssueCreate = z.infer<typeof IssueCreateSchema>
-export type IssueFieldContent = z.infer<typeof IssueFieldContentSchema>
+export type IssueFieldContentCreate = z.infer<typeof IssueFieldContentSchema>
 export type IssueFieldDataType = z.infer<typeof IssueFieldDataTypeSchema>
 export type IssueUpdate = z.infer<typeof IssueUpdateSchema>;
