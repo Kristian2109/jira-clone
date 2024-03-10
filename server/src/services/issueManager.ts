@@ -76,8 +76,8 @@ export default class IssueManager {
         return this._issueRepository.findIssueWithFieldsAndColumn(projectId, issueId);
     }
 
-    public async findIssuesByProject(projectId: number) {
-        return this._issueRepository.findIssuesByProject(projectId);
+    public async findIssuesByProject(projectId: number, filters: {key: string, value: string}[]) {
+        return this._issueRepository.findIssuesByProject(projectId, filters);
     }
 
     public async updateIssueField(params: {projectId: number, issueId: number, updateInfo: IssueUpdate}) {
@@ -97,11 +97,11 @@ export default class IssueManager {
             }
             let fieldIndexToUpdate = issue.fields.findIndex(field => field.issueField.id === issueField.id);
             if (fieldIndexToUpdate === -1) {
-                issue.fields.push(new IssueFieldContent(issueField, updatedField.content));
-            } else {
-                issue.fields[fieldIndexToUpdate].content = updatedField.content;
-            }
+                throw new Error(`Field with id ${issueField.id} cannot be found!`);
+            } 
+            issue.fields[fieldIndexToUpdate].content = updatedField.content;
         })
+
         return this._issueRepository.save(issue);
     }
 

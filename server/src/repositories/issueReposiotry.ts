@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { AppDataSource } from "../config/datasource";
-import { Repository } from "typeorm";
+import { FindOperator, Repository } from "typeorm";
 import Issue from "../entities/issue/issue";
 import { Id } from "../types/genericTypes";
 
@@ -55,14 +55,17 @@ export default class IssueRepository {
         })
     }
 
-    public async findIssuesByProject(projectId: Id): Promise<Issue[]> {
+    public async findIssuesByProject(projectId: Id, filters: {key: string, value: string}[] = []): Promise<Issue[]> {
+        const isCompleted = filters.find(filter => filter.key === "isCompleted");
+
         return this._issueNativeRepo.find({
             where: {
                 issueType: {
                     project: {
                         id: projectId
                     }
-                }
+                },
+                isCompleted: (isCompleted != undefined) ? Boolean(isCompleted.value) : false
             },
             relations: ["boardColumn"]
         })

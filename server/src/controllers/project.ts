@@ -8,6 +8,7 @@ import BoardManager from "../services/boardManager";
 import IssueManager from "../services/issueManager";
 import { IssueCreateSchema, IssueFieldCreateSchema, IssueUpdateSchema } from "../types/issue";
 import { IdSchema } from "../types/genericTypes";
+import { firebaseappcheck } from "googleapis/build/src/apis/firebaseappcheck";
 
 @controller("/projects", JwtResolver.resolve)
 class ProjectController {
@@ -223,8 +224,14 @@ class ProjectController {
     @httpGet("/:projectId/issues")
     public async getIssues(req: AuthenticatedRequest, res: Response) {
         const idParam = Number(req.params.projectId);
+        const queryParams = req.query;
+        const filters = Object.entries(queryParams).map(entry => {
+            return {key: String(entry[0]), value: String(entry[1])}
+        })
+        console.log(filters);
+
         const projectId = IdSchema.parse(idParam)
-        const issues = await this._issueManager.findIssuesByProject(projectId);
+        const issues = await this._issueManager.findIssuesByProject(projectId, filters);
 
         return res.status(200).json({
             data: {
