@@ -63,7 +63,7 @@ export default class IssueManager {
     public async addIssueToBoard(params: {projectId: Id, issueId: Id, boardColumnId: Id}) {
         const {projectId, issueId, boardColumnId} = params;
 
-        const issue = await this._issueRepository.find(projectId, issueId);
+        const issue = await this._issueRepository.findWithAllRelations(projectId, issueId);
         await this.setBoardColumnToIssue(issue, projectId, boardColumnId);
         return this._issueRepository.save(issue);
     }
@@ -73,7 +73,7 @@ export default class IssueManager {
     }
 
     public async findIssue(projectId: number, issueId: number) {
-        return this._issueRepository.find(projectId, issueId);
+        return this._issueRepository.findIssueWithFieldsAndColumn(projectId, issueId);
     }
 
     public async findIssuesByProject(projectId: number) {
@@ -82,7 +82,7 @@ export default class IssueManager {
 
     public async updateIssueField(params: {projectId: number, issueId: number, updateInfo: IssueUpdate}) {
         const { projectId, issueId, updateInfo } = params;
-        const issue = await this._issueRepository.find(projectId, issueId);
+        const issue = await this._issueRepository.findWithAllRelations(projectId, issueId);
         const issueTypeFields = issue.issueType.issueFields;
 
         issue.summary = updateInfo.summary || issue.summary;

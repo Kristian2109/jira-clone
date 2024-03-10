@@ -15,18 +15,32 @@ export default class IssueRepository {
         return this._issueNativeRepo.save(issueType);
     }
 
-    public async find(projectId: Id, issueId: Id) {
+    public async findIssueWithRelations(issueIdentifier: {projectId: Id, issueId: Id}, relations: string[] = []) {
         return this._issueNativeRepo.findOneOrFail({
             where: {
-                id: issueId,
+                id: issueIdentifier.issueId,
                 issueType: {
                     project: {
-                        id: projectId
+                        id: issueIdentifier.projectId
                     }
                 }
             },
-            relations: ["issueType", "issueType.issueFields", "fields", "fields.issueField", "boardColumn"]
+            relations
         })
+    }
+
+    public async findWithAllRelations(projectId: Id, issueId: Id) {
+        return this.findIssueWithRelations(
+            {projectId, issueId},
+            ["issueType", "issueType.issueFields", "fields", "fields.issueField", "boardColumn"]
+            );
+    }
+
+    public async findIssueWithFieldsAndColumn(projectId: Id, issueId: Id) {
+        return this.findIssueWithRelations(
+            {projectId, issueId},
+            ["issueType", "fields", "fields.issueField", "boardColumn"]
+            );
     }
 
     public async countOfTasksInProject(projectId: Id) {
