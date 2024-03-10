@@ -25,4 +25,7 @@ export default class Issue extends BaseEntity {
 
     @ManyToOne(() => BoardColumn)
     boardColumn?: BoardColumn;
+
+    @Column({ default: false })
+    isCompleted!: Boolean;
 }

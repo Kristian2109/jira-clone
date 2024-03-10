@@ -3,7 +3,7 @@ import { NameAndDescription, OrderNumber } from "../types/project";
 import IssueTypeRepository from "../repositories/issueTypeRepository";
 import IssueTypeMapper from "../mappers/issueTypeMapper";
 import ProjectRepository from "../repositories/projectRepository";
-import { IssueCreate, IssueFieldCreate } from "../types/issue";
+import { IssueCreate, IssueFieldCreate, IssueUpdate } from "../types/issue";
 import IssueFieldMapper from "../mappers/issueFieldMapper";
 import OrderNumberManager from "./orderManager";
 import IssueField from "../entities/issue/issueField";
@@ -11,6 +11,11 @@ import UserManager from "./userManager";
 import IssueMapper from "../mappers/issueMapper";
 import IssueRepository from "../repositories/issueReposiotry";
 import Project from "../entities/project/project";
+import BoardColumn from "../entities/project/boardColumn";
+import { Id } from "../types/genericTypes";
+import Issue from "../entities/issue/issue";
+import BadRequestError from "../exceptions/badRequestError";
+import IssueFieldContent from "../entities/issue/issueFieldContent";
 
 @injectable()
 export default class IssueManager {
@@ -54,12 +59,49 @@ export default class IssueManager {
         return this._issueTypeRepository.save(issueType);
     }
 
+    public async addIssueToBoard(params: {projectId: Id, issueId: Id, boardColumnId: Id}) {
+        const {projectId, issueId, boardColumnId} = params;
+
+        const issue = await this._issueRepository.find(projectId, issueId);
+        this.setBoardColumnToIssue(issue, projectId, boardColumnId);
+        return this._issueRepository.save(issue);
+    }
+
     public async findIssueType(projectId: number, issueTypeId: number) {
         return this._issueTypeRepository.findIssueTypeWithFields(projectId, issueTypeId);
     }
 
     public async findIssue(projectId: number, issueId: number) {
         return this._issueRepository.find(projectId, issueId);
+    }
+
+    public async findIssuesByProject(projectId: number) {
+        return this._issueRepository.findIssuesByProject(projectId);
+    }
+
+    public async updateIssueField(params: {projectId: number, issueId: number, updateInfo: IssueUpdate}) {
+        const { projectId, issueId, updateInfo } = params;
+        const issue = await this._issueRepository.find(projectId, issueId);
+        const issueTypeFields = issue.issueType.issueFields;
+
+        issue.summary = updateInfo.summary || issue.summary;
+        if (updateInfo.isCompleted !== undefined) {
+            issue.isCompleted = updateInfo.isCompleted;
+        }
+        
+        updateInfo.fields?.forEach(updatedField => {
+            const issueField = issueTypeFields.find(field => field.id === updatedField.issueFieldId);
+            if (!issueField) {
+                throw new BadRequestError({message: `Field with id ${updatedField.issueFieldId} is not part of issue of type ${issue.issueType.name}!`, statusCode: 400})
+            }
+            let fieldIndexToUpdate = issue.fields.findIndex(field => field.issueField.id === issueField.id);
+            if (fieldIndexToUpdate === -1) {
+                issue.fields.push(new IssueFieldContent(issueField, updatedField.content));
+            } else {
+                issue.fields[fieldIndexToUpdate].content = updatedField.content;
+            }
+        })
+        return this._issueRepository.save(issue);
     }
 
     public async createIssue(params: {projectId: number, createdById: number, issueToCreate: IssueCreate}) {
@@ -72,6 +114,11 @@ export default class IssueManager {
         newIssue.createdBy = createdBy;
         newIssue.issueType = issueType;
         newIssue.key = await this.generateIssueKey(project);
+
+        if (issueToCreate.boardColumnId) {
+            await this.setBoardColumnToIssue(newIssue, projectId, issueToCreate.boardColumnId)
+        }
+
         return this._issueRepository.save(newIssue);
     }
 
@@ -79,5 +126,14 @@ export default class IssueManager {
         const projectName = project.key;
         const tasksCount = await this._issueRepository.countOfTasksInProject(project.id);
         return `${projectName}-${tasksCount}`;
+    }
+
+    private async setBoardColumnToIssue(issue: Issue, projectId: Id, boardColumnId: Id) {
+        const board  = (await this._projectRepository.findWithBoard(projectId)).board;
+        const boardColumn = board.boardColumns.find(column => column.id === boardColumnId);
+        if (!boardColumn) {
+            throw new BadRequestError({message: `Board column with id: ${boardColumnId} is not a part of board: ${board.name}!`, statusCode: 400});
+        }
+        issue.boardColumn = boardColumn;
     }
 }

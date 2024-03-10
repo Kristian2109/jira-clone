@@ -6,7 +6,8 @@ import { AuthenticatedRequest } from "../types/auth";
 import JwtResolver from "../middleware/jwtResolver";
 import BoardManager from "../services/boardManager";
 import IssueManager from "../services/issueManager";
-import { IssueCreateSchema, IssueFieldCreateSchema } from "../types/issue";
+import { IssueCreateSchema, IssueFieldCreateSchema, IssueUpdateSchema } from "../types/issue";
+import { IdSchema } from "../types/genericTypes";
 
 @controller("/projects", JwtResolver.resolve)
 class ProjectController {
@@ -104,9 +105,17 @@ class ProjectController {
         return res.sendStatus(204);
     }
 
-    @httpPost("/:projectId/board/issues") 
-    public addIssueToBoard(req: AuthenticatedRequest, res: Response) {
-        
+    @httpPatch("/:projectId/boardColumns/:boardColumnId/addIssue") 
+    public async addIssueToBoard(req: AuthenticatedRequest, res: Response) {
+        const projectId = Number(req.params.projectId);
+        const boardColumnId = Number(req.params.boardColumnId);
+        const issueId = Number(req.body.issueId)
+        const issue = await this._issueManager.addIssueToBoard({projectId, boardColumnId, issueId})
+        return res.status(200).json({
+            data: {
+                issue
+            }
+        })
     }
 
     @httpPost("/:projectId/issueTypes")
@@ -121,15 +130,15 @@ class ProjectController {
         })
     }
 
-    @httpDelete("/:projectId/issueTypes/:issueTypeId")
-    public deleteIssueType(req: Request, res: Response) {
+    // @httpDelete("/:projectId/issueTypes/:issueTypeId")
+    // public deleteIssueType(req: Request, res: Response) {
 
-    }
+    // }
 
-    @httpPatch("/:projectId/issueTypes/:issueTypeId")
-    public updateIssueType(req: Request, res: Response) {
+    // @httpPatch("/:projectId/issueTypes/:issueTypeId")
+    // public updateIssueType(req: Request, res: Response) {
 
-    }
+    // }
 
     @httpGet("/:projectId/issueTypes/:issueTypeId")
     public async getIssueType(req: AuthenticatedRequest, res: Response) {
@@ -159,15 +168,15 @@ class ProjectController {
         })
     }
 
-    @httpDelete("/:projectId/issueTypes/:issueTypeId/fields")
-    public deleteIssueField(req: Request, res: Response) {
+    // @httpDelete("/:projectId/issueTypes/:issueTypeId/fields")
+    // public deleteIssueField(req: Request, res: Response) {
         
-    }
+    // }
 
-    @httpPatch("/:projectId/issueTypes/:issueTypeId/fields")
-    public updateIssueField(req: Request, res: Response) {
+    // @httpPatch("/:projectId/issueTypes/:issueTypeId/fields")
+    // public updateIssueField(req: Request, res: Response) {
 
-    }
+    // }
 
     @httpPost("/:projectId/issues")
     public async createIssue(req: AuthenticatedRequest, res: Response) {
@@ -195,6 +204,35 @@ class ProjectController {
             }
         })
     }
+
+    @httpPatch("/:projectId/issues/:issueId") 
+    public async updateIssue(req: AuthenticatedRequest, res: Response) {
+        const updateInfo = IssueUpdateSchema.parse(req.body);
+        const projectId = Number(req.params.projectId);
+        const issueId = Number(req.params.issueId);
+
+        const updatedIssue = await this._issueManager.updateIssueField({projectId, issueId, updateInfo});
+
+        return res.status(200).json({
+            data: {
+                issue: updatedIssue
+            }
+        })
+    }
+
+    @httpGet("/:projectId/issues")
+    public async getIssues(req: AuthenticatedRequest, res: Response) {
+        const idParam = Number(req.params.projectId);
+        const projectId = IdSchema.parse(idParam)
+        const issues = await this._issueManager.findIssuesByProject(projectId);
+
+        return res.status(200).json({
+            data: {
+                issues
+            }
+        })
+    }
+
 }
 
 export default ProjectController;

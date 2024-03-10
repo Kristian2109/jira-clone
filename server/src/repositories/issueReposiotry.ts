@@ -1,8 +1,8 @@
 import { injectable } from "inversify";
 import { AppDataSource } from "../config/datasource";
 import { Repository } from "typeorm";
-import IssueType from "../entities/issue/issueType";
 import Issue from "../entities/issue/issue";
+import { Id } from "../types/genericTypes";
 
 @injectable()
 export default class IssueRepository {
@@ -15,7 +15,7 @@ export default class IssueRepository {
         return this._issueNativeRepo.save(issueType);
     }
 
-    public async find(projectId: number, issueId: number) {
+    public async find(projectId: Id, issueId: Id) {
         return this._issueNativeRepo.findOneOrFail({
             where: {
                 id: issueId,
@@ -25,11 +25,11 @@ export default class IssueRepository {
                     }
                 }
             },
-            relations: ["issueType", "fields", "fields.issueField"]
+            relations: ["issueType", "issueType.issueFields", "fields", "fields.issueField", "boardColumn"]
         })
     }
 
-    public async countOfTasksInProject(projectId: number) {
+    public async countOfTasksInProject(projectId: Id) {
         return this._issueNativeRepo.count({
             where: {
                 issueType: {
@@ -41,4 +41,16 @@ export default class IssueRepository {
         })
     }
 
+    public async findIssuesByProject(projectId: Id): Promise<Issue[]> {
+        return this._issueNativeRepo.find({
+            where: {
+                issueType: {
+                    project: {
+                        id: projectId
+                    }
+                }
+            },
+            relations: ["boardColumn"]
+        })
+    }
 }

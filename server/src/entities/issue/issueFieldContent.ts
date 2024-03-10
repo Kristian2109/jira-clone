@@ -13,4 +13,10 @@ export default class IssueFieldContent extends BaseEntity {
 
     @Column()
     content!: string;
+
+    constructor(issueField: IssueField, content: string) {
+        super();
+        this.issueField = issueField;
+        this.content = content;
+    }
 }
