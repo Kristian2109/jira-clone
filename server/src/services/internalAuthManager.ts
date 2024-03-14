@@ -1,16 +1,13 @@
 import { IntegerType, Repository } from "typeorm";
 import bcrypt from "bcrypt"
-import { FullUserDetails, RegisterUser } from "../types/auth";
 import { AppDataSource } from "../config/datasource";
-import UserAccount from "../entities/account/userAccount";
-import DuplicateResourceException from "../exceptions/genericException";
-import UserMapper from "../mappers/userMapper";
 import InternalUserLogin from "../entities/account/internalUserLogin";
 import { injectable } from "inversify";
 import { Login, RegisterUserSchema, RegisterUserSchemaWIthPass } from "../types/account";
 import UserManager from "./userManager";
 import { signToken } from "../utils/jwt";
 import GenericException from "../exceptions/genericException";
+import UserAccount from "../entities/account/userAccount";
 
 @injectable()
 export default class InternalAuthManager {
@@ -37,7 +34,7 @@ export default class InternalAuthManager {
         const createdUser = await this.userManager.createUser(registerInfo);
         await this.saveInternalLoginData(registerInfo.password, createdUser);
         return {
-            token: signToken({userId: createdUser.id}),
+            token: signToken({userId: createdUser.id, role: createdUser.role}),
             userId: createdUser.id
         }
     }
@@ -56,7 +53,7 @@ export default class InternalAuthManager {
             throw new Error("Invalid password");
         }
         return {
-            token: signToken({userId: userToLogin.id}),
+            token: signToken({userId: userToLogin.id, role: userToLogin.role}),
             userId: userToLogin.id
         }
     }

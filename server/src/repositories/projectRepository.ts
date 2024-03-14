@@ -64,6 +64,19 @@ export default class ProjectRepository {
         return foundProject;
     }
 
+    public async isUserMemberOfProject(projectId: number, userId: number) {
+        return this._memberRepo.count({
+            where: {
+                project: {
+                    id: projectId
+                },
+                user: {
+                    id: userId
+                }
+            }
+        })
+    }
+
     public async findMembership(projectId: number, userId: number) {
         return this._memberRepo.findOneOrFail({
             where: {

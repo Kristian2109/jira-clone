@@ -16,11 +16,17 @@ class UserManager{
 
     public async createUser(registerInfo: RegisterUserSchema): Promise<UserAccount> {
         const userToCreate = UserMapper.toUser(registerInfo);
+        userToCreate.role = "user"
         return this._userRepository.save(userToCreate);
     } 
 
     public async getUserByEmail(email: string) {
         return this._userRepository.findOneByOrFail({email});
+    }
+
+
+    public async getUserByEmailWithoutException(email: string) {
+        return this._userRepository.findOneBy({email});
     }
 
     public async getUserByIdWithException(id: number): Promise<UserAccount> {

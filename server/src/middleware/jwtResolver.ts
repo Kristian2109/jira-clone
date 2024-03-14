@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from '../constants';
-import { IntegerType } from 'typeorm';
-import { AuthenticatedRequest } from '../types/auth';
+import { AuthenticatedRequest, UserRole, UserRoleSchema } from '../types/auth';
+import { Id, IdSchema } from '../types/genericTypes';
 
 dotenv.config()
 
 class JwtResolver {
-    static resolve(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    public static async resolve(req: AuthenticatedRequest, res: Response) {
         // Extract headers from the request
         const authHeader = req.headers?.authorization;
         if (!authHeader) {
@@ -30,16 +30,19 @@ class JwtResolver {
             return res.sendStatus(401);
         }
         
-        const userId: IntegerType | undefined = Number(payload?.userId);
-        if (!userId) {
+        let userId: Id;
+        let role: UserRole;
+        try {
+            userId = IdSchema.parse(payload.userId);
+            role = UserRoleSchema.parse(payload.role);
+        } catch (error) {
             return res.sendStatus(401);
         }
 
         req.user = {
-            id: userId
+            id: userId,
+            role
         }
-
-        next();
     }
 }
 

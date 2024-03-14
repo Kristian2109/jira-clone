@@ -28,7 +28,8 @@ export default class UserMapper {
             organization: user.organization,
             position: user.position,
             displayName: user.displayName,
-            address: user.address
+            address: user.address,
+            role: user.role
         }
     }
 }

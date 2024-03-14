@@ -2,6 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Unique, O
 import BaseEntity from "../baseEntity"
 import UserAddress from "./address";
 import ProjectMember from "../project/projectMember";
+import { UserRole } from "../../types/auth";
+import ExternalUserLogin from "./externalUserLogin";
 
 @Entity()
 @Unique("unique_email", ["email"])
@@ -30,4 +32,7 @@ export default class UserAccount extends BaseEntity {
 
     @OneToMany(() => ProjectMember, projectMember => projectMember.project, {lazy: true})
     memberships!: ProjectMember[];
+
+    @Column({default: "user"})
+    role!: UserRole;
 }

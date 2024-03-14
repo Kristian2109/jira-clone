@@ -11,7 +11,6 @@ import UserManager from "./userManager";
 import IssueMapper from "../mappers/issueMapper";
 import IssueRepository from "../repositories/issueReposiotry";
 import Project from "../entities/project/project";
-import BoardColumn from "../entities/project/boardColumn";
 import { Id } from "../types/genericTypes";
 import Issue from "../entities/issue/issue";
 import BadRequestError from "../exceptions/badRequestError";

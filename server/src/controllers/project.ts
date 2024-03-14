@@ -1,5 +1,6 @@
-import { controller, httpDelete, httpGet, httpPatch, httpPost } from "inversify-express-utils";
-import { NextFunction, Request, Response } from "express";
+import { Controller, controller, httpDelete, httpGet, httpPatch, httpPost, interfaces } from "inversify-express-utils";
+import container from "../config/inversify.config";
+import { Response } from "express";
 import { ProjectCreateSchema, NameAndDescriptionSchema, BoardColumnCreateSchema } from "../types/project";
 import ProjectManager from "../services/projectManager";
 import { AuthenticatedRequest } from "../types/auth";
@@ -8,9 +9,8 @@ import BoardManager from "../services/boardManager";
 import IssueManager from "../services/issueManager";
 import { IssueCreateSchema, IssueFieldCreateSchema, IssueUpdateSchema } from "../types/issue";
 import { IdSchema } from "../types/genericTypes";
-import { firebaseappcheck } from "googleapis/build/src/apis/firebaseappcheck";
 
-@controller("/projects", JwtResolver.resolve)
+@controller("/projects")
 class ProjectController {
     private _projectManager: ProjectManager;
     private _boardManager: BoardManager;
@@ -25,7 +25,6 @@ class ProjectController {
             this._projectManager = projectManager;
             this._boardManager = boardManager;
             this._issueManager = issueManager;
-
         }
 
     @httpPost("/")
