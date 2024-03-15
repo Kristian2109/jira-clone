@@ -1,12 +1,7 @@
 body {
-    background-color: #B7C9F2;
+  background-color: #b7c9f2;
 }
 
 .navbar-light {
-    background-color: #DFF5FF !important;
-}
-
-.home-image {
-    height: 15rem;
-    width: 25rem;
+  background-color: #dff5ff !important;
 }
