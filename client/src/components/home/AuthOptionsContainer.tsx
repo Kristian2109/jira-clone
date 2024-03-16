@@ -13,13 +13,17 @@ export const AuthOptionsContainer = () => {
           type="button"
           className="btn btn-primary btn-lg w-25"
           data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
+          data-bs-target="#loginForm"
         >
           Login
         </button>
-        <button type="button" className="btn btn-primary btn-lg w-25">
+        <a
+          type="button"
+          className="btn btn-primary btn-lg w-25"
+          href="/register"
+        >
           Register
-        </button>
+        </a>
       </div>
     </div>
   );

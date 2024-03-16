@@ -2,13 +2,13 @@ export const Modal = (props: {
   title: string;
   content: any;
   buttonContent: string;
-  modalId: number;
+  modalId: string;
   submitHandler: React.MouseEventHandler<HTMLButtonElement>;
 }) => {
   return (
     <div
-      className="modal fade"
-      id={`${props.modalId}`}
+      className="modal fade w-100"
+      id={props.modalId}
       data-bs-backdrop="static"
       data-bs-keyboard="false"
       tabIndex={-1}
@@ -28,7 +28,7 @@ export const Modal = (props: {
               aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body"></div>
+          <div className="modal-body">{props.content}</div>
           <div className="modal-footer">
             <button
               type="button"
