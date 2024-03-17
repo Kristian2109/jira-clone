@@ -8,9 +8,8 @@ import dotenv from "dotenv";
 
 import { AppDataSource } from "./config/datasource";
 import ErrorHandler from "./middleware/errorHandler";
-import { AuthenticatedRequest } from "./types/auth";
 import AuthorizationManager from "./middleware/authorizationManager";
-import trebble from "@treblle/express";
+// import trebble from "@treblle/express";
 import JwtResolver from "./middleware/jwtResolver";
 import tryCatch from "./utils/tryCatch";
 
@@ -26,7 +25,7 @@ config.setConfig((app) => {
   app.use(express.json());
   app.use(cors());
 
-  app.use(trebble());
+  // app.use(trebble());
   app.use(tryCatch(JwtResolver.resolve));
   app.use(tryCatch(authManager.authorize));
 });
