@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { LoginFormType } from "../../types/forms";
 import axios from "axios";
 import { Modal } from "../generic/Modal";
-import { LOGIN_URL } from "../../constants";
+import { ACCOUNT_URL, LOGIN_URL } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 export const LoginModal = () => {
   const [form, setForm] = useState<LoginFormType>({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -25,6 +28,14 @@ export const LoginModal = () => {
     event.preventDefault();
     try {
       const response = await axios.post(LOGIN_URL, form);
+      const responseData = await response.data;
+      const jwtToken = responseData.data?.jsonWebToken;
+      if (!jwtToken) {
+        console.log("No token!");
+      }
+      sessionStorage.setItem("jwtToken", jwtToken);
+      navigate("/account");
+
       console.log("User logged successfully: ", response.data);
     } catch (error) {
       console.error("Error while sending the form", error);

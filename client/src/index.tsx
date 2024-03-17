@@ -7,6 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/Home";
 import RegisterPage from "./pages/RegisterPage";
+import UserPage from "./pages/UserPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   { path: "/register", element: <RegisterPage /> },
+  { path: "/account", element: <UserPage /> },
 ]);
 
 const root = ReactDOM.createRoot(

@@ -3,7 +3,6 @@ import { REGISTER_URL } from "../../constants";
 import { RegisterFormType } from "../../types/forms";
 import { useState } from "react";
 import FloatingInput from "../generic/FloatingInput";
-import "./RegisterFromContainer.css";
 
 const RegisterFormContainer = () => {
   const [formContent, setFormContent] = useState<RegisterFormType>({
@@ -16,7 +15,6 @@ const RegisterFormContainer = () => {
     birthday: new Date(),
     company: "",
     position: "",
-    address: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,14 +121,6 @@ const RegisterFormContainer = () => {
         changeHandler={handleChange}
         label="Position"
         placeholder="Software Engineer"
-      />
-      <FloatingInput
-        name="address"
-        type="text"
-        columnSize={8}
-        changeHandler={handleChange}
-        label="Address"
-        placeholder="Sofia, Bulgaria"
       />
       <div className="col-12">
         <button

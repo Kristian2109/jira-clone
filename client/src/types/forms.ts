@@ -15,3 +15,15 @@ export type RegisterFormType = {
   position?: string;
   address?: string;
 };
+
+export type UserFields = {
+  id: number;
+  name: string;
+  email: string;
+  displayName?: string;
+  dateOfBirth?: Date;
+  position?: string;
+  organization?: string;
+  createdAt: Date;
+  role: string;
+};
