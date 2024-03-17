@@ -3,6 +3,7 @@ const UserInput = (props: {
   label: string;
   value: string;
   type: string;
+  disabled: boolean;
 }) => {
   return (
     <div className="row mb-3">
@@ -15,6 +16,7 @@ const UserInput = (props: {
           className="form-control"
           id={props.inputId}
           value={props.value}
+          disabled={props.disabled}
         />
       </div>
     </div>
