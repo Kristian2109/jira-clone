@@ -26,7 +26,6 @@ export const LoginModal = () => {
   };
 
   async function submitLoginForm(event: any) {
-    event.preventDefault();
     try {
       const response = await axios.post(LOGIN_URL, form);
       const responseData = await response.data;
@@ -36,7 +35,6 @@ export const LoginModal = () => {
       }
       setToken(jwtToken);
       navigate("/account");
-
       console.log("User logged successfully: ", response.data);
     } catch (error) {
       console.error("Error while sending the form", error);

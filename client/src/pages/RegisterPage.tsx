@@ -1,15 +1,11 @@
-import React from "react";
-import { JiraNavbar } from "../components/generic/Navbar/JiraNavbar";
-import { Footer } from "../components/generic/Footer";
 import RegisterFormContainer from "../components/register/RegisterFormContainer";
+import Layout from "../components/generic/Layout";
 
 const RegisterPage = () => {
   return (
-    <div className="container-fluid p-0">
-      <JiraNavbar />
+    <Layout>
       <RegisterFormContainer />
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

@@ -10,6 +10,7 @@ import {
 } from "../constants";
 import axios, { AxiosRequestConfig } from "axios";
 import { UserFields } from "../types/forms";
+import Layout from "../components/generic/Layout";
 
 const UserPage = () => {
   const [fields, setFields] = useState<UserFields>({
@@ -97,8 +98,7 @@ const UserPage = () => {
     });
 
   return (
-    <div className="container-fluid p-0 m-0">
-      <JiraNavbar />
+    <Layout>
       <div className="w-50 my-4 mx-auto">
         <h3 className="text-center mb-4">About you</h3>
         <div className="border rounded border-2 p-2">
@@ -108,8 +108,7 @@ const UserPage = () => {
           </form>
         </div>
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 
