@@ -3,6 +3,8 @@ import { REGISTER_URL } from "../../constants";
 import { RegisterFormType } from "../../types/forms";
 import { useState } from "react";
 import FloatingInput from "../generic/FloatingInput";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "../../utils/auth";
 
 const RegisterFormContainer = () => {
   const [formContent, setFormContent] = useState<RegisterFormType>({
@@ -16,6 +18,8 @@ const RegisterFormContainer = () => {
     company: "",
     position: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -39,6 +43,9 @@ const RegisterFormContainer = () => {
         displayName: formContent.displayName,
       };
       const response = await axios.post(REGISTER_URL, toSend);
+      const responseData = await response.data;
+      setToken(responseData.data?.jsonWebToken);
+      navigate("/account");
       console.log("User logged successfully: ", response.data);
     } catch (error) {
       console.error("Error while sending the form", error);

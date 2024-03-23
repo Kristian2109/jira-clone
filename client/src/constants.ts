@@ -4,6 +4,8 @@ export const REGISTER_URL = BASE_API_URL + "/auth/register";
 export const GOOGLE_AUTH_URL = BASE_API_URL + "/auth/external";
 export const ACCOUNT_URL = BASE_API_URL + "/accounts/me";
 
+export const JWT_TOKEN_KEY = "jsonWebToken";
+
 export const RESPONSE_TO_DISPLAY_ATTRIBUTES = new Map([
   [
     "name",

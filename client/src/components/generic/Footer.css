@@ -5,3 +5,7 @@ footer {
 .footer-copyright {
   background-color: #b7c9f2;
 }
+
+a {
+  text-decoration: none;
+}

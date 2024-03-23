@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { LoginFormType } from "../../types/forms";
 import axios from "axios";
 import { Modal } from "../generic/Modal";
-import { ACCOUNT_URL, LOGIN_URL } from "../../constants";
+import { ACCOUNT_URL, JWT_TOKEN_KEY, LOGIN_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
+import { setToken } from "../../utils/auth";
 
 export const LoginModal = () => {
   const [form, setForm] = useState<LoginFormType>({
@@ -33,7 +34,7 @@ export const LoginModal = () => {
       if (!jwtToken) {
         console.log("No token!");
       }
-      sessionStorage.setItem("jwtToken", jwtToken);
+      setToken(jwtToken);
       navigate("/account");
 
       console.log("User logged successfully: ", response.data);

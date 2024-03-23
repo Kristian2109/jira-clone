@@ -7,7 +7,10 @@ const UserInput = (props: {
 }) => {
   return (
     <div className="row mb-3">
-      <label htmlFor={props.inputId} className="col-lg-3 col-form-label">
+      <label
+        htmlFor={props.inputId}
+        className="col-lg-3 col-form-label text-start fw-semibold"
+      >
         {props.label}
       </label>
       <div className="col-lg-9">

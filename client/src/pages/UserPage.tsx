@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import FloatingInput from "../components/generic/FloatingInput";
 import { Footer } from "../components/generic/Footer";
-import { HomeHeader } from "../components/home/HomeHeader";
+import { JiraNavbar } from "../components/generic/Navbar/JiraNavbar";
 import UserInput from "../components/user/UserInput";
 import { useNavigate } from "react-router-dom";
 import {
@@ -99,7 +98,7 @@ const UserPage = () => {
 
   return (
     <div className="container-fluid p-0 m-0">
-      <HomeHeader />
+      <JiraNavbar />
       <div className="w-50 my-4 mx-auto">
         <h3 className="text-center mb-4">About you</h3>
         <div className="border rounded border-2 p-2">
