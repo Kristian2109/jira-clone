@@ -23,9 +23,9 @@ const router = createBrowserRouter([
       },
       { path: "/register", element: <RegisterFormContainer /> },
       { path: "/account", element: <UserPage /> },
+      { path: "/google/callback", element: <Callback /> },
     ],
   },
-  { path: "/google/callback", element: <Callback /> },
 ]);
 
 const root = ReactDOM.createRoot(

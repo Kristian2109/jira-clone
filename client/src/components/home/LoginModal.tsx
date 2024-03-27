@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LoginFormType } from "../../types/forms";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Modal } from "../generic/Modal";
 import { LOGIN_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,10 @@ export const LoginModal = () => {
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState<string | null>(null);
+
+  const invalidFeedback = <p className="alert alert-danger">{error}</p>;
 
   const navigate = useNavigate();
 
@@ -28,6 +32,12 @@ export const LoginModal = () => {
   async function submitLoginForm(event: any) {
     try {
       const response = await axios.post(LOGIN_URL, form);
+
+      if (response.status !== 200) {
+        const errorMessage = (await response.data).error;
+        setError(errorMessage);
+        return;
+      }
       const responseData = await response.data;
       const jwtToken = responseData.data?.jsonWebToken;
       if (!jwtToken) {
@@ -36,13 +46,19 @@ export const LoginModal = () => {
       setToken(jwtToken);
       navigate("/account");
       console.log("User logged successfully: ", response.data);
-    } catch (error) {
+    } catch (error: AxiosError | any) {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.error || "An error occurred");
+      } else {
+        setError("An error occurred");
+      }
       console.error("Error while sending the form", error);
     }
   }
 
   const loginFormElement = (
     <form id="login-form">
+      {error && invalidFeedback}
       <div className="form-floating mb-3">
         <input
           name="email"

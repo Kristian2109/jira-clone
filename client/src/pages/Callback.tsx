@@ -1,19 +1,19 @@
 import axios from "axios";
 import { GOOGLE_AUTH_CALLBACK_URL } from "../constants";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { setToken } from "../utils/auth";
 
 const Callback = () => {
   const navigate = useNavigate();
+  const [queryParameters] = useSearchParams();
+
   useEffect(() => {
     saveGoogleDataToServer();
   }, []);
 
   async function saveGoogleDataToServer() {
     try {
-      const queryParameters = new URLSearchParams(window.location.search);
-
       console.log("Query parameters: ", queryParameters);
 
       const response = await axios.get(GOOGLE_AUTH_CALLBACK_URL, {
