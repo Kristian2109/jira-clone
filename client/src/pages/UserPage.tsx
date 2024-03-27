@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Footer } from "../components/generic/Footer";
-import { JiraNavbar } from "../components/generic/Navbar/JiraNavbar";
 import UserInput from "../components/user/UserInput";
 import { useNavigate } from "react-router-dom";
 import {
   ACCOUNT_URL,
   BASE_API_URL,
   RESPONSE_TO_DISPLAY_ATTRIBUTES,
+  JWT_TOKEN_KEY,
 } from "../constants";
 import axios, { AxiosRequestConfig } from "axios";
 import { UserFields } from "../types/forms";
@@ -33,9 +32,9 @@ const UserPage = () => {
   }, []);
 
   async function fetchDataFromAccount() {
-    const jwtToken = sessionStorage.getItem("jwtToken");
+    const jwtToken = sessionStorage.getItem(JWT_TOKEN_KEY);
     if (!jwtToken) {
-      navigate(BASE_API_URL);
+      navigate("/");
       return;
     }
     console.log(jwtToken);
@@ -98,17 +97,15 @@ const UserPage = () => {
     });
 
   return (
-    <Layout>
-      <div className="w-50 my-4 mx-auto">
-        <h3 className="text-center mb-4">About you</h3>
-        <div className="border rounded border-2 p-2">
-          <form>
-            {elements}
-            <button className="btn btn-primary btn-md w-25 my-2">Save</button>
-          </form>
-        </div>
+    <div className="w-50 my-4 mx-auto">
+      <h3 className="text-center mb-4">About you</h3>
+      <div className="border rounded border-2 p-2">
+        <form>
+          {elements}
+          <button className="btn btn-primary btn-md w-25 my-2">Save</button>
+        </form>
       </div>
-    </Layout>
+    </div>
   );
 };
 

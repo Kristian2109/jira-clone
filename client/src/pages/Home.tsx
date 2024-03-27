@@ -7,9 +7,8 @@ import Layout from "../components/generic/Layout";
 
 export const Home = () => {
   return (
-    <Layout>
+    <>
       <HomeContent />
-      <LoginModal />
-    </Layout>
+    </>
   );
 };

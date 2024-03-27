@@ -1,5 +1,6 @@
 import jiraImg from "../../Jira.jpg";
 import { AuthOptionsContainer } from "./AuthOptionsContainer";
+import { LoginModal } from "./LoginModal";
 
 export const HomeContent = () => {
   return (
@@ -18,6 +19,7 @@ export const HomeContent = () => {
         </div>
         <div className="auth-container col-lg-6 col-md-12 border rounded">
           <AuthOptionsContainer />
+          <LoginModal />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LoginFormType } from "../../types/forms";
 import axios from "axios";
 import { Modal } from "../generic/Modal";
-import { ACCOUNT_URL, JWT_TOKEN_KEY, LOGIN_URL } from "../../constants";
+import { LOGIN_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../utils/auth";
 

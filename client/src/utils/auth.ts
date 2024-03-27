@@ -5,9 +5,9 @@ export const isAuthenticated = () => {
 };
 
 export const logout = () => {
-  localStorage.removeItem(JWT_TOKEN_KEY);
+  sessionStorage.removeItem(JWT_TOKEN_KEY);
 };
 
 export const setToken = (token: string) => {
-  localStorage.setItem(JWT_TOKEN_KEY, token);
+  sessionStorage.setItem(JWT_TOKEN_KEY, token);
 };

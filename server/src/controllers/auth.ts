@@ -42,8 +42,8 @@ class AuthController {
   @httpGet("/google/callback")
   public async googleCallback(req: Request, res: Response) {
     const authCode = String(req.query.code);
-    const tokenAndId = await this._oAuthManager.authenticate(authCode);
-    return res.status(200).json({ data: { tokenAndId } });
+    const token = await this._oAuthManager.authenticate(authCode);
+    return res.status(200).json({ data: { token } });
   }
 
   @httpPost("/login")

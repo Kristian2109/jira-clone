@@ -8,14 +8,24 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/Home";
 import RegisterPage from "./pages/RegisterPage";
 import UserPage from "./pages/UserPage";
+import Callback from "./pages/Callback";
+import Layout from "./components/generic/Layout";
+import RegisterFormContainer from "./components/register/RegisterFormContainer";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      { path: "/register", element: <RegisterFormContainer /> },
+      { path: "/account", element: <UserPage /> },
+    ],
   },
-  { path: "/register", element: <RegisterPage /> },
-  { path: "/account", element: <UserPage /> },
+  { path: "/google/callback", element: <Callback /> },
 ]);
 
 const root = ReactDOM.createRoot(

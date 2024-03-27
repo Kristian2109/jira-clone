@@ -3,6 +3,7 @@ export const LOGIN_URL = BASE_API_URL + "/auth/login";
 export const REGISTER_URL = BASE_API_URL + "/auth/register";
 export const GOOGLE_AUTH_URL = BASE_API_URL + "/auth/external";
 export const ACCOUNT_URL = BASE_API_URL + "/accounts/me";
+export const GOOGLE_AUTH_CALLBACK_URL = BASE_API_URL + "/auth/google/callback";
 
 export const JWT_TOKEN_KEY = "jsonWebToken";
 

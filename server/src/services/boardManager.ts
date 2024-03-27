@@ -34,12 +34,20 @@ export default class BoardManager {
     boardMetadata: NameAndDescription;
   }) {
     const { projectId, boardMetadata } = params;
-    const project = await this._projectCustomRepository.findByIdWithException(
+    const project = await this._projectCustomRepository.findWithBoard(
       projectId
     );
+
+    if (project.board) {
+      throw new BadRequestError({
+        message: "Board already exists!",
+        statusCode: 400,
+      });
+    }
+
     const boardView = new Board();
-    (boardView.name = boardMetadata.name),
-      (boardView.description = boardMetadata.description);
+    boardView.name = boardMetadata.name;
+    boardView.description = boardMetadata.description;
     boardView.boardColumns = this.createInitialBoardColumns();
     project.board = boardView;
     return this._projectCustomRepository.save(project);
