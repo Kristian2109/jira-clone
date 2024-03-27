@@ -1,7 +1,7 @@
 import { JWT_TOKEN_KEY } from "../constants";
 
 export const isAuthenticated = () => {
-  return localStorage.getItem(JWT_TOKEN_KEY) != null;
+  return sessionStorage.getItem(JWT_TOKEN_KEY) != null;
 };
 
 export const logout = () => {

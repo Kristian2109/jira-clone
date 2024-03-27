@@ -21,7 +21,10 @@ const Callback = () => {
       });
 
       const resPayload = await response.data;
-      setToken(resPayload.data?.jsonWebToken);
+      if (resPayload) {
+        setToken(resPayload.data?.token);
+      }
+
       console.log(resPayload);
 
       if (response.status === 200) {
