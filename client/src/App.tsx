@@ -3,11 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
-import {
-  ActionFunction,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import HomePage, { loginAction } from "./pages/Home/index";
 import UserDetailsPage, {
   loader as authLoader,
@@ -26,7 +22,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
+        path: "/",
         element: <HomePage />,
         action: loginAction,
       },

@@ -1,9 +1,6 @@
-import axios from "axios";
 import { REGISTER_URL } from "../../constants";
-import { RegisterFormType } from "../../types/forms";
-import { useState } from "react";
 import FloatingInput from "../../components/generic/FloatingInput";
-import { Form, redirect, useNavigate } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import { setToken } from "../../utils/auth";
 
 const RegisterFormContainer = () => {

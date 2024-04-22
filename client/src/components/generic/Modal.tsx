@@ -1,6 +1,6 @@
 import { Form } from "react-router-dom";
 
-export const LoginModal = (props: {
+export const Modal = (props: {
   title: string;
   buttonContent: string;
   modalId: string;

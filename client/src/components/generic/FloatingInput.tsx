@@ -4,9 +4,16 @@ const FloatingInput = (props: {
   name: string;
   type: string;
   placeholder: string;
+  additionalInputClasses?: string;
 }) => {
+  const inputClasses = props.additionalInputClasses
+    ? props.additionalInputClasses
+    : "my-2 p-0 mx-2";
+
   return (
-    <div className={`col col-${props.columnSize} form-floating my-2 p-0 mx-2`}>
+    <div
+      className={`col col-${props.columnSize} form-floating ${inputClasses}`}
+    >
       <input
         name={props.name}
         type={props.type}
