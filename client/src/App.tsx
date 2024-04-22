@@ -4,8 +4,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import HomePage from "./pages/Home";
-import UserDetailsPage, { authLoader } from "./pages/UserDetails";
+import HomePage from "./pages/Home/index";
+import UserDetailsPage, {
+  loader as authLoader,
+} from "./pages/UserDetails/index";
 import Callback from "./pages/Callback";
 import Layout from "./components/Layout/Layout";
 import RegisterFormContainer from "./pages/Register";

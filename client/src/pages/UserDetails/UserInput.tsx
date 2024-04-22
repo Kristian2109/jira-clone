@@ -21,6 +21,7 @@ const UserInput = (props: {
           id={props.inputId}
           value={props.value}
           disabled={props.disabled}
+          onChange={props.valueHandler}
         />
       </div>
     </div>
