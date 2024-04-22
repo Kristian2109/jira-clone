@@ -1,8 +1,8 @@
-import jiraImg from "../../Jira.jpg";
+import jiraImg from "../../assets/Jira.jpg";
 import { AuthOptionsContainer } from "./AuthOptionsContainer";
 import { LoginModal } from "./LoginModal";
 
-export const HomeContent = () => {
+const Home = () => {
   return (
     <div className="container home-content">
       <h1 className="my-4">
@@ -25,3 +25,5 @@ export const HomeContent = () => {
     </div>
   );
 };
+
+export default Home;

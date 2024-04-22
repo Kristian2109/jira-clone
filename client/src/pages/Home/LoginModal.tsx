@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LoginFormType } from "../../types/forms";
 import axios, { AxiosError } from "axios";
-import { Modal } from "../generic/Modal";
+import { Modal } from "../../components/generic/Modal";
 import { LOGIN_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../utils/auth";

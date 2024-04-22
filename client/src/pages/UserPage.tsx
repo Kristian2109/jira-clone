@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import UserInput from "../components/user/UserInput";
+import UserInput from "../components/UserInput";
 import { useNavigate } from "react-router-dom";
 import {
   ACCOUNT_URL,
-  BASE_API_URL,
   RESPONSE_TO_DISPLAY_ATTRIBUTES,
   JWT_TOKEN_KEY,
 } from "../constants";
 import axios, { AxiosRequestConfig } from "axios";
 import { UserFields } from "../types/forms";
-import Layout from "../components/generic/Layout";
 
 const UserPage = () => {
   const [fields, setFields] = useState<UserFields>({
@@ -33,10 +31,6 @@ const UserPage = () => {
 
   async function fetchDataFromAccount() {
     const jwtToken = sessionStorage.getItem(JWT_TOKEN_KEY);
-    if (!jwtToken) {
-      navigate("/");
-      return;
-    }
     console.log(jwtToken);
 
     const config: AxiosRequestConfig = {

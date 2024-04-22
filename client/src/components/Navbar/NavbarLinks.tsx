@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
-import { logout } from "../../../utils/auth";
-import { MouseEventHandler } from "react";
+import { Link, NavLink } from "react-router-dom";
 
-const NavbarLinks = () => {
+const NavbarLinks = (props: { logoutHandler: any }) => {
   return (
     <div>
       <button
@@ -21,17 +19,26 @@ const NavbarLinks = () => {
         id="navbarNavAltMarkup"
       >
         <div className="navbar-nav">
-          <Link
-            className="nav-link fw-semibold"
+          <NavLink
+            className={(props: { isActive: boolean }) => {
+              return `nav-link fw-semibold  + ${
+                props.isActive ? "active" : ""
+              }`;
+            }}
             aria-current="page"
             to="/account"
+            end={true}
           >
             Profile
-          </Link>
-          <Link className="nav-link fw-semibold" to="/your-work ">
+          </NavLink>
+          <NavLink className="nav-link fw-semibold" to="/your-work ">
             Your Work
-          </Link>
-          <Link className="nav-link fw-semibold" to="/" onClick={logout}>
+          </NavLink>
+          <Link
+            className="nav-link fw-semibold"
+            to="/"
+            onClick={props.logoutHandler}
+          >
             Logout
           </Link>
         </div>

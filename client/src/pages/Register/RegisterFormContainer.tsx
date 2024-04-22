@@ -2,7 +2,7 @@ import axios from "axios";
 import { REGISTER_URL } from "../../constants";
 import { RegisterFormType } from "../../types/forms";
 import { useState } from "react";
-import FloatingInput from "../generic/FloatingInput";
+import FloatingInput from "../../components/generic/FloatingInput";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../utils/auth";
 

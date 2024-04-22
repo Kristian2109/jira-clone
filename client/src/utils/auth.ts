@@ -1,3 +1,4 @@
+import { redirect } from "react-router-dom";
 import { JWT_TOKEN_KEY } from "../constants";
 
 export const isAuthenticated = () => {
@@ -10,4 +11,17 @@ export const logout = () => {
 
 export const setToken = (token: string) => {
   sessionStorage.setItem(JWT_TOKEN_KEY, token);
+};
+
+export const getToken = () => {
+  return sessionStorage.getItem(JWT_TOKEN_KEY);
+};
+
+export const authLoader = () => {
+  const token = getToken();
+
+  if (!token) {
+    return redirect("/");
+  }
+  return null;
 };
