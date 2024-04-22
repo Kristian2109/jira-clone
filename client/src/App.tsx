@@ -14,7 +14,9 @@ import UserDetailsPage, {
 } from "./pages/UserDetails/index";
 import Callback from "./pages/Callback";
 import Layout from "./components/Layout/Layout";
-import RegisterFormContainer from "./pages/Register";
+import RegisterFormContainer, {
+  action as registerAction,
+} from "./pages/Register/index";
 import ErrorPage from "./pages/Error";
 
 const router = createBrowserRouter([
@@ -31,6 +33,7 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterFormContainer />,
+        action: registerAction,
       },
       {
         path: "/account",

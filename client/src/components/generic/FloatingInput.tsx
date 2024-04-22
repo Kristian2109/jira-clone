@@ -1,5 +1,4 @@
 const FloatingInput = (props: {
-  changeHandler: any;
   columnSize: number;
   label: string;
   name: string;
@@ -14,7 +13,6 @@ const FloatingInput = (props: {
         className="form-control border-3"
         placeholder={props.placeholder}
         id={props.name}
-        onChange={props.changeHandler}
       />
       <label htmlFor="floatingInput">{props.label}</label>
     </div>

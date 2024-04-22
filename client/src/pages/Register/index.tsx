@@ -3,56 +3,14 @@ import { REGISTER_URL } from "../../constants";
 import { RegisterFormType } from "../../types/forms";
 import { useState } from "react";
 import FloatingInput from "../../components/generic/FloatingInput";
-import { useNavigate } from "react-router-dom";
+import { Form, redirect, useNavigate } from "react-router-dom";
 import { setToken } from "../../utils/auth";
 
 const RegisterFormContainer = () => {
-  const [formContent, setFormContent] = useState<RegisterFormType>({
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    repeatedPassword: "",
-    displayName: "",
-    birthday: new Date(),
-    company: "",
-    position: "",
-  });
-
-  const navigate = useNavigate();
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setFormContent((prevState: RegisterFormType) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-  };
-
-  async function submitRegisterForm(event: any) {
-    event.preventDefault();
-    try {
-      const toSend = {
-        name: `${formContent.firstName} ${formContent.lastName}`,
-        email: formContent.email,
-        password: formContent.password,
-        birthday: formContent.birthday,
-        displayName: formContent.displayName,
-      };
-      const response = await axios.post(REGISTER_URL, toSend);
-      const responseData = await response.data;
-      setToken(responseData.data?.jsonWebToken);
-      navigate("/account");
-      console.log("User logged successfully: ", response.data);
-    } catch (error) {
-      console.error("Error while sending the form", error);
-    }
-  }
   return (
-    <form
+    <Form
+      action="/register"
+      method="POST"
       className="row container mx-auto w-75 my-4 justify-content-center px-4"
       id="login-form"
     >
@@ -61,7 +19,6 @@ const RegisterFormContainer = () => {
         name="email"
         type="email"
         columnSize={8}
-        changeHandler={handleChange}
         label="Email Address"
         placeholder="example@gmail.com"
       />
@@ -69,7 +26,6 @@ const RegisterFormContainer = () => {
         name="firstName"
         type="text"
         columnSize={5}
-        changeHandler={handleChange}
         label="First Name"
         placeholder="Peter"
       />
@@ -77,7 +33,6 @@ const RegisterFormContainer = () => {
         name="lastName"
         type="text"
         columnSize={5}
-        changeHandler={handleChange}
         label="Last Name"
         placeholder="Petrov"
       />
@@ -85,7 +40,6 @@ const RegisterFormContainer = () => {
         name="password"
         type="password"
         columnSize={5}
-        changeHandler={handleChange}
         label="Password"
         placeholder="Password"
       />
@@ -93,7 +47,6 @@ const RegisterFormContainer = () => {
         name="repeatedPassword"
         type="password"
         columnSize={5}
-        changeHandler={handleChange}
         label="Repeated Password"
         placeholder="Repeat Password"
       />
@@ -101,7 +54,6 @@ const RegisterFormContainer = () => {
         name="displayName"
         type="text"
         columnSize={5}
-        changeHandler={handleChange}
         label="Display Name"
         placeholder="Pesho"
       />
@@ -109,7 +61,6 @@ const RegisterFormContainer = () => {
         name="birthday"
         type="date"
         columnSize={5}
-        changeHandler={handleChange}
         label="Birthday"
         placeholder="Birthday"
       />
@@ -117,7 +68,6 @@ const RegisterFormContainer = () => {
         name="company"
         type="text"
         columnSize={5}
-        changeHandler={handleChange}
         label="Company"
         placeholder="Bosch"
       />
@@ -125,20 +75,43 @@ const RegisterFormContainer = () => {
         name="position"
         type="text"
         columnSize={5}
-        changeHandler={handleChange}
         label="Position"
         placeholder="Software Engineer"
       />
       <div className="col-12">
-        <button
-          className="btn btn-primary btn-lg mt-4"
-          onClick={submitRegisterForm}
-        >
+        <button className="btn btn-primary btn-lg mt-4" type="submit">
           Register
         </button>
       </div>
-    </form>
+    </Form>
   );
 };
 
 export default RegisterFormContainer;
+
+export async function action(args: { params: any; request: Request }) {
+  const formData = await args.request.formData();
+  const payload = {
+    name: `${formData.get("firstName")} ${formData.get("lastName")}`,
+    email: formData.get("email"),
+    password: formData.get("password"),
+    dateOfBirth: formData.get("birthday"),
+    displayName: formData.get("displayName"),
+  };
+  console.log(JSON.stringify(payload));
+
+  const response = await fetch(REGISTER_URL, {
+    body: JSON.stringify(payload),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const responseData = await response.json();
+  if (!response.ok) {
+    throw new Error(responseData?.error);
+  }
+
+  setToken(responseData.data?.jsonWebToken);
+  return redirect("/account");
+}
