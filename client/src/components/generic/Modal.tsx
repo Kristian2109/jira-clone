@@ -1,9 +1,9 @@
-export const Modal = (props: {
+import { Form } from "react-router-dom";
+
+export const LoginModal = (props: {
   title: string;
-  content: any;
   buttonContent: string;
   modalId: string;
-  submitHandler: React.MouseEventHandler<HTMLButtonElement>;
 }) => {
   return (
     <div
@@ -28,16 +28,35 @@ export const Modal = (props: {
               aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body">{props.content}</div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={props.submitHandler}
-            >
-              {props.buttonContent}
-            </button>
-          </div>
+          <Form>
+            <div className="modal-body">
+              <div className="form-floating mb-3">
+                <input
+                  name="email"
+                  type="email"
+                  className="form-control"
+                  id="floatingInput"
+                  placeholder="name@example.com"
+                />
+                <label htmlFor="floatingInput">Email address</label>
+              </div>
+              <div className="form-floating">
+                <input
+                  name="password"
+                  type="password"
+                  className="form-control"
+                  id="floatingPassword"
+                  placeholder="Password"
+                />
+                <label htmlFor="floatingPassword">Password</label>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="submit" className="btn btn-primary">
+                {props.buttonContent}
+              </button>
+            </div>
+          </Form>
         </div>
       </div>
     </div>

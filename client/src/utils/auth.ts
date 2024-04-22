@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 import { JWT_TOKEN_KEY } from "../constants";
 
 export const isAuthenticated = () => {
