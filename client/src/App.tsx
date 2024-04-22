@@ -1,13 +1,14 @@
 import React from "react";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import HomePage from "./pages/Home";
-import UserPage from "./pages/UserPage";
+import UserDetailsPage, { authLoader } from "./pages/UserDetails";
 import Callback from "./pages/Callback";
-import Layout from "./components/generic/Layout";
-import RegisterFormContainer from "./pages/Register/RegisterFormContainer";
-import { authLoader } from "./utils/auth";
+import Layout from "./components/Layout/Layout";
+import RegisterFormContainer from "./pages/Register";
 import ErrorPage from "./pages/Error";
 
 const router = createBrowserRouter([
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/account",
-        element: <UserPage />,
+        element: <UserDetailsPage />,
         loader: authLoader,
       },
       { path: "/google/callback", element: <Callback /> },

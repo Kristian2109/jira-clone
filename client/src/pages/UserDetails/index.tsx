@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import UserInput from "../components/UserInput";
-import { useNavigate } from "react-router-dom";
+import UserInput from "./UserInput";
+import { redirect, useNavigate } from "react-router-dom";
 import {
   ACCOUNT_URL,
   RESPONSE_TO_DISPLAY_ATTRIBUTES,
   JWT_TOKEN_KEY,
-} from "../constants";
+} from "../../constants";
 import axios, { AxiosRequestConfig } from "axios";
-import { UserFields } from "../types/forms";
+import { UserFields } from "../../types/forms";
+import { getToken } from "../../utils/auth";
 
-const UserPage = () => {
+const UserDetailsPage = () => {
   const [fields, setFields] = useState<UserFields>({
     id: -1,
     name: "",
@@ -22,12 +23,18 @@ const UserPage = () => {
     position: "",
   });
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     console.log("Data fetched!");
     fetchDataFromAccount();
   }, []);
+
+  function handleChangeField(event: React.ChangeEvent<HTMLInputElement>) {
+    const { id, value } = event.target;
+    setFields((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  }
 
   async function fetchDataFromAccount() {
     const jwtToken = sessionStorage.getItem(JWT_TOKEN_KEY);
@@ -42,7 +49,6 @@ const UserPage = () => {
     try {
       const response = await axios.get(ACCOUNT_URL, config);
       const resData = await response.data;
-      console.log(resData.data.user);
       setFields(resData.data.user);
     } catch (error) {
       console.error(error);
@@ -73,6 +79,7 @@ const UserPage = () => {
             value={value}
             disabled={fieldDisplayProperties.readonly}
             key={fieldDisplayProperties.order}
+            valueHandler={handleChangeField}
           />
         ),
       };
@@ -103,4 +110,13 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default UserDetailsPage;
+
+export const authLoader = () => {
+  const token = getToken();
+
+  if (!token) {
+    return redirect("/");
+  }
+  return null;
+};

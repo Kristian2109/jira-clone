@@ -1,6 +1,7 @@
 import { JiraNavbar } from "../Navbar/JiraNavbar";
-import { Footer } from "./Footer";
+import { Footer } from "../Footer/Footer";
 import { Outlet } from "react-router-dom";
+import "./Layout.css";
 
 const Layout = () => {
   return (

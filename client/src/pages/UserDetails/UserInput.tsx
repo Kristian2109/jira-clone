@@ -4,6 +4,7 @@ const UserInput = (props: {
   value: string;
   type: string;
   disabled: boolean;
+  valueHandler: any;
 }) => {
   return (
     <div className="row mb-3">

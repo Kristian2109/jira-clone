@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { isAuthenticated, logout } from "../../utils/auth";
 import NavbarLinks from "./NavbarLinks";
+import "./Navbar.css";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 export const JiraNavbar = () => {

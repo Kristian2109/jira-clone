@@ -16,12 +16,3 @@ export const setToken = (token: string) => {
 export const getToken = () => {
   return sessionStorage.getItem(JWT_TOKEN_KEY);
 };
-
-export const authLoader = () => {
-  const token = getToken();
-
-  if (!token) {
-    return redirect("/");
-  }
-  return null;
-};
