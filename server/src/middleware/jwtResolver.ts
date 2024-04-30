@@ -9,7 +9,6 @@ dotenv.config();
 
 class JwtResolver {
   public static async resolve(req: AuthenticatedRequest) {
-    // Extract headers from the request
     const authHeader = req.headers?.authorization;
     if (!authHeader) {
       return;
