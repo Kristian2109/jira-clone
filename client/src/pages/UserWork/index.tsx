@@ -3,6 +3,7 @@ import RecentProjectsContainer from "./RecentProjectsContainer";
 import { fetchUserProjects } from "../../utils/requests";
 import { ProjectType } from "../../types/project";
 import { defer } from "react-router-dom";
+import RecentTasksContainer from "./RecentTasksContainer";
 
 const WorkPage: FC = () => {
   return (
@@ -10,6 +11,7 @@ const WorkPage: FC = () => {
       <h3>Your work</h3>
       <hr></hr>
       <RecentProjectsContainer />
+      <RecentTasksContainer />
     </div>
   );
 };
