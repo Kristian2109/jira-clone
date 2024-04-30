@@ -98,6 +98,7 @@ export default class IssueRepository {
       },
       skip: pagination.begin,
       take: pagination.end - pagination.begin,
+      relations: ["issueType", "issueType.project"],
     });
   }
 }

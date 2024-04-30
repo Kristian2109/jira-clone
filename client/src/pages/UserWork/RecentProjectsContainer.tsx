@@ -10,7 +10,7 @@ const RecentProjectsContainer: FC = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between mx-2 mb-2">
+      <div className="d-flex justify-content-between mb-2">
         <h6 className="mb-0">Recent Projects</h6>
         <Link
           className="link-underline-opacity-0 link-underline-opacity-75-hover"
@@ -19,6 +19,7 @@ const RecentProjectsContainer: FC = () => {
           Create Project
         </Link>
       </div>
+      <hr className="mt-2 mb-3"></hr>
       <div className="d-flex">
         <Suspense fallback={<p>Loading Projects</p>}>
           <Await
@@ -26,9 +27,13 @@ const RecentProjectsContainer: FC = () => {
             errorElement={<p>Error while loading projects.</p>}
           >
             {(projects: ProjectType[]) =>
-              projects.map((project: ProjectType) => {
-                return <RecentProject key={project.id} project={project} />;
-              })
+              projects.length === 0 ? (
+                <p>You don't have projects</p>
+              ) : (
+                projects.map((project: ProjectType) => {
+                  return <RecentProject key={project.id} project={project} />;
+                })
+              )
             }
           </Await>
         </Suspense>
