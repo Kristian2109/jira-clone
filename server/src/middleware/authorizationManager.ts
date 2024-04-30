@@ -1,10 +1,8 @@
-import { NextFunction, Response } from "express";
 import ProjectRepository from "../repositories/projectRepository";
 import { AuthenticatedRequest } from "../types/auth";
 import { IdSchema } from "../types/genericTypes";
 import BadRequestError from "../exceptions/badRequestError";
 import { injectable } from "inversify";
-import JwtResolver from "./jwtResolver";
 
 @injectable()
 export default class AuthorizationManager {
@@ -12,13 +10,6 @@ export default class AuthorizationManager {
 
   constructor(projectRepository: ProjectRepository) {
     this._projectRepository = projectRepository;
-  }
-
-  public async authorize(request: AuthenticatedRequest) {
-    const projectRegex = /\/projects\/\d+/;
-    if (projectRegex.test(request.url)) {
-      await this._validateUserAccessProject(request);
-    }
   }
 
   private async _validateUserAccessProject(request: AuthenticatedRequest) {
@@ -35,6 +26,13 @@ export default class AuthorizationManager {
         message: "User doesn't have access to this project!",
         statusCode: 401,
       });
+    }
+  }
+
+  public async authorize(request: AuthenticatedRequest) {
+    const projectRegex = /\/projects\/\d+/;
+    if (projectRegex.test(request.url)) {
+      await this._validateUserAccessProject(request);
     }
   }
 }

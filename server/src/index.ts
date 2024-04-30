@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import container from "./config/inversify.config";
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application } from "express";
 import { InversifyExpressServer } from "inversify-express-utils";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -16,8 +16,8 @@ import tryCatch from "./utils/tryCatch";
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 
-const authManager =
-  container.resolve<AuthorizationManager>(AuthorizationManager);
+const authManager = container.get<AuthorizationManager>(AuthorizationManager);
+console.log(authManager);
 
 const config = new InversifyExpressServer(container);
 config.setConfig((app) => {
@@ -27,7 +27,7 @@ config.setConfig((app) => {
 
   // app.use(trebble());
   app.use(tryCatch(JwtResolver.resolve));
-  app.use(tryCatch(authManager.authorize));
+  app.use(tryCatch(authManager.authorize.bind(authManager)));
 });
 
 const app: Application = config.build();
