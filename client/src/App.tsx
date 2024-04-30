@@ -14,6 +14,7 @@ import RegisterFormContainer, {
   action as registerAction,
 } from "./pages/Register/index";
 import ErrorPage from "./pages/Error";
+import WorkPage, { workPageLoader } from "./pages/UserWork";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
         loader: authLoader,
       },
       { path: "/google/callback", element: <Callback /> },
+      {
+        path: "/your-work",
+        element: <WorkPage />,
+        loader: workPageLoader,
+      },
     ],
   },
 ]);
