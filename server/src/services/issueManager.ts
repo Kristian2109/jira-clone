@@ -226,4 +226,11 @@ export default class IssueManager {
     issue.boardColumn = boardColumn;
     this._issueRepository.save(issue);
   }
+
+  public async findIssuesByUser(
+    userId: number,
+    pagination?: { begin: number; end: number }
+  ) {
+    return this._issueRepository.findIssuesByUser(userId, pagination);
+  }
 }

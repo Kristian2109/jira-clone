@@ -31,7 +31,7 @@ const NavbarLinks = (props: { logoutHandler: any }) => {
           >
             Profile
           </NavLink>
-          <NavLink className="nav-link fw-semibold" to="/your-work ">
+          <NavLink className="nav-link fw-semibold" to="/your-work">
             Your Work
           </NavLink>
           <Link
