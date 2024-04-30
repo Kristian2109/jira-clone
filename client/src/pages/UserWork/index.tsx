@@ -6,7 +6,9 @@ import { defer } from "react-router-dom";
 
 const WorkPage: FC = () => {
   return (
-    <div>
+    <div className="w-75 my-4 mx-auto text-start">
+      <h3>Your work</h3>
+      <hr></hr>
       <RecentProjectsContainer />
     </div>
   );
