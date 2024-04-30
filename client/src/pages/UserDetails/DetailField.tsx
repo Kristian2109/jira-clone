@@ -1,9 +1,9 @@
-const UserInput = (props: {
+const DetailField = (props: {
   inputId: string;
   label: string;
   value: string;
   type: string;
-  disabled: boolean;
+  disabled?: boolean;
   valueHandler: any;
 }) => {
   return (
@@ -28,4 +28,4 @@ const UserInput = (props: {
   );
 };
 
-export default UserInput;
+export default DetailField;

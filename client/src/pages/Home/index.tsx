@@ -39,7 +39,6 @@ export async function loginAction(args: { params: any; request: Request }) {
     throw new Error(errorMessage);
   }
   const responseData = await response.data;
-  console.log(responseData);
   const jwtToken = responseData.data?.jsonWebToken;
   if (!jwtToken) {
     console.log("No token!");
