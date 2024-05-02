@@ -7,6 +7,8 @@ import RecentIssuesTable from "./RecentIssuesTable";
 const RecentTasksContainer = () => {
   const { userIssues } = useLoaderData() as WorkPageLoaderType;
 
+  console.log("Event reloaded");
+
   return (
     <div className="my-4">
       <h6>Recent Issues</h6>

@@ -9,31 +9,26 @@ const Callback = () => {
   const [queryParameters] = useSearchParams();
 
   useEffect(() => {
-    saveGoogleDataToServer();
-  }, []);
+    async function saveGoogleDataToServer() {
+      try {
+        const response = await axios.get(GOOGLE_AUTH_CALLBACK_URL, {
+          params: queryParameters,
+        });
 
-  async function saveGoogleDataToServer() {
-    try {
-      console.log("Query parameters: ", queryParameters);
-
-      const response = await axios.get(GOOGLE_AUTH_CALLBACK_URL, {
-        params: queryParameters,
-      });
-
-      const resPayload = await response.data;
-      if (resPayload) {
-        setToken(resPayload.data?.token);
+        const resPayload = await response.data;
+        if (resPayload) {
+          setToken(resPayload.data?.token);
+        }
+        if (response.status === 200) {
+          navigate("/account");
+        }
+      } catch (error) {
+        console.error("Error while saving Google data", error);
       }
-
-      console.log(resPayload);
-
-      if (response.status === 200) {
-        navigate("/account");
-      }
-    } catch (error) {
-      console.error("Error while saving Google data", error);
     }
-  }
+
+    saveGoogleDataToServer();
+  }, [navigate, queryParameters]);
 
   return (
     <div>

@@ -8,20 +8,20 @@ const FloatingInput: FC<{
   placeholder: string;
   additionalInputClasses?: string;
   required?: boolean;
-}> = ({ columnSize, placeholder, additionalInputClasses, name, ...props }) => {
+}> = ({ columnSize, additionalInputClasses, name, ...props }) => {
   const inputClasses = additionalInputClasses
     ? additionalInputClasses
     : "my-2 p-0 mx-2";
 
   return (
-    <div className={`col col-${columnSize} form-floating ${inputClasses}`}>
+    <div className={`form-floating col col-${columnSize} ${inputClasses}`}>
       <input
+        className="form-control border-2"
         name={name}
-        className="form-control border-3"
         id={name}
         {...props}
       />
-      <label htmlFor="floatingInput">{props.label}</label>
+      <label htmlFor={name}>{props.label}</label>
     </div>
   );
 };

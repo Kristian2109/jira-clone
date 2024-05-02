@@ -27,3 +27,7 @@ export type UserFields = {
   createdAt: Date;
   role: string;
 };
+
+export type LowerCaseFormMethod = "get" | "post" | "put" | "patch" | "delete";
+export type UpperCaseFormMethod = Uppercase<LowerCaseFormMethod>;
+export type HTMLFormMethod = LowerCaseFormMethod | UpperCaseFormMethod;
