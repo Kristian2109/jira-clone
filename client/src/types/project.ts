@@ -6,6 +6,12 @@ export type ProjectType = {
   key: string;
 };
 
+export type CreateProject = {
+  name: string;
+  description: string;
+  key: string;
+};
+
 export type Issue = {
   id: number;
   createdAt: string;

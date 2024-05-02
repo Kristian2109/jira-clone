@@ -44,8 +44,6 @@ export async function loginAction(args: { params: any; request: Request }) {
     console.log("No token!");
   }
 
-  const element = document.getElementById("loginForm");
-
   setToken(jwtToken);
   return redirect("/account");
 }
