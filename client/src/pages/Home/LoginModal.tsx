@@ -1,6 +1,14 @@
+import { useRef } from "react";
 import LoginForm from "./LoginForm";
 
 const LoginModal = () => {
+  const modalRef = useRef<HTMLButtonElement>(null);
+
+  const closeModal = () => {
+    modalRef.current!.click();
+  };
+
+  // modalRef.current!.
   return (
     <div
       className="modal fade w-100"
@@ -10,6 +18,7 @@ const LoginModal = () => {
       tabIndex={-1}
       aria-labelledby="staticBackdropLabel"
       aria-hidden="true"
+      // ref={modalRef}
     >
       <div className="modal-dialog">
         <div className="modal-content px-4">
@@ -22,9 +31,10 @@ const LoginModal = () => {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              ref={modalRef}
             ></button>
           </div>
-          <LoginForm />
+          <LoginForm onCloseModal={closeModal} />
         </div>
       </div>
     </div>
