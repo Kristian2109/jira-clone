@@ -2,9 +2,9 @@ import { Form } from "react-router-dom";
 import FloatingInput from "../../components/generic/FloatingInput";
 import { FC } from "react";
 
-const LoginForm: FC<{ onCloseModal: () => void }> = ({ onCloseModal }) => {
+const LoginForm: FC<{ onLogin: () => void }> = ({ onLogin }) => {
   return (
-    <Form method="POST" onSubmit={onCloseModal}>
+    <Form method="POST" onSubmit={onLogin}>
       <div className="modal-body">
         <FloatingInput
           columnSize={12}

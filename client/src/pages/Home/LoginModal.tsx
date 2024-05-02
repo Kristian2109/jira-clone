@@ -1,10 +1,13 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import LoginForm from "./LoginForm";
+import { AuthContext } from "../../store/auth-context";
 
 const LoginModal = () => {
   const modalRef = useRef<HTMLButtonElement>(null);
+  const { setAuthenticated } = useContext(AuthContext);
 
-  const closeModal = () => {
+  const handleLogin = () => {
+    setAuthenticated();
     modalRef.current!.click();
   };
 
@@ -34,7 +37,7 @@ const LoginModal = () => {
               ref={modalRef}
             ></button>
           </div>
-          <LoginForm onCloseModal={closeModal} />
+          <LoginForm onLogin={handleLogin} />
         </div>
       </div>
     </div>

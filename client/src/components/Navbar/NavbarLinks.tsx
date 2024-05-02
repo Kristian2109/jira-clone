@@ -1,6 +1,16 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../store/auth-context";
+import { logout } from "../../utils/auth";
 
-const NavbarLinks = (props: { logoutHandler: any }) => {
+const NavbarLinks = () => {
+  const { setUnauthenticated } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    setUnauthenticated();
+  };
+
   return (
     <div>
       <button
@@ -34,11 +44,7 @@ const NavbarLinks = (props: { logoutHandler: any }) => {
           <NavLink className="nav-link fw-semibold" to="/your-work">
             Your Work
           </NavLink>
-          <Link
-            className="nav-link fw-semibold"
-            to="/"
-            onClick={props.logoutHandler}
-          >
+          <Link className="nav-link fw-semibold" to="/" onClick={handleLogout}>
             Logout
           </Link>
         </div>
