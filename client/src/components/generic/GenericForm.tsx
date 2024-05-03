@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { Form } from "react-router-dom";
-import { HTMLFormMethod } from "../types/forms";
+import { HTMLFormMethod } from "../../types/forms";
 
 const GenericForm: FC<{
   children: ReactNode;

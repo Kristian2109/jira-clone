@@ -4,7 +4,7 @@ import {
   CreateProject,
   Issue,
   ProjectType,
-  ProjectWithMembers,
+  ProjectWithAllData,
 } from "../types/project";
 import { getToken } from "./auth";
 
@@ -68,7 +68,7 @@ export async function fetchProject(projectId: number) {
   const fetchProjectUrl = `${PROJECTS_URL}/${projectId}`;
   const projectResponse = (await authenticatedRequest(fetchProjectUrl)) as any;
 
-  return projectResponse.project as ProjectWithMembers;
+  return projectResponse.project as ProjectWithAllData;
 }
 
 export const createProject = async (project: CreateProject) => {

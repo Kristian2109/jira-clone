@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import GenericForm from "../../components/GenericForm";
+import GenericForm from "../../components/generic/GenericForm";
 import FloatingInput from "../../components/generic/FloatingInput";
 import FloatingTextarea from "../../components/generic/FloatingTexarea";
 import { CreateProject } from "../../types/project";

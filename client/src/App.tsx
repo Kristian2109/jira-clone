@@ -18,8 +18,9 @@ import WorkPage, { workPageLoader } from "./pages/UserWork";
 import CreateProjectPage, { createProjectAction } from "./pages/CreateProject";
 import ProjectNavigation, {
   projectLoader,
-} from "./components/ProjectNavigation";
+} from "./components/ProjectNavigation/ProjectNavigation";
 import ProjectPage from "./pages/Project";
+import IssuesNavigation from "./components/IssuesNavigation";
 
 const router = createBrowserRouter([
   {
@@ -55,16 +56,22 @@ const router = createBrowserRouter([
         action: createProjectAction,
       },
       {
-        path: "/projects/:projectId",
+        path: "/projects/:projectId/details",
         element: <ProjectNavigation />,
         loader: projectLoader,
         id: "project",
         children: [
           {
-            path: "details",
+            index: true,
             element: <ProjectPage />,
           },
         ],
+      },
+      {
+        path: "/projects/:projectId/issueTypes",
+        element: <IssuesNavigation />,
+        id: "issueTypes",
+        loader: projectLoader,
       },
     ],
   },

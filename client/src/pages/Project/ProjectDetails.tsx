@@ -1,9 +1,9 @@
 import { useRouteLoaderData } from "react-router";
-import { ProjectWithMembers } from "../../types/project";
+import { ProjectWithAllData } from "../../types/project";
 import { formatDate } from "../../utils/date";
 
 const ProjectDetails = () => {
-  const project = useRouteLoaderData("project") as ProjectWithMembers;
+  const project = useRouteLoaderData("project") as ProjectWithAllData;
 
   return (
     <div className="px-4 mb-3">

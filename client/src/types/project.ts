@@ -16,8 +16,9 @@ export type ProjectMember = {
   createdAt: string;
 };
 
-export interface ProjectWithMembers extends ProjectType {
+export interface ProjectWithAllData extends ProjectType {
   members: ProjectMember[];
+  issueTypes: IssueType[];
 }
 
 export type CreateProject = {
