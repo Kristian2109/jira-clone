@@ -1,0 +1,8 @@
+#sidebar-container {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 12rem;
+  height: 100%;
+}

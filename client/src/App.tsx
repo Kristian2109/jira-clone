@@ -52,11 +52,11 @@ const router = createBrowserRouter([
         action: createProjectAction,
       },
       {
-        path: "/projects",
+        path: "/projects/:projectId",
         element: <ProjectNavigation />,
         children: [
           {
-            path: ":projectId",
+            index: true,
             element: <ProjectPage />,
           },
         ],
