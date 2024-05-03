@@ -16,6 +16,8 @@ import RegisterFormContainer, {
 import ErrorPage from "./pages/Error";
 import WorkPage, { workPageLoader } from "./pages/UserWork";
 import CreateProjectPage, { createProjectAction } from "./pages/CreateProject";
+import ProjectNavigation from "./components/ProjectNavigation";
+import ProjectPage from "./pages/Project";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,16 @@ const router = createBrowserRouter([
         path: "/create-project",
         element: <CreateProjectPage />,
         action: createProjectAction,
+      },
+      {
+        path: "/projects",
+        element: <ProjectNavigation />,
+        children: [
+          {
+            path: ":projectId",
+            element: <ProjectPage />,
+          },
+        ],
       },
     ],
   },

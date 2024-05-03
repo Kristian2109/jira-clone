@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { ProjectType } from "../../types/project";
+import { Link } from "react-router-dom";
 
 const RecentProject: FC<{ project: ProjectType }> = ({ project }) => {
   let formattedDescription = project.description.slice(0, 30);
@@ -8,7 +9,11 @@ const RecentProject: FC<{ project: ProjectType }> = ({ project }) => {
   }
 
   return (
-    <div className="card shadow-sm mx-2" style={{ width: "10rem" }}>
+    <Link
+      className="card shadow-sm mx-2"
+      style={{ width: "10rem" }}
+      to={`/projects/${project.id}`}
+    >
       <div className="card-body">
         <h5 className="card-title fs-6" style={{ fontSize: "0.9rem" }}>
           {project.name}
@@ -29,7 +34,7 @@ const RecentProject: FC<{ project: ProjectType }> = ({ project }) => {
           Another link
         </a> */}
       </div>
-    </div>
+    </Link>
   );
 };
 
