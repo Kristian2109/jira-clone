@@ -6,6 +6,7 @@ export const ACCOUNT_URL = BASE_API_URL + "/accounts/me";
 export const GOOGLE_AUTH_CALLBACK_URL = BASE_API_URL + "/auth/google/callback";
 export const USER_PROJECTS_URL = BASE_API_URL + "/projects/me";
 export const USER_ISSUES_URL = BASE_API_URL + "/accounts/me/issues";
+export const CREATE_PROJECT_URL = BASE_API_URL + "/projects";
 
 export const JWT_TOKEN_KEY = "jsonWebToken";
 

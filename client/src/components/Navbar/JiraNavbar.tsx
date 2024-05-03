@@ -1,24 +1,16 @@
-import { useState } from "react";
-import { isAuthenticated, logout } from "../../utils/auth";
+import { useContext } from "react";
 import NavbarLinks from "./NavbarLinks";
 import "./Navbar.css";
+import { AuthContext } from "../../store/auth-context";
 
-/* eslint-disable jsx-a11y/anchor-is-valid */
 export const JiraNavbar = () => {
-  const [isAuth, setIsAuth] = useState(isAuthenticated());
-
-  const handleLogout = () => {
-    logout();
-    setIsAuth(false);
-  };
+  const { isAuth } = useContext(AuthContext);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-expand-md navbar-light">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          Jira Work Management
-        </a>
-        {isAuth && <NavbarLinks logoutHandler={handleLogout} />}
+        <span className="navbar-brand">Jira Work Management</span>
+        {isAuth && <NavbarLinks />}
       </div>
     </nav>
   );

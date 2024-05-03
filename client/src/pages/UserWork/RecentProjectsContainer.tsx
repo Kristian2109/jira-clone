@@ -14,7 +14,7 @@ const RecentProjectsContainer: FC = () => {
         <h6 className="mb-0">Recent Projects</h6>
         <Link
           className="link-underline-opacity-0 link-underline-opacity-75-hover"
-          to="create"
+          to="/create-project"
         >
           Create Project
         </Link>

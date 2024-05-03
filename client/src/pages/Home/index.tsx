@@ -34,7 +34,7 @@ export async function loginAction(args: { params: any; request: Request }) {
   };
   const response = await axios.post(LOGIN_URL, toSend);
 
-  if (response.status > 399) {
+  if (response.status >= 399) {
     const errorMessage = (await response.data).error;
     throw new Error(errorMessage);
   }
@@ -43,6 +43,7 @@ export async function loginAction(args: { params: any; request: Request }) {
   if (!jwtToken) {
     console.log("No token!");
   }
+
   setToken(jwtToken);
   return redirect("/account");
 }

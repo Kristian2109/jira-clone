@@ -1,27 +1,27 @@
-const FloatingInput = (props: {
+import { FC } from "react";
+
+const FloatingInput: FC<{
   columnSize: number;
   label: string;
   name: string;
   type: string;
   placeholder: string;
   additionalInputClasses?: string;
-}) => {
-  const inputClasses = props.additionalInputClasses
-    ? props.additionalInputClasses
+  required?: boolean;
+}> = ({ columnSize, additionalInputClasses, name, ...props }) => {
+  const inputClasses = additionalInputClasses
+    ? additionalInputClasses
     : "my-2 p-0 mx-2";
 
   return (
-    <div
-      className={`col col-${props.columnSize} form-floating ${inputClasses}`}
-    >
+    <div className={`form-floating col col-${columnSize} ${inputClasses}`}>
       <input
-        name={props.name}
-        type={props.type}
-        className="form-control border-3"
-        placeholder={props.placeholder}
-        id={props.name}
+        className="form-control border-2"
+        name={name}
+        id={name}
+        {...props}
       />
-      <label htmlFor="floatingInput">{props.label}</label>
+      <label htmlFor={name}>{props.label}</label>
     </div>
   );
 };

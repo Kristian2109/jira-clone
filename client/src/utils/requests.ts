@@ -1,11 +1,20 @@
-import { USER_ISSUES_URL, USER_PROJECTS_URL } from "../constants";
-import { Issue, ProjectType } from "../types/project";
+import {
+  CREATE_PROJECT_URL,
+  USER_ISSUES_URL,
+  USER_PROJECTS_URL,
+} from "../constants";
+import { HTMLFormMethod } from "../types/forms";
+import { CreateProject, Issue, ProjectType } from "../types/project";
 import { getToken } from "./auth";
 
-async function genericGetRequest<ReturnType>(url: string) {
+async function authenticatedRequest<ReturnType>(
+  url: string,
+  config?: { method: HTMLFormMethod; body: string }
+) {
   const token = getToken();
 
   const response = await fetch(url, {
+    ...config,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -48,8 +57,17 @@ export async function fetchUserIssues() {
   const end = 10;
   const issuesUrl = `${USER_ISSUES_URL}?begin=${begin}&end=${end}`;
 
-  const issuesResponse = await genericGetRequest<{ issues: Issue[] }>(
+  const issuesResponse = await authenticatedRequest<{ issues: Issue[] }>(
     issuesUrl
   );
   return issuesResponse.issues;
 }
+
+export const createProject = async (project: CreateProject) => {
+  const response = (await authenticatedRequest(CREATE_PROJECT_URL, {
+    method: "POST",
+    body: JSON.stringify(project),
+  })) as any;
+
+  return response.project.id;
+};

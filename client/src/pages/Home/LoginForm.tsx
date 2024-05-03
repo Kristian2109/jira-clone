@@ -1,9 +1,10 @@
 import { Form } from "react-router-dom";
 import FloatingInput from "../../components/generic/FloatingInput";
+import { FC } from "react";
 
-const LoginForm = () => {
+const LoginForm: FC<{ onLogin: () => void }> = ({ onLogin }) => {
   return (
-    <Form method="POST">
+    <Form method="POST" onSubmit={onLogin}>
       <div className="modal-body">
         <FloatingInput
           columnSize={12}
@@ -12,6 +13,7 @@ const LoginForm = () => {
           type="email"
           placeholder="name@example.com"
           additionalInputClasses="my-3"
+          required={true}
         />
         <FloatingInput
           columnSize={12}
