@@ -8,7 +8,7 @@ import LoginModal from "./LoginModal";
 
 const Home = () => {
   return (
-    <div className="container home-content">
+    <div className="container home-content mb-5">
       <h1 className="my-4">
         The best platform to manage you teams work according to agile
         methodologies

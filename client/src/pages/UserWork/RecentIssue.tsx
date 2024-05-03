@@ -1,16 +1,9 @@
 import { FC } from "react";
 import { Issue } from "../../types/project";
-
-const dateFormatter = Intl.DateTimeFormat("en-US", {
-  weekday: "long",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
+import { formatDate } from "../../utils/date";
 
 const RecentIssue: FC<{ issue: Issue }> = ({ issue }) => {
-  const date = new Date(issue.createdAt);
-  const formattedDate = dateFormatter.format(date).replace(/\//g, "-");
+  const formattedDate = formatDate(issue.createdAt);
 
   return (
     <tr>
