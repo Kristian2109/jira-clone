@@ -16,12 +16,15 @@ import RegisterFormContainer, {
 import ErrorPage from "./pages/Error";
 import WorkPage, { workPageLoader } from "./pages/UserWork";
 import CreateProjectPage, { createProjectAction } from "./pages/CreateProject";
-import ProjectNavigation from "./components/ProjectNavigation";
+import ProjectNavigation, {
+  projectLoader,
+} from "./components/ProjectNavigation";
 import ProjectPage from "./pages/Project";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    id: "root",
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
@@ -54,9 +57,11 @@ const router = createBrowserRouter([
       {
         path: "/projects/:projectId",
         element: <ProjectNavigation />,
+        loader: projectLoader,
+        id: "project",
         children: [
           {
-            index: true,
+            path: "details",
             element: <ProjectPage />,
           },
         ],

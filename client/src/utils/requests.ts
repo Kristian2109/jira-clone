@@ -1,10 +1,11 @@
-import {
-  CREATE_PROJECT_URL,
-  USER_ISSUES_URL,
-  USER_PROJECTS_URL,
-} from "../constants";
+import { PROJECTS_URL, USER_ISSUES_URL, USER_PROJECTS_URL } from "../constants";
 import { HTMLFormMethod } from "../types/forms";
-import { CreateProject, Issue, ProjectType } from "../types/project";
+import {
+  CreateProject,
+  Issue,
+  ProjectType,
+  ProjectWithMembers,
+} from "../types/project";
 import { getToken } from "./auth";
 
 async function authenticatedRequest<ReturnType>(
@@ -63,8 +64,15 @@ export async function fetchUserIssues() {
   return issuesResponse.issues;
 }
 
+export async function fetchProject(projectId: number) {
+  const fetchProjectUrl = `${PROJECTS_URL}/${projectId}`;
+  const projectResponse = (await authenticatedRequest(fetchProjectUrl)) as any;
+
+  return projectResponse.project as ProjectWithMembers;
+}
+
 export const createProject = async (project: CreateProject) => {
-  const response = (await authenticatedRequest(CREATE_PROJECT_URL, {
+  const response = (await authenticatedRequest(PROJECTS_URL, {
     method: "POST",
     body: JSON.stringify(project),
   })) as any;
