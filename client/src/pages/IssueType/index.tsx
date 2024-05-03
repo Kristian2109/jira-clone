@@ -18,6 +18,7 @@ const IssueTypePage = () => {
 export default IssueTypePage;
 
 export const issueTypeLoader = async ({ params }: { params: Params }) => {
+  console.log("loader");
   const issueTypeId = Number(params.issueTypeId);
   const projectId = Number(params.projectId);
 

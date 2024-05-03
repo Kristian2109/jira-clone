@@ -1,14 +1,24 @@
-import { Form } from "react-router-dom";
+import { FC, ReactNode, useEffect, useRef } from "react";
 
-export const Modal = (props: {
-  title: string;
-  buttonContent: string;
-  modalId: string;
+export const Modal: FC<{ children: ReactNode; title: string }> = ({
+  children,
+  title,
 }) => {
+  // const closeButtonRef = useRef<HTMLButtonElement>(null);
+  // const isOpenedOnce = useRef(false);
+
+  // useEffect(() => {
+  //   if (!isOpenedOnce.current) {
+  //     isOpenedOnce.current = true;
+  //   } else if (!isModalOpen) {
+  //     closeButtonRef.current!.click();
+  //   }
+  // }, [isModalOpen]);
+
   return (
     <div
-      className="modal fade w-100"
-      id={props.modalId}
+      className="modal fade"
+      id="staticBackdrop"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
       tabIndex={-1}
@@ -16,10 +26,10 @@ export const Modal = (props: {
       aria-hidden="true"
     >
       <div className="modal-dialog">
-        <div className="modal-content px-4">
+        <div className="modal-content">
           <div className="modal-header">
-            <h1 className="modal-title fs-3" id="staticBackdropLabel">
-              {props.title}
+            <h1 className="modal-title fs-5" id="staticBackdropLabel">
+              {title}
             </h1>
             <button
               type="button"
@@ -28,35 +38,7 @@ export const Modal = (props: {
               aria-label="Close"
             ></button>
           </div>
-          <Form>
-            <div className="modal-body">
-              <div className="form-floating mb-3">
-                <input
-                  name="email"
-                  type="email"
-                  className="form-control"
-                  id="floatingInput"
-                  placeholder="name@example.com"
-                />
-                <label htmlFor="floatingInput">Email address</label>
-              </div>
-              <div className="form-floating">
-                <input
-                  name="password"
-                  type="password"
-                  className="form-control"
-                  id="floatingPassword"
-                  placeholder="Password"
-                />
-                <label htmlFor="floatingPassword">Password</label>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="submit" className="btn btn-primary">
-                {props.buttonContent}
-              </button>
-            </div>
-          </Form>
+          {children}
         </div>
       </div>
     </div>

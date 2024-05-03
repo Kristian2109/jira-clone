@@ -13,6 +13,7 @@ const IssuesNavigation = () => {
     },
   ];
 
+  project.issueTypes.reverse();
   links.push(
     ...project.issueTypes.map((issueType) => {
       return {
@@ -24,9 +25,9 @@ const IssuesNavigation = () => {
 
   return (
     <SidebarLayout links={links}>
-      <div className="ps-3 mt-3">
+      <div className="ps-3 my-3">
         <Link
-          to={`/projects/${project.id}/create-issueType`}
+          to={`/projects/${project.id}/issueTypes/create`}
           className="btn btn-primary"
         >
           + Issue Type

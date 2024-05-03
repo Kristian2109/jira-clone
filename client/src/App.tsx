@@ -22,6 +22,9 @@ import ProjectNavigation, {
 import ProjectPage from "./pages/Project";
 import IssuesNavigation from "./components/Layout/IssuesNavigation";
 import IssueTypePage, { issueTypeLoader } from "./pages/IssueType";
+import CreateIssueTypePage, {
+  createIssueTypeAction,
+} from "./pages/CreateIssueType";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +81,11 @@ const router = createBrowserRouter([
             path: ":issueTypeId",
             element: <IssueTypePage />,
             loader: issueTypeLoader,
+          },
+          {
+            path: "create",
+            element: <CreateIssueTypePage />,
+            action: createIssueTypeAction,
           },
         ],
       },

@@ -21,6 +21,14 @@ export interface IssueTypeWithFields extends IssueType {
   issueFields: IssueField[];
 }
 
+export type IssueFieldDataType = "string" | "number" | "person";
+
+export type IssueFieldCreate = {
+  name: string;
+  description: string;
+  dataType: string;
+};
+
 export type ProjectMember = {
   user: UserFields;
   status: string;

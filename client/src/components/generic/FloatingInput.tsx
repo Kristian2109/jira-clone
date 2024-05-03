@@ -9,10 +9,7 @@ const FloatingInput: FC<{
   additionalInputClasses?: string;
   required?: boolean;
 }> = ({ columnSize, additionalInputClasses, name, ...props }) => {
-  const inputClasses = additionalInputClasses
-    ? additionalInputClasses
-    : "my-2 p-0 mx-2";
-
+  const inputClasses = `my-2 p-0 mx-2 ${additionalInputClasses ?? ""}`;
   return (
     <div className={`form-floating col col-${columnSize} ${inputClasses}`}>
       <input

@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData, useOutlet } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import { ProjectWithAllData } from "../../../types/project";
 import { FC, ReactNode } from "react";
 import NavbarLink from "./NavbarLink";
@@ -16,13 +16,16 @@ const SidebarLayout: FC<{
 
   return (
     <div className="d-flex mx-6 justify-content-between" id="sidebar-container">
-      <div className="border-end border-2 sidebar text-start">
+      <div
+        className="border-end border-2 sidebar text-start"
+        style={{ overflow: "auto" }}
+      >
         <div className="mt-3 mb-5 ps-3">
           <h5>{projectDisplayName}</h5>
         </div>
-        <ul className="navbar-nav flex-column">
+        <ul className="navbar-nav">
           {links.map((link) => {
-            return <NavbarLink to={link.to} text={link.text} />;
+            return <NavbarLink key={link.to} to={link.to} text={link.text} />;
           })}
         </ul>
         {children}

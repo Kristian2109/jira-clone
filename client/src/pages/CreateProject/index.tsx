@@ -56,6 +56,6 @@ export const createProjectAction = async (args: {
     formData.entries()
   ) as CreateProject;
 
-  createProject(projectToCreate);
-  return redirect("/your-work");
+  const projectId = await createProject(projectToCreate);
+  return redirect(`/projects/${projectId}/details`);
 };

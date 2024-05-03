@@ -81,6 +81,19 @@ export const createProject = async (project: CreateProject) => {
   return response.project.id;
 };
 
+export const createIssueType = async (
+  issueType: { name: string; description: string },
+  projectId: number
+) => {
+  const createIssueUrl = `${PROJECTS_URL}/${projectId}/issueTypes`;
+  const response = (await authenticatedRequest(createIssueUrl, {
+    method: "POST",
+    body: JSON.stringify(issueType),
+  })) as any;
+
+  return response.newIssueType?.id;
+};
+
 export const fetchIssueType = async (
   issueTypeId: number,
   projectId: number

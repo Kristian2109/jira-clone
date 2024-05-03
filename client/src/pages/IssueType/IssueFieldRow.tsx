@@ -1,7 +1,9 @@
 import { FC } from "react";
-import { IssueField } from "../../types/project";
+import { IssueField, IssueFieldCreate } from "../../types/project";
 
-const IssueFieldRow: FC<{ issueField: IssueField }> = ({ issueField }) => {
+const IssueFieldRow: FC<{ issueField: IssueField | IssueFieldCreate }> = ({
+  issueField,
+}) => {
   return (
     <tr>
       <td>{issueField.name}</td>
