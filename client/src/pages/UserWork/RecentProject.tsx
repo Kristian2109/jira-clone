@@ -2,8 +2,8 @@ import { FC } from "react";
 import { ProjectType } from "../../types/project";
 
 const RecentProject: FC<{ project: ProjectType }> = ({ project }) => {
-  let formattedDescription = project.description.slice(0, 50);
-  if (project.description.length > 50) {
+  let formattedDescription = project.description.slice(0, 30);
+  if (project.description.length > 30) {
     formattedDescription += "...";
   }
 

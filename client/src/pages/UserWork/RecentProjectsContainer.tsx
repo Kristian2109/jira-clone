@@ -30,7 +30,7 @@ const RecentProjectsContainer: FC = () => {
               projects.length === 0 ? (
                 <p>You don't have projects</p>
               ) : (
-                projects.map((project: ProjectType) => {
+                projects.slice(0, 5).map((project: ProjectType) => {
                   return <RecentProject key={project.id} project={project} />;
                 })
               )
