@@ -1,7 +1,7 @@
 import { Params, useLoaderData } from "react-router";
 import { fetchProject } from "../../utils/requests";
 import { ProjectWithAllData } from "../../types/project";
-import SidebarLayout from "../Layout/ProjectLayout/Sidebar";
+import SidebarLayout from "./ProjectSidebarLayout/Sidebar";
 
 const ProjectNavigation = () => {
   const project = useLoaderData() as ProjectWithAllData;

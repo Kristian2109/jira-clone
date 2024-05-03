@@ -10,3 +10,7 @@
 .sidebar-active {
   background-color: #ccf7ff;
 }
+
+.nav-link:hover {
+  background-color: #99ffff;
+}
