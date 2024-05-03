@@ -3,6 +3,7 @@ import { HTMLFormMethod } from "../types/forms";
 import {
   CreateProject,
   Issue,
+  IssueTypeWithFields,
   ProjectType,
   ProjectWithAllData,
 } from "../types/project";
@@ -78,4 +79,15 @@ export const createProject = async (project: CreateProject) => {
   })) as any;
 
   return response.project.id;
+};
+
+export const fetchIssueType = async (
+  issueTypeId: number,
+  projectId: number
+) => {
+  const issueTypeUrl = `${PROJECTS_URL}/${projectId}/issueTypes/${issueTypeId}`;
+
+  const issueTypeResponse = (await authenticatedRequest(issueTypeUrl)) as any;
+
+  return issueTypeResponse?.issueType as IssueTypeWithFields;
 };

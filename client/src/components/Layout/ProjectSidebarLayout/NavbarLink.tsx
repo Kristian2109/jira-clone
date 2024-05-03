@@ -7,7 +7,9 @@ const NavbarLink: FC<{ to: string; text: string }> = ({ text, to }) => {
       <NavLink
         className={(props: { isActive: boolean }) => {
           return `nav-link ps-3 ${
-            props.isActive ? "fw-semibold sidebar-active" : "fw-normal"
+            props.isActive
+              ? "fw-semibold sidebar-active"
+              : "fw-normal hover-link"
           }`;
         }}
         to={to}

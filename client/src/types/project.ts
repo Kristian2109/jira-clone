@@ -8,6 +8,19 @@ export interface ProjectType {
   key: string;
 }
 
+export type IssueField = {
+  name: string;
+  description: string;
+  orderNumber: number;
+  dataType: string;
+  id: number;
+  createdAtc: string;
+};
+
+export interface IssueTypeWithFields extends IssueType {
+  issueFields: IssueField[];
+}
+
 export type ProjectMember = {
   user: UserFields;
   status: string;
@@ -36,10 +49,10 @@ export type Issue = {
   issueType: IssueType;
 };
 
-export type IssueType = {
+export interface IssueType {
   id: number;
   createdAt: string;
   name: string;
   description: string;
   project: ProjectType;
-};
+}

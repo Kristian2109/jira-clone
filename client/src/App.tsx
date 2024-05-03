@@ -21,7 +21,7 @@ import ProjectNavigation, {
 } from "./components/Layout/ProjectNavigation";
 import ProjectPage from "./pages/Project";
 import IssuesNavigation from "./components/Layout/IssuesNavigation";
-import IssueTypePage from "./pages/IssueType";
+import IssueTypePage, { issueTypeLoader } from "./pages/IssueType";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +77,7 @@ const router = createBrowserRouter([
           {
             path: ":issueTypeId",
             element: <IssueTypePage />,
+            loader: issueTypeLoader,
           },
         ],
       },
