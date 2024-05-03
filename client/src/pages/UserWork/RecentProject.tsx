@@ -12,7 +12,7 @@ const RecentProject: FC<{ project: ProjectType }> = ({ project }) => {
     <Link
       className="card shadow-sm mx-2"
       style={{ width: "10rem" }}
-      to={`/projects/${project.id}`}
+      to={`/projects/${project.id}/details`}
     >
       <div className="card-body">
         <h5 className="card-title fs-6" style={{ fontSize: "0.9rem" }}>

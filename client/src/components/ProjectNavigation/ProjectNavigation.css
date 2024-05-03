@@ -6,3 +6,7 @@
   width: 12rem;
   height: 100%;
 }
+
+.sidebar-active {
+  background-color: #ccf7ff;
+}

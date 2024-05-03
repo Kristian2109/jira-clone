@@ -1,9 +1,14 @@
-import { useRouteLoaderData } from "react-router";
-import { ProjectWithMembers } from "../../types/project";
+import ProjectDetails from "./ProjectDetails";
+import ProjectMembersContainer from "./ProjectMembersContainer";
+import "./index.css";
 
 const ProjectPage = () => {
-  const project = useRouteLoaderData("project") as ProjectWithMembers;
-  return <div className="mt-3">Project Page - {project.name}</div>;
+  return (
+    <div className="mt-3 text-start">
+      <ProjectDetails />
+      <ProjectMembersContainer />
+    </div>
+  );
 };
 
 export default ProjectPage;

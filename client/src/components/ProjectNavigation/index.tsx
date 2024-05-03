@@ -14,7 +14,7 @@ const ProjectNavigation = () => {
   return (
     <div className="d-flex mx-6 justify-content-between" id="sidebar-container">
       <div className="border-end border-2 sidebar text-start">
-        <div className="mt-2 mb-4 ps-3">
+        <div className="mt-2 mb-5 ps-3">
           <h5>{projectDisplayName}</h5>
         </div>
         <ul className="navbar-nav flex-column">
