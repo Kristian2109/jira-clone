@@ -1,20 +1,9 @@
-import { FC, ReactNode, useEffect, useRef } from "react";
+import { FC, ReactNode } from "react";
 
 export const Modal: FC<{ children: ReactNode; title: string }> = ({
   children,
   title,
 }) => {
-  // const closeButtonRef = useRef<HTMLButtonElement>(null);
-  // const isOpenedOnce = useRef(false);
-
-  // useEffect(() => {
-  //   if (!isOpenedOnce.current) {
-  //     isOpenedOnce.current = true;
-  //   } else if (!isModalOpen) {
-  //     closeButtonRef.current!.click();
-  //   }
-  // }, [isModalOpen]);
-
   return (
     <div
       className="modal fade"

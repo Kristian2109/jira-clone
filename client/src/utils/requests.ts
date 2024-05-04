@@ -66,6 +66,15 @@ export async function fetchUserIssues() {
   return issuesResponse.issues;
 }
 
+export async function fetchProjectIssues(projectId: number) {
+  const projectIssuesUrl = `${PROJECTS_URL}/${projectId}/issues`;
+  const projectIssuesResponse = (await authenticatedRequest(
+    projectIssuesUrl
+  )) as any;
+
+  return projectIssuesResponse.issues as Issue;
+}
+
 export async function fetchProject(projectId: number) {
   const fetchProjectUrl = `${PROJECTS_URL}/${projectId}`;
   const projectResponse = (await authenticatedRequest(fetchProjectUrl)) as any;
