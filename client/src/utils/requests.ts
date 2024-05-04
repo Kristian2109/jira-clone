@@ -1,5 +1,6 @@
 import { PROJECTS_URL, USER_ISSUES_URL, USER_PROJECTS_URL } from "../constants";
 import { HTMLFormMethod } from "../types/forms";
+import { IssueCreate } from "../types/issues";
 import {
   CreateProject,
   Issue,
@@ -131,4 +132,15 @@ export const createIssueField = async (
   )) as any;
 
   return createdIssueResponse;
+};
+
+export const createIssue = async (issue: IssueCreate, projectId: number) => {
+  const issueCreateUrl = `${PROJECTS_URL}/${projectId}/issues`;
+  console.log(issue);
+  const createdIssueResponse = (await authenticatedRequest(issueCreateUrl, {
+    method: "POST",
+    body: JSON.stringify(issue),
+  })) as any;
+
+  return createdIssueResponse.createdIssue.id as number;
 };

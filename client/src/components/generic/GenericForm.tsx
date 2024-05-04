@@ -7,10 +7,11 @@ const GenericForm: FC<{
   action: string;
   method: HTMLFormMethod;
   id: string;
-}> = ({ children, ...props }) => {
+  additionalClasses?: string;
+}> = ({ children, additionalClasses = "", ...props }) => {
   return (
     <Form
-      className="row container mx-auto w-75 my-4 justify-content-center px-4"
+      className={`row container mx-auto w-75 my-4 justify-content-center px-4 ${additionalClasses}`}
       {...props}
     >
       {children}

@@ -1,6 +1,6 @@
 import { FC, useRef } from "react";
 import { Modal } from "../../components/generic/Modal";
-import NormalInput from "../../components/generic/NormalInput";
+import NormalInputWithRef from "../../components/generic/NormalInputWithRef";
 import NormalTextarea from "../../components/generic/NormalTextarea";
 import { IssueFieldCreate } from "../../types/project";
 
@@ -35,7 +35,7 @@ const AddIssueFieldModal: FC<{
     <Modal title="Add Issue Field">
       <div className="modal-body">
         <form className="px-4" ref={formRef}>
-          <NormalInput
+          <NormalInputWithRef
             label="Field Name"
             inputId="name"
             type="text"
@@ -62,7 +62,7 @@ const AddIssueFieldModal: FC<{
               <option value="person">person</option>
             </select>
           </div>
-          <NormalInput
+          <NormalInputWithRef
             label="Order in the Issue"
             inputId="orderNumber"
             type="number"

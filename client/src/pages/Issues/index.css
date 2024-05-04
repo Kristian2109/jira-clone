@@ -1,3 +1,8 @@
 .create-issue-button {
   margin: 0.5rem 0;
 }
+
+.scrollable-issues {
+  overflow-y: auto;
+  max-height: 70wh;
+}

@@ -1,13 +1,14 @@
-import { FC } from "react";
+import { FC, ForwardedRef, forwardRef } from "react";
 
 const cssLabelStyles = { fontSize: "0.9rem" };
 
-const NormalInput: FC<{
+const NormalInputWithRef: FC<{
   inputId: string;
   label: string;
   type: string;
   disabled?: boolean;
-}> = (props) => {
+  ref: ForwardedRef<HTMLInputElement>;
+}> = forwardRef((props, ref: ForwardedRef<HTMLInputElement>) => {
   return (
     <div className="mb-3">
       <label
@@ -23,9 +24,10 @@ const NormalInput: FC<{
         id={props.inputId}
         disabled={props.disabled}
         name={props.inputId}
+        ref={ref}
       />
     </div>
   );
-};
+});
 
-export default NormalInput;
+export default NormalInputWithRef;
