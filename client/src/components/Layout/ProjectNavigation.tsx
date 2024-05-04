@@ -17,13 +17,11 @@ const ProjectNavigation = () => {
       text: "Board",
     },
     {
-      to: `/projects/${project.id}/issueTypes/${
-        firstProjectIssue ? firstProjectIssue.id : ""
-      }`,
+      to: `issueTypes/${firstProjectIssue ? firstProjectIssue.id : ""}`,
       text: "Issue Types",
     },
     {
-      to: `/project/${project.id}/issues`,
+      to: `issues`,
       text: "Issues",
     },
   ];
