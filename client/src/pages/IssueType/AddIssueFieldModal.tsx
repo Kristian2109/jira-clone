@@ -14,6 +14,7 @@ const AddIssueFieldModal: FC<{
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const typeRef = useRef<HTMLSelectElement>(null);
+  const orderRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const resetForm = () => {
@@ -25,6 +26,7 @@ const AddIssueFieldModal: FC<{
       name: nameRef.current!.value,
       description: descriptionRef.current!.value,
       dataType: typeRef.current!.value,
+      orderNumber: Number(orderRef.current!.value) ?? 100,
     });
     resetForm();
   };
@@ -44,7 +46,7 @@ const AddIssueFieldModal: FC<{
             inputId="description"
             ref={descriptionRef}
           />
-          <div>
+          <div className="my-2">
             <label className="fw-semibold" style={selectStyles}>
               Field Type
             </label>
@@ -60,6 +62,12 @@ const AddIssueFieldModal: FC<{
               <option value="person">person</option>
             </select>
           </div>
+          <NormalInput
+            label="Order in the Issue"
+            inputId="orderNumber"
+            type="number"
+            ref={orderRef}
+          />
         </form>
       </div>
       <div className="modal-footer">

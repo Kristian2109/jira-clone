@@ -3,39 +3,47 @@ import { IssueField, IssueFieldCreate } from "../../types/project";
 import IssueFieldRow from "./IssueFieldRow";
 import AddIssueFieldModal from "./AddIssueFieldModal";
 
-const IssueFieldsTable: FC<{ issueFields: IssueField[] }> = ({
-  issueFields,
-}) => {
+const IssueFieldsTable: FC<{
+  issueFields: IssueField[];
+  onSaveFields: (fields: IssueFieldCreate[]) => void;
+}> = ({ issueFields, onSaveFields }) => {
   const [newIssueFields, setNewIssueFields] = useState<IssueFieldCreate[]>([]);
 
   const handleAddIssueField = (issueField: IssueFieldCreate) => {
     setNewIssueFields((prev) => [...prev, issueField]);
   };
 
+  const handleSaveFields = () => {
+    onSaveFields(newIssueFields);
+    setNewIssueFields([]);
+  };
+
   const table = (
-    <table className="table" style={{ fontSize: "0.85rem" }}>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Data Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        {issueFields
-          .sort((a, b) => a.orderNumber - b.orderNumber)
-          .map((issueField: IssueField) => {
+    <div className="scrollable">
+      <table className="table" style={{ fontSize: "0.85rem" }}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Data Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {issueFields
+            .sort((a, b) => a.orderNumber - b.orderNumber)
+            .map((issueField: IssueField) => {
+              return (
+                <IssueFieldRow key={issueField.id} issueField={issueField} />
+              );
+            })}
+          {newIssueFields.map((issueField: IssueFieldCreate) => {
             return (
-              <IssueFieldRow key={issueField.id} issueField={issueField} />
+              <IssueFieldRow key={issueField.name} issueField={issueField} />
             );
           })}
-        {newIssueFields.map((issueField: IssueFieldCreate) => {
-          return (
-            <IssueFieldRow key={issueField.name} issueField={issueField} />
-          );
-        })}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   );
 
   return (
@@ -56,7 +64,9 @@ const IssueFieldsTable: FC<{ issueFields: IssueField[] }> = ({
         >
           Add Field
         </button>
-        <button className="btn btn-secondary mx-2">Save</button>
+        <button className="btn btn-secondary mx-2" onClick={handleSaveFields}>
+          Save
+        </button>
       </div>
     </div>
   );

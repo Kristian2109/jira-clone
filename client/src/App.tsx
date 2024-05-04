@@ -60,7 +60,7 @@ const router = createBrowserRouter([
         action: createProjectAction,
       },
       {
-        path: "/projects/:projectId/details",
+        path: "/projects/:projectId",
         element: <ProjectNavigation />,
         loader: projectLoader,
         id: "project",
@@ -68,6 +68,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <ProjectPage />,
+            path: "details",
           },
         ],
       },

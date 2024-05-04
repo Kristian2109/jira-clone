@@ -6,6 +6,7 @@ import {
   IssueTypeWithFields,
   ProjectType,
   ProjectWithAllData,
+  IssueFieldCreate,
 } from "../types/project";
 import { getToken } from "./auth";
 
@@ -103,4 +104,22 @@ export const fetchIssueType = async (
   const issueTypeResponse = (await authenticatedRequest(issueTypeUrl)) as any;
 
   return issueTypeResponse?.issueType as IssueTypeWithFields;
+};
+
+export const createIssueField = async (
+  issueTypeId: number,
+  projectId: number,
+  issueField: IssueFieldCreate
+) => {
+  const issueFieldCreateUrl = `${PROJECTS_URL}/${projectId}/issueTypes/${issueTypeId}/fields`;
+
+  const createdIssueResponse = (await authenticatedRequest(
+    issueFieldCreateUrl,
+    {
+      method: "POST",
+      body: JSON.stringify(issueField),
+    }
+  )) as any;
+
+  return createdIssueResponse;
 };

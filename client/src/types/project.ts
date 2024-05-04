@@ -27,6 +27,7 @@ export type IssueFieldCreate = {
   name: string;
   description: string;
   dataType: string;
+  orderNumber: number;
 };
 
 export type ProjectMember = {

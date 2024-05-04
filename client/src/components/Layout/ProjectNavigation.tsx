@@ -9,7 +9,7 @@ const ProjectNavigation = () => {
 
   const links = [
     {
-      to: ".",
+      to: "details",
       text: "Details",
     },
     {
