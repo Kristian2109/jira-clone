@@ -69,7 +69,7 @@ class ProjectController {
   @httpGet("/:projectId/board")
   public async getProjectBoard(req: AuthenticatedRequest, res: Response) {
     const projectId = Number(req.params.projectId);
-    const board = await this._boardManager.getBoard({ projectId });
+    const board = await this._boardManager.getFullBoard({ projectId });
     return res.status(200).json({ data: { board } });
   }
 
