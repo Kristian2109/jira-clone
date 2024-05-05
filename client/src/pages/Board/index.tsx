@@ -6,12 +6,14 @@ import {
   getProjectIdFromParams,
 } from "../../utils/requests";
 import "./index.css";
+import CreateColumnModal from "./CreateColumnModal";
 
 const BoardPage = () => {
   return (
     <div className="text-start m-3">
       <BoardHeader />
       <BoardContainer />
+      <CreateColumnModal />
     </div>
   );
 };

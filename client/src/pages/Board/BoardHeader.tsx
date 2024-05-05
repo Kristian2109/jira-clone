@@ -1,7 +1,6 @@
 import { useLoaderData } from "react-router";
 import { Board } from "../../types/board";
 import { Link } from "react-router-dom";
-import PrimaryButton from "../../components/generic/PrimaryButton";
 
 const BoardHeader = () => {
   const board = useLoaderData() as Board;
@@ -11,7 +10,14 @@ const BoardHeader = () => {
       <h5>{board.name}</h5>
       <p>{board.description}</p>
       <div className="my-2 d-flex justify-content-end">
-        <PrimaryButton>Create Column</PrimaryButton>
+        <button
+          type="button"
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Add Column
+        </button>
         <Link className="btn btn-secondary mx-2" to="../create-issue">
           Create Issue
         </Link>
