@@ -3,6 +3,7 @@ import BoardContainer from "./BoardContainer";
 import BoardHeader from "./BoardHeader";
 import {
   createBoardColumn,
+  deleteBoardColumn,
   fetchProjectBoard,
   getProjectIdFromParams,
 } from "../../utils/requests";
@@ -24,8 +25,7 @@ export default BoardPage;
 export const boardLoader = async ({ params }: { params: Params }) => {
   const projectId = getProjectIdFromParams({ params: params });
 
-  const board = await fetchProjectBoard(projectId);
-  return board;
+  return await fetchProjectBoard(projectId);
 };
 
 export const boardAction = async ({
@@ -37,12 +37,17 @@ export const boardAction = async ({
 }) => {
   const projectId = getProjectIdFromParams({ params: params });
   const formData = await request.formData();
-  const board = {
-    name: formData.get("name")?.toString() ?? "No Name",
-    description: formData.get("description")?.toString() ?? "No description",
-    orderNumber: Number(formData.get("orderNumber")),
-  };
+  if (request.method === "POST") {
+    const board = {
+      name: formData.get("name")?.toString() ?? "No Name",
+      description: formData.get("description")?.toString() ?? "No description",
+      orderNumber: Number(formData.get("orderNumber")),
+    };
 
-  await createBoardColumn(projectId, board);
+    await createBoardColumn(projectId, board);
+  } else if (request.method === "DELETE") {
+    const boardId = Number(formData.get("columnId"));
+    await deleteBoardColumn({ projectId, boardId });
+  }
   return redirect(".");
 };

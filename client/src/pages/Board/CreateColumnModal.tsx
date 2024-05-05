@@ -14,11 +14,12 @@ const CreateColumnModal = () => {
           label="Order in the Board"
           type="number"
         />
-        <div className="modal-footer">
+        <div className="text-end">
           <PrimaryButton data-bs-dismiss="modal">+ Create</PrimaryButton>
           <PrimaryButton
             data-bs-dismiss="modal"
             additionalClasses="btn-secondary"
+            type="button"
           >
             Close
           </PrimaryButton>

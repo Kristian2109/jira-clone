@@ -41,9 +41,9 @@ async function authenticatedRequest<ReturnType>(
   return data?.data as ReturnType;
 }
 
-async function authenticatedCreateRequest<ReturnType>(
+async function authenticatedCreateRequest(
   url: string,
-  config?: { method: HTMLFormMethod; body: string }
+  config?: { method: HTMLFormMethod; body?: string }
 ) {
   const token = getToken();
 
@@ -197,6 +197,20 @@ export const createBoardColumn = async (
   await authenticatedCreateRequest(boardUrl, {
     method: "POST",
     body: JSON.stringify(column),
+  });
+};
+
+export const deleteBoardColumn = async ({
+  projectId,
+  boardId,
+}: {
+  projectId: number;
+  boardId: number;
+}) => {
+  const boardURL = `${PROJECTS_URL}/${projectId}/board/columns/${boardId}`;
+
+  await authenticatedCreateRequest(boardURL, {
+    method: "DELETE",
   });
 };
 
