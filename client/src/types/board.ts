@@ -3,11 +3,14 @@ import { Issue } from "./project";
 
 export interface BoardColumn extends NamedObject {
   orderNumber: number;
+}
+
+export interface BoardColumnWithIssues extends BoardColumn {
   issues: Issue[];
 }
 
 export interface Board extends NamedObject {
-  boardColumns: BoardColumn[];
+  boardColumns: BoardColumnWithIssues[];
 }
 
 export interface BoardColumnCreate {

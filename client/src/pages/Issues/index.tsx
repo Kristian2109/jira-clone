@@ -9,6 +9,8 @@ const IssuesPage = () => {
   const issues = useLoaderData() as Issue[];
   const project = useRouteLoaderData("project") as ProjectType;
 
+  const backlogIssues = issues.filter((issue) => issue.boardColumn);
+
   return (
     <div className="m-3 text-start">
       <div className="d-flex justify-content-between mb-3">
@@ -32,7 +34,7 @@ const IssuesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {issues.map((issue: Issue) => {
+            {backlogIssues.map((issue: Issue) => {
               return <ProjectIssueRow key={issue.id} issue={issue} />;
             })}
           </tbody>

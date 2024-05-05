@@ -7,21 +7,25 @@ import { BorderColumnCreate, NameAndDescription } from "../types/project";
 import BoardRepository from "../repositories/boardRepository";
 import BoardColumnMapper from "../mappers/boardMapper";
 import OrderNumberManager from "./orderManager";
+import IssueRepository from "../repositories/issueReposiotry";
 
 @injectable()
 export default class BoardManager {
   protected _projectCustomRepository: ProjectRepository;
   protected _boardRepository: BoardRepository;
   protected _orderNumberManager: OrderNumberManager<BoardColumn>;
+  protected _issueCustomRepository: IssueRepository;
 
   constructor(
     projectRepository: ProjectRepository,
     boardRepository: BoardRepository,
-    orderNumberManager: OrderNumberManager<BoardColumn>
+    orderNumberManager: OrderNumberManager<BoardColumn>,
+    issueCustomRepository: IssueRepository
   ) {
     this._projectCustomRepository = projectRepository;
     this._boardRepository = boardRepository;
     this._orderNumberManager = orderNumberManager;
+    this._issueCustomRepository = issueCustomRepository;
   }
 
   public async createBoard(params: {
@@ -99,7 +103,17 @@ export default class BoardManager {
       board.boardColumns,
       columnToDeleteIndex
     );
-    this._projectCustomRepository.save(project);
+    const issues = await this._issueCustomRepository.findIssuesByBoard(
+      projectId,
+      columnId
+    );
+
+    for (let issue of issues) {
+      const updatedIssue =
+        await this._issueCustomRepository.setBoardIssueToNull(issue.id);
+    }
+    await this._projectCustomRepository.save(project);
+    this._boardRepository.deleteColumn(columnId);
   }
 
   private createInitialBoardColumns() {

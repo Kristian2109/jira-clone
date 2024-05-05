@@ -1,3 +1,4 @@
+import { BoardColumn, BoardColumnWithIssues } from "./board";
 import { UserFields } from "./forms";
 
 export interface ProjectType {
@@ -52,6 +53,7 @@ export interface Issue {
   key: string;
   isCompleted: boolean;
   issueType: IssueType;
+  boardColumn?: BoardColumn;
 }
 
 export interface IssueType {

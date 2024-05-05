@@ -3,12 +3,15 @@ import { Repository } from "typeorm";
 import Board from "../entities/project/board";
 import { AppDataSource } from "../config/datasource";
 import BadRequestError from "../exceptions/badRequestError";
+import BoardColumn from "../entities/project/boardColumn";
 
 @injectable()
 export default class BoardRepository {
   protected _nativeRepo: Repository<Board>;
+  protected _columnNativeRepo: Repository<BoardColumn>;
   constructor() {
     this._nativeRepo = AppDataSource.getRepository(Board);
+    this._columnNativeRepo = AppDataSource.getRepository(BoardColumn);
   }
 
   public async save(board: Board) {
@@ -28,5 +31,9 @@ export default class BoardRepository {
       });
     }
     return foundProject;
+  }
+
+  public async deleteColumn(columnId: number) {
+    await this._columnNativeRepo.delete({ id: columnId });
   }
 }

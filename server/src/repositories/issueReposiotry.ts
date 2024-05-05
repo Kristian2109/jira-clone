@@ -11,8 +11,20 @@ export default class IssueRepository {
     this._issueNativeRepo = AppDataSource.getRepository(Issue);
   }
 
-  public async save(issueType: Issue) {
-    return this._issueNativeRepo.save(issueType);
+  public async save(issue: Issue) {
+    return this._issueNativeRepo.save(issue);
+  }
+
+  public async saveMany(issues: Issue[]) {
+    return this._issueNativeRepo.save(issues);
+  }
+
+  public async setBoardIssueToNull(issueId: number) {
+    return this._issueNativeRepo
+      .createQueryBuilder()
+      .relation(Issue, "boardColumn")
+      .of(issueId) // you can use just post id as well
+      .set(null);
   }
 
   public async findIssueWithRelations(
@@ -47,6 +59,7 @@ export default class IssueRepository {
       "fields",
       "fields.issueField",
       "boardColumn",
+      "issueType",
     ]);
   }
 
@@ -98,6 +111,22 @@ export default class IssueRepository {
       skip: pagination.begin,
       take: pagination.end - pagination.begin,
       relations: ["issueType", "issueType.project"],
+    });
+  }
+
+  public async findIssuesByBoard(projectId: number, columnId: number) {
+    return this._issueNativeRepo.find({
+      where: {
+        boardColumn: {
+          id: columnId,
+        },
+        issueType: {
+          project: {
+            id: projectId,
+          },
+        },
+      },
+      relations: ["boardColumn", "issueType", "issueType.project"],
     });
   }
 }
