@@ -1,16 +1,17 @@
 import { Params } from "react-router";
-import Board from "./Board";
+import BoardContainer from "./BoardContainer";
 import BoardHeader from "./BoardHeader";
 import {
   fetchProjectBoard,
   getProjectIdFromParams,
 } from "../../utils/requests";
+import "./index.css";
 
 const BoardPage = () => {
   return (
     <div className="text-start m-3">
       <BoardHeader />
-      <Board />
+      <BoardContainer />
     </div>
   );
 };
