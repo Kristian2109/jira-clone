@@ -1,5 +1,10 @@
+import { useLoaderData } from "react-router";
+import { Board } from "../../types/board";
+
 const BoardHeader = () => {
-  return <h1>Header</h1>;
+  const board = useLoaderData() as Board;
+
+  return <h1>{board?.name}</h1>;
 };
 
 export default BoardHeader;

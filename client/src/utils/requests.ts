@@ -11,6 +11,8 @@ import {
 
 import { IssueTypeWithFields } from "../types/issues";
 import { getToken } from "./auth";
+import { Board } from "../types/board";
+import { Params } from "react-router";
 
 async function authenticatedRequest<ReturnType>(
   url: string,
@@ -152,4 +154,22 @@ export const fetchIssue = async (projectId: number, issueId: number) => {
   const foundIssueResponse = (await authenticatedRequest(findIssueUrl)) as any;
 
   return foundIssueResponse.issue as IssueWithFields;
+};
+
+export const fetchProjectBoard = async (projectId: number) => {
+  const boardUrl = `${PROJECTS_URL}/${projectId}/board`;
+
+  const foundBoardResponse = (await authenticatedRequest(boardUrl)) as any;
+
+  return foundBoardResponse.board as Board;
+};
+
+export const getProjectIdFromParams = ({ params }: { params: Params }) => {
+  const projectId = Number(params.projectId);
+
+  if (!projectId) {
+    throw new Error("Invalid project Id");
+  }
+
+  return projectId;
 };
