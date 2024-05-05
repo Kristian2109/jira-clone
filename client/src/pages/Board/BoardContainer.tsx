@@ -9,7 +9,7 @@ const BoardContainer = () => {
   );
 
   return (
-    <div className="d-flex" id="board-container">
+    <div id="board-container">
       {sortedColumns.map((column) => {
         return <BoardColumnContainer column={column} key={column.id} />;
       })}

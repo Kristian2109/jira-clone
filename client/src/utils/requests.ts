@@ -38,7 +38,31 @@ async function authenticatedRequest<ReturnType>(
   }
 
   const data = await response.json();
-  return data.data as ReturnType;
+  return data?.data as ReturnType;
+}
+
+async function authenticatedCreateRequest<ReturnType>(
+  url: string,
+  config?: { method: HTMLFormMethod; body: string }
+) {
+  const token = getToken();
+
+  const response = await fetch(url, {
+    ...config,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = (await response.json()).error;
+    if (error) {
+      throw new Error(error);
+    } else {
+      throw new Error("Error while loading data!");
+    }
+  }
 }
 
 export async function fetchUserProjects() {
@@ -170,7 +194,7 @@ export const createBoardColumn = async (
 ) => {
   const boardUrl = `${PROJECTS_URL}/${projectId}/board/columns`;
 
-  await authenticatedRequest(boardUrl, {
+  await authenticatedCreateRequest(boardUrl, {
     method: "POST",
     body: JSON.stringify(column),
   });
