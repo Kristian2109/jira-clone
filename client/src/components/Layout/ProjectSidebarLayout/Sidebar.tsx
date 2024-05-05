@@ -5,7 +5,7 @@ import NavbarLink from "./NavbarLink";
 import "./Sidebar.css";
 
 const SidebarLayout: FC<{
-  links: { text: string; to: string }[];
+  links: { text: string; to: string; isEnd: boolean }[];
   children?: ReactNode;
 }> = ({ links, children }) => {
   const projectWithMembers = useLoaderData() as ProjectWithAllData;
@@ -25,7 +25,14 @@ const SidebarLayout: FC<{
         </div>
         <ul className="navbar-nav">
           {links.map((link) => {
-            return <NavbarLink key={link.to} to={link.to} text={link.text} />;
+            return (
+              <NavbarLink
+                isEnd={link.isEnd}
+                key={link.to}
+                to={link.to}
+                text={link.text}
+              />
+            );
           })}
         </ul>
         {children}

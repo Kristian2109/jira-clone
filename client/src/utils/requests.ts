@@ -11,6 +11,8 @@ import {
 
 import { IssueTypeWithFields } from "../types/issues";
 import { getToken } from "./auth";
+import { Board, BoardColumnCreate } from "../types/board";
+import { Params } from "react-router";
 
 async function authenticatedRequest<ReturnType>(
   url: string,
@@ -36,7 +38,31 @@ async function authenticatedRequest<ReturnType>(
   }
 
   const data = await response.json();
-  return data.data as ReturnType;
+  return data?.data as ReturnType;
+}
+
+async function authenticatedCreateRequest(
+  url: string,
+  config?: { method: HTMLFormMethod; body?: string }
+) {
+  const token = getToken();
+
+  const response = await fetch(url, {
+    ...config,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = (await response.json()).error;
+    if (error) {
+      throw new Error(error);
+    } else {
+      throw new Error("Error while loading data!");
+    }
+  }
 }
 
 export async function fetchUserProjects() {
@@ -152,4 +178,48 @@ export const fetchIssue = async (projectId: number, issueId: number) => {
   const foundIssueResponse = (await authenticatedRequest(findIssueUrl)) as any;
 
   return foundIssueResponse.issue as IssueWithFields;
+};
+
+export const fetchProjectBoard = async (projectId: number) => {
+  const boardUrl = `${PROJECTS_URL}/${projectId}/board`;
+
+  const foundBoardResponse = (await authenticatedRequest(boardUrl)) as any;
+
+  return foundBoardResponse.board as Board;
+};
+
+export const createBoardColumn = async (
+  projectId: number,
+  column: BoardColumnCreate
+) => {
+  const boardUrl = `${PROJECTS_URL}/${projectId}/board/columns`;
+
+  await authenticatedCreateRequest(boardUrl, {
+    method: "POST",
+    body: JSON.stringify(column),
+  });
+};
+
+export const deleteBoardColumn = async ({
+  projectId,
+  boardId,
+}: {
+  projectId: number;
+  boardId: number;
+}) => {
+  const boardURL = `${PROJECTS_URL}/${projectId}/board/columns/${boardId}`;
+
+  await authenticatedCreateRequest(boardURL, {
+    method: "DELETE",
+  });
+};
+
+export const getProjectIdFromParams = ({ params }: { params: Params }) => {
+  const projectId = Number(params.projectId);
+
+  if (!projectId) {
+    throw new Error("Invalid project Id");
+  }
+
+  return projectId;
 };

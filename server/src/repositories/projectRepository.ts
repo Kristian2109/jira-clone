@@ -108,4 +108,20 @@ export default class ProjectRepository {
   public async deleteMembership(projectMember: ProjectMember) {
     this._memberRepo.remove(projectMember);
   }
+
+  public async findFullBoard(projectId: number) {
+    const project = await this._projectRepo.findOneOrFail({
+      where: {
+        id: projectId,
+      },
+      relations: [
+        "board",
+        "board.boardColumns",
+        "board.boardColumns.issues",
+        "board.boardColumns.issues.issueType",
+      ],
+    });
+
+    return project.board;
+  }
 }

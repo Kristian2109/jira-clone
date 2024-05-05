@@ -1,0 +1,42 @@
+.board-column {
+  width: 18vw;
+  background-color: #f6f5f2;
+}
+
+#board-container {
+  height: 70vh;
+  display: flex;
+  overflow-x: auto;
+  width: 73vw;
+}
+
+.column-issue {
+  background-color: white;
+}
+
+.column-issue:hover {
+  background-color: rgb(222, 222, 222);
+}
+
+.column-issue p {
+  margin: 0.25rem auto;
+}
+
+.scrollable-column {
+  height: 90%;
+  overflow-y: auto;
+}
+
+.issue-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.issue-type {
+  font-size: 0.8rem;
+}
+
+.issue-key {
+  font-size: 0.75rem;
+  color: rgb(65, 160, 255);
+}
