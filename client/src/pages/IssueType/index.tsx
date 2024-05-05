@@ -1,6 +1,7 @@
 import { Params, useLoaderData, useNavigate, useParams } from "react-router";
 import { createIssueField, fetchIssueType } from "../../utils/requests";
-import { IssueFieldCreate, IssueTypeWithFields } from "../../types/project";
+import { IssueFieldCreate } from "../../types/project";
+import { IssueTypeWithFields } from "../../types/issues";
 import IssueFieldsTable from "./IssueFieldsTable";
 import "./index.css";
 

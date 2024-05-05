@@ -14,12 +14,8 @@ export type IssueField = {
   orderNumber: number;
   dataType: string;
   id: number;
-  createdAtc: string;
+  createdAt: string;
 };
-
-export interface IssueTypeWithFields extends IssueType {
-  issueFields: IssueField[];
-}
 
 export type IssueFieldDataType = "string" | "number" | "person";
 
@@ -49,14 +45,14 @@ export type CreateProject = {
   key: string;
 };
 
-export type Issue = {
+export interface Issue {
   id: number;
   createdAt: string;
   summary: string;
   key: string;
   isCompleted: boolean;
   issueType: IssueType;
-};
+}
 
 export interface IssueType {
   id: number;

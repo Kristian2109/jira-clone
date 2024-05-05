@@ -10,6 +10,7 @@ const IssuesNavigation = () => {
     {
       to: `/projects/${project.id}/details`,
       text: "Back to Details",
+      isEnd: true,
     },
   ];
 
@@ -19,6 +20,7 @@ const IssuesNavigation = () => {
       return {
         to: `/projects/${project.id}/issueTypes/${issueType.id}`,
         text: issueType.name,
+        isEnd: true,
       };
     })
   );

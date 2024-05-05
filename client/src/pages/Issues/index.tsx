@@ -23,7 +23,7 @@ const IssuesPage = () => {
         </div>
       </div>
       <div className="scrollable-issues">
-        <table className="table table-hover" style={{ fontSize: "0.85rem" }}>
+        <table className="table" style={{ fontSize: "0.85rem" }}>
           <thead>
             <tr>
               <th>Key</th>

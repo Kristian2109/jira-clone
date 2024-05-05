@@ -27,6 +27,7 @@ import CreateIssueTypePage, {
 } from "./pages/CreateIssueType";
 import IssuesPage, { projectIssuesLoader } from "./pages/Issues";
 import CreateIssuePage, { createIssueAction } from "./pages/CreateIssue";
+import IssuePage, { issueLoader } from "./pages/Issue";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,11 @@ const router = createBrowserRouter([
             path: "create-issue",
             element: <CreateIssuePage />,
             action: createIssueAction,
+          },
+          {
+            path: "issues/:issueId",
+            element: <IssuePage />,
+            loader: issueLoader,
           },
         ],
       },

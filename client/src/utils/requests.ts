@@ -1,14 +1,15 @@
 import { PROJECTS_URL, USER_ISSUES_URL, USER_PROJECTS_URL } from "../constants";
 import { HTMLFormMethod } from "../types/forms";
-import { IssueCreate } from "../types/issues";
+import { IssueCreate, IssueWithFields } from "../types/issues";
 import {
   CreateProject,
   Issue,
-  IssueTypeWithFields,
   ProjectType,
   ProjectWithAllData,
   IssueFieldCreate,
 } from "../types/project";
+
+import { IssueTypeWithFields } from "../types/issues";
 import { getToken } from "./auth";
 
 async function authenticatedRequest<ReturnType>(
@@ -136,11 +137,19 @@ export const createIssueField = async (
 
 export const createIssue = async (issue: IssueCreate, projectId: number) => {
   const issueCreateUrl = `${PROJECTS_URL}/${projectId}/issues`;
-  console.log(issue);
+
   const createdIssueResponse = (await authenticatedRequest(issueCreateUrl, {
     method: "POST",
     body: JSON.stringify(issue),
   })) as any;
 
   return createdIssueResponse.createdIssue.id as number;
+};
+
+export const fetchIssue = async (projectId: number, issueId: number) => {
+  const findIssueUrl = `${PROJECTS_URL}/${projectId}/issues/${issueId}`;
+
+  const foundIssueResponse = (await authenticatedRequest(findIssueUrl)) as any;
+
+  return foundIssueResponse.issue as IssueWithFields;
 };

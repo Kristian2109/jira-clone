@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { AppDataSource } from "../config/datasource";
-import { FindOperator, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import Issue from "../entities/issue/issue";
 import { Id } from "../types/genericTypes";
 
@@ -44,7 +44,6 @@ export default class IssueRepository {
 
   public async findIssueWithFieldsAndColumn(projectId: Id, issueId: Id) {
     return this.findIssueWithRelations({ projectId, issueId }, [
-      "issueType",
       "fields",
       "fields.issueField",
       "boardColumn",
@@ -79,7 +78,7 @@ export default class IssueRepository {
         isCompleted:
           isCompleted != undefined ? Boolean(isCompleted.value) : false,
       },
-      relations: ["boardColumn"],
+      relations: ["boardColumn", "issueType"],
     });
   }
 

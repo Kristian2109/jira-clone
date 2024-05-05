@@ -11,18 +11,22 @@ const ProjectNavigation = () => {
     {
       to: "details",
       text: "Details",
+      isEnd: true,
     },
     {
       to: "board",
       text: "Board",
+      isEnd: true,
     },
     {
       to: `issueTypes/${firstProjectIssue ? firstProjectIssue.id : ""}`,
       text: "Issue Types",
+      isEnd: true,
     },
     {
       to: `issues`,
       text: "Issues",
+      isEnd: false,
     },
   ];
 

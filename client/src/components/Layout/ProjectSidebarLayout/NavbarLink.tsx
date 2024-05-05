@@ -1,7 +1,10 @@
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
 
-const NavbarLink: FC<{ to: string; text: string }> = ({ text, to }) => {
+const NavbarLink: FC<{ to: string; text: string; isEnd?: boolean }> = ({
+  text,
+  to,
+}) => {
   return (
     <li className="nav-item">
       <NavLink
