@@ -11,7 +11,7 @@ import {
 
 import { IssueTypeWithFields } from "../types/issues";
 import { getToken } from "./auth";
-import { Board } from "../types/board";
+import { Board, BoardColumnCreate } from "../types/board";
 import { Params } from "react-router";
 
 async function authenticatedRequest<ReturnType>(
@@ -162,6 +162,18 @@ export const fetchProjectBoard = async (projectId: number) => {
   const foundBoardResponse = (await authenticatedRequest(boardUrl)) as any;
 
   return foundBoardResponse.board as Board;
+};
+
+export const createBoardColumn = async (
+  projectId: number,
+  column: BoardColumnCreate
+) => {
+  const boardUrl = `${PROJECTS_URL}/${projectId}/board/columns`;
+
+  await authenticatedRequest(boardUrl, {
+    method: "POST",
+    body: JSON.stringify(column),
+  });
 };
 
 export const getProjectIdFromParams = ({ params }: { params: Params }) => {

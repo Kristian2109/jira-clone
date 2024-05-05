@@ -9,3 +9,9 @@ export interface BoardColumn extends NamedObject {
 export interface Board extends NamedObject {
   boardColumns: BoardColumn[];
 }
+
+export interface BoardColumnCreate {
+  name: string;
+  description: string;
+  orderNumber: number;
+}

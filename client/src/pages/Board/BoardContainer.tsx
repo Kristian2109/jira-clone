@@ -4,10 +4,13 @@ import BoardColumnContainer from "./BoardColumnContainer";
 
 const BoardContainer = () => {
   const board = useLoaderData() as Board;
+  const sortedColumns = board.boardColumns.sort(
+    (a, b) => a.orderNumber - b.orderNumber
+  );
 
   return (
     <div className="d-flex" id="board-container">
-      {board.boardColumns.map((column) => {
+      {sortedColumns.map((column) => {
         return <BoardColumnContainer column={column} key={column.id} />;
       })}
     </div>

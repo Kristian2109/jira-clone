@@ -14,16 +14,16 @@ const CreateColumnModal = () => {
           label="Order in the Board"
           type="number"
         />
+        <div className="modal-footer">
+          <PrimaryButton data-bs-dismiss="modal">+ Create</PrimaryButton>
+          <PrimaryButton
+            data-bs-dismiss="modal"
+            additionalClasses="btn-secondary"
+          >
+            Close
+          </PrimaryButton>
+        </div>
       </GenericForm>
-      <div className="modal-footer">
-        <PrimaryButton data-bs-dismiss="modal">+ Create</PrimaryButton>
-        <PrimaryButton
-          data-bs-dismiss="modal"
-          additionalClasses="btn-secondary"
-        >
-          Close
-        </PrimaryButton>
-      </div>
     </Modal>
   );
 };
