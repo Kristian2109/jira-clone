@@ -248,3 +248,12 @@ export const createBoard = async (
     body: JSON.stringify(board),
   });
 };
+
+export const addMember = async (projectId: number, userEmail: string) => {
+  const addMemberUrl = `${PROJECTS_URL}/${projectId}/members`;
+
+  await authenticatedCreateRequest(addMemberUrl, {
+    method: "POST",
+    body: JSON.stringify({ userEmail }),
+  });
+};

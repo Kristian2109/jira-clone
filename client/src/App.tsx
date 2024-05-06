@@ -19,7 +19,7 @@ import CreateProjectPage, { createProjectAction } from "./pages/CreateProject";
 import ProjectNavigation, {
   projectLoader,
 } from "./components/Layout/ProjectNavigation";
-import ProjectPage from "./pages/Project";
+import ProjectPage, { projectAction } from "./pages/Project";
 import IssuesNavigation from "./components/Layout/IssuesNavigation";
 import IssueTypePage, { issueTypeLoader } from "./pages/IssueType";
 import CreateIssueTypePage, {
@@ -73,6 +73,7 @@ const router = createBrowserRouter([
             index: true,
             element: <ProjectPage />,
             path: "details",
+            action: projectAction,
           },
           {
             path: "issues",
