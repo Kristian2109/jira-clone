@@ -11,9 +11,11 @@ import {
   getProjectIdFromParams,
 } from "../../utils/requests";
 import { Issue, ProjectWithAllData } from "../../types/project";
-import ProjectIssueRow from "./ProjectIssueRow";
 import { Link } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
+import SelectFilter from "./SelectFilter";
+import IssuesTable from "./IssuesTable";
+import { IssuesHeader } from "./IssuesHeader";
 
 const IssuesPage = () => {
   const issues = useLoaderData() as Issue[];
@@ -44,7 +46,6 @@ const IssuesPage = () => {
   const handleChangeFilter = (event: ChangeEvent<HTMLSelectElement>) => {
     const key = event.target.name;
     const value = Number(event.target.value);
-    console.log(key, value);
     setFilters((prev) => {
       return { ...prev, [key]: value };
     });
@@ -52,75 +53,26 @@ const IssuesPage = () => {
 
   return (
     <div className="m-3 text-start">
-      <div className="d-flex justify-content-between mb-3">
-        <h3>Project Issues</h3>
-        <div>
-          <Link
-            className="btn btn-primary"
-            to={`/projects/${project.id}/create-issue`}
-          >
-            Create Issue
-          </Link>
-        </div>
-      </div>
+      <IssuesHeader projectId={project.id} />
       <div className="d-flex justify-content-between mb-2">
         <h5>Board Issues</h5>
         <div id="issue-filters" className="row">
-          <div className="col-auto small-font">
-            <label htmlFor="select-board-column">Board Column</label>
-            <select
-              className="form-select select-issue-type"
-              name="boardColumnId"
-              onChange={handleChangeFilter}
-              id="select-board-column"
-            >
-              <option value={0}>No Filter</option>
-              <option value={-1}>Not Assigned</option>
-              {boardColumnsToSelect.map((column) => {
-                return (
-                  <option key={column.id} value={column.id}>
-                    {column.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div className="col-auto small-font">
-            <label htmlFor="select-board-column">Issue Type</label>
-            <select
-              className="form-select select-issue-type"
-              name="issueTypeId"
-              onChange={handleChangeFilter}
-            >
-              <option value={0}>No Filter</option>
-              {issueTypesToSelect.map((issueType) => {
-                return (
-                  <option key={issueType.id} value={issueType.id}>
-                    {issueType.name}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          <SelectFilter
+            onChangeFilter={handleChangeFilter}
+            columns={boardColumnsToSelect}
+            name="boardColumnId"
+            label="Board Column"
+            additionalFilterOptions={[{ value: -1, text: "Not Assigned" }]}
+          />
+          <SelectFilter
+            onChangeFilter={handleChangeFilter}
+            columns={issueTypesToSelect}
+            name="issueTypeId"
+            label="Issue Type"
+          />
         </div>
       </div>
-      <div className="scrollable-issues pe-2">
-        <table className="table" style={{ fontSize: "0.85rem" }}>
-          <thead>
-            <tr>
-              <th>Key</th>
-              <th>Summary</th>
-              <th>Type</th>
-              <th>Board Column</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredIssues.map((issue: Issue) => {
-              return <ProjectIssueRow key={issue.id} issue={issue} />;
-            })}
-          </tbody>
-        </table>
-      </div>
+      <IssuesTable issues={filteredIssues} />
     </div>
   );
 };
