@@ -85,7 +85,7 @@ export async function fetchUserProjects() {
 
 export async function fetchUserIssues() {
   const begin = 0;
-  const end = 5;
+  const end = 20;
   const issuesUrl = `${USER_ISSUES_URL}?begin=${begin}&end=${end}`;
 
   const issuesResponse = await authenticatedRequest<{ issues: Issue[] }>(

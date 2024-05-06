@@ -1,0 +1,5 @@
+#projects-container {
+  width: 73vw;
+  overflow-y: auto;
+  height: 50vh;
+}

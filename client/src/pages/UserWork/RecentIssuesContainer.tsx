@@ -3,6 +3,7 @@ import { WorkPageLoaderType } from ".";
 import { Suspense } from "react";
 import { Issue } from "../../types/project";
 import RecentIssuesTable from "./RecentIssuesTable";
+import "./index.css";
 
 const RecentTasksContainer = () => {
   const { userIssues } = useLoaderData() as WorkPageLoaderType;

@@ -11,7 +11,6 @@ import {
   getProjectIdFromParams,
 } from "../../utils/requests";
 import { Issue, ProjectWithAllData } from "../../types/project";
-import { Link } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 import SelectFilter from "./SelectFilter";
 import IssuesTable from "./IssuesTable";
