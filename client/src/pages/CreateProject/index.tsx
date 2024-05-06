@@ -2,8 +2,8 @@ import { redirect } from "react-router";
 import GenericForm from "../../components/generic/GenericForm";
 import FloatingInput from "../../components/generic/FloatingInput";
 import FloatingTextarea from "../../components/generic/FloatingTexarea";
-import { CreateProject } from "../../types/project";
-import { createProject } from "../../utils/requests";
+import { CreateProject, ProjectType } from "../../types/project";
+import { createBoard, createProject } from "../../utils/requests";
 
 const CreateProjectPage = () => {
   return (
@@ -56,6 +56,10 @@ export const createProjectAction = async (args: {
     formData.entries()
   ) as CreateProject;
 
-  const projectId = await createProject(projectToCreate);
-  return redirect(`/projects/${projectId}/details`);
+  const project = (await createProject(projectToCreate)) as ProjectType;
+  await createBoard(project.id, {
+    name: `Board of ${project.name}`,
+    description: "Description of " + project.name,
+  });
+  return redirect(`/projects/${project.id}/details`);
 };

@@ -116,7 +116,7 @@ export const createProject = async (project: CreateProject) => {
     body: JSON.stringify(project),
   })) as any;
 
-  return response.project.id;
+  return response.project;
 };
 
 export const createIssueType = async (
@@ -234,5 +234,17 @@ export const addIssueToBoard = async (params: {
   await authenticatedCreateRequest(updateIssueUrl, {
     method: "PATCH",
     body: JSON.stringify({ issueId: params.issueId }),
+  });
+};
+
+export const createBoard = async (
+  projectId: number,
+  board: { name: string; description: string }
+) => {
+  const createBoardUrl = `${PROJECTS_URL}/${projectId}/board`;
+
+  await authenticatedCreateRequest(createBoardUrl, {
+    method: "POST",
+    body: JSON.stringify(board),
   });
 };

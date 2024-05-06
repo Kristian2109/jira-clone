@@ -44,11 +44,11 @@ const CreateIssuePage = () => {
           <select
             onChange={handleSelectIssueType}
             className="form-select"
-            aria-label="Select Field Type"
-            defaultValue="string"
+            aria-label="Select Issue Type"
             name="issueType"
             ref={selectRef}
           >
+            <option defaultValue={0}>Select</option>
             {project.issueTypes.map((type) => {
               return (
                 <option key={type.id} value={type.id}>

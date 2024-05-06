@@ -1,4 +1,4 @@
-import { Params, redirect } from "react-router";
+import { Params, redirect, useLoaderData } from "react-router";
 import BoardContainer from "./BoardContainer";
 import BoardHeader from "./BoardHeader";
 import {
@@ -11,11 +11,19 @@ import "./index.css";
 import CreateColumnModal from "./CreateColumnModal";
 
 const BoardPage = () => {
+  const board = useLoaderData();
+
   return (
     <div className="text-start m-3">
-      <BoardHeader />
-      <BoardContainer />
-      <CreateColumnModal />
+      {board ? (
+        <>
+          <BoardHeader />
+          <BoardContainer />
+          <CreateColumnModal />
+        </>
+      ) : (
+        <h1>No Board for this project</h1>
+      )}
     </div>
   );
 };
