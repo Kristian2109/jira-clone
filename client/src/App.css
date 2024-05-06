@@ -41,3 +41,7 @@
   overflow-y: auto;
   max-height: 50vh;
 }
+
+.small-font {
+  font-size: 0.8rem;
+}

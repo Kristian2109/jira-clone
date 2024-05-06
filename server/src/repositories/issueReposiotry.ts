@@ -60,6 +60,8 @@ export default class IssueRepository {
       "fields.issueField",
       "boardColumn",
       "issueType",
+      "issueType.project",
+      "createdBy",
     ]);
   }
 

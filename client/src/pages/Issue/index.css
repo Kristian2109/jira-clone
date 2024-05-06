@@ -1,0 +1,26 @@
+.issue-page-key {
+  color: grey;
+}
+
+#fields-container {
+  overflow-y: auto;
+  height: 65vh;
+  width: 70wh;
+  background-color: rgb(244, 243, 243);
+  border-radius: 10px;
+}
+
+.issue-field {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.issue-field-data-type {
+  font-size: 0.8rem;
+}
+
+.issue-field input {
+  width: fit-content;
+  min-width: 35%;
+  max-width: 100%;
+}

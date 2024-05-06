@@ -1,5 +1,5 @@
 import { UserFields } from "./forms";
-import { Issue, IssueField, IssueType } from "./project";
+import { Issue, IssueField, IssueType, ProjectType } from "./project";
 
 export type FieldContentCreate = {
   content: string;
@@ -27,4 +27,5 @@ export interface IssueWithFields extends Issue {
   fields: IssueFieldContent[];
   issueType: IssueType;
   createdBy: UserFields;
+  project: ProjectType;
 }
