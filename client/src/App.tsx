@@ -25,7 +25,7 @@ import IssueTypePage, { issueTypeLoader } from "./pages/IssueType";
 import CreateIssueTypePage, {
   createIssueTypeAction,
 } from "./pages/CreateIssueType";
-import IssuesPage, { projectIssuesLoader } from "./pages/Issues";
+import IssuesPage, { issuesAction, projectIssuesLoader } from "./pages/Issues";
 import CreateIssuePage, { createIssueAction } from "./pages/CreateIssue";
 import IssuePage, { issueLoader } from "./pages/Issue";
 import BoardPage, { boardAction, boardLoader } from "./pages/Board";
@@ -81,6 +81,7 @@ const router = createBrowserRouter([
             shouldRevalidate: () => {
               return true;
             },
+            action: issuesAction,
           },
           {
             path: "create-issue",

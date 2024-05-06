@@ -100,7 +100,7 @@ export async function fetchProjectIssues(projectId: number) {
     projectIssuesUrl
   )) as any;
 
-  return projectIssuesResponse.issues as Issue;
+  return projectIssuesResponse.issues as Issue[];
 }
 
 export async function fetchProject(projectId: number) {
@@ -222,4 +222,17 @@ export const getProjectIdFromParams = ({ params }: { params: Params }) => {
   }
 
   return projectId;
+};
+
+export const addIssueToBoard = async (params: {
+  projectId: number;
+  boardColumnId: number;
+  issueId: number;
+}) => {
+  const updateIssueUrl = `${PROJECTS_URL}/${params.projectId}/boardColumns/${params.boardColumnId}/addIssue`;
+
+  await authenticatedCreateRequest(updateIssueUrl, {
+    method: "PATCH",
+    body: JSON.stringify({ issueId: params.issueId }),
+  });
 };

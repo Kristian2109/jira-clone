@@ -1,6 +1,15 @@
-import { Params, useLoaderData, useRouteLoaderData } from "react-router";
+import {
+  Params,
+  redirect,
+  useLoaderData,
+  useRouteLoaderData,
+} from "react-router";
 import "./index.css";
-import { fetchProjectIssues } from "../../utils/requests";
+import {
+  addIssueToBoard,
+  fetchProjectIssues,
+  getProjectIdFromParams,
+} from "../../utils/requests";
 import { Issue, ProjectType } from "../../types/project";
 import ProjectIssueRow from "./ProjectIssueRow";
 import { Link } from "react-router-dom";
@@ -8,8 +17,6 @@ import { Link } from "react-router-dom";
 const IssuesPage = () => {
   const issues = useLoaderData() as Issue[];
   const project = useRouteLoaderData("project") as ProjectType;
-
-  const backlogIssues = issues.filter((issue) => issue.boardColumn);
 
   return (
     <div className="m-3 text-start">
@@ -25,16 +32,18 @@ const IssuesPage = () => {
         </div>
       </div>
       <div className="scrollable-issues">
+        <h5>Board Issues</h5>
         <table className="table" style={{ fontSize: "0.85rem" }}>
           <thead>
             <tr>
               <th>Key</th>
               <th>Summary</th>
               <th>Type</th>
+              <th>Board Column</th>
             </tr>
           </thead>
           <tbody>
-            {backlogIssues.map((issue: Issue) => {
+            {issues.map((issue: Issue) => {
               return <ProjectIssueRow key={issue.id} issue={issue} />;
             })}
           </tbody>
@@ -55,4 +64,25 @@ export const projectIssuesLoader = ({ params }: { params: Params }) => {
   }
 
   return fetchProjectIssues(projectId);
+};
+
+export const issuesAction = async ({
+  params,
+  request,
+}: {
+  params: Params;
+  request: Request;
+}) => {
+  const projectId = getProjectIdFromParams({ params });
+  const formData = await request.formData();
+
+  const columnId = Number(formData.get("columnId"));
+  const issueId = Number(formData.get("issueId"));
+
+  if (!columnId || !issueId) {
+    throw new Error("No column Id in params");
+  }
+
+  await addIssueToBoard({ projectId, boardColumnId: columnId, issueId });
+  return redirect(".");
 };

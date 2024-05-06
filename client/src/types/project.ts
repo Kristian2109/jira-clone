@@ -1,4 +1,4 @@
-import { BoardColumn, BoardColumnWithIssues } from "./board";
+import { Board, BoardColumn, BoardColumnWithIssues } from "./board";
 import { UserFields } from "./forms";
 
 export interface ProjectType {
@@ -38,6 +38,7 @@ export type ProjectMember = {
 export interface ProjectWithAllData extends ProjectType {
   members: ProjectMember[];
   issueTypes: IssueType[];
+  board: Board;
 }
 
 export type CreateProject = {
