@@ -17,7 +17,6 @@ dotenv.config();
 const PORT = process.env.PORT || 8080;
 
 const authManager = container.get<AuthorizationManager>(AuthorizationManager);
-console.log(authManager);
 
 const config = new InversifyExpressServer(container);
 config.setConfig((app) => {

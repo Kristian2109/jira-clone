@@ -1,12 +1,14 @@
 import axios from "axios";
 import { GOOGLE_AUTH_CALLBACK_URL } from "../constants";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { setToken } from "../utils/auth";
+import { AuthContext } from "../store/auth-context";
 
 const Callback = () => {
   const navigate = useNavigate();
   const [queryParameters] = useSearchParams();
+  const { setAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     async function saveGoogleDataToServer() {
@@ -20,6 +22,7 @@ const Callback = () => {
           setToken(resPayload.data?.token);
         }
         if (response.status === 200) {
+          setAuthenticated();
           navigate("/account");
         }
       } catch (error) {
@@ -28,7 +31,7 @@ const Callback = () => {
     }
 
     saveGoogleDataToServer();
-  }, [navigate, queryParameters]);
+  }, [navigate, queryParameters, setAuthenticated]);
 
   return (
     <div>

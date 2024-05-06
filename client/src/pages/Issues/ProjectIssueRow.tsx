@@ -1,6 +1,7 @@
 import { FC, useRef } from "react";
 import { Issue, ProjectWithAllData } from "../../types/project";
 import { Form, Link, useRouteLoaderData } from "react-router-dom";
+import IssueTypeSelect from "./IssueTypeSelect";
 
 const selectClasses = {
   padding: "0.1rem 1.5rem 0.1rem 0.75rem",
@@ -8,13 +9,6 @@ const selectClasses = {
 };
 
 const ProjectIssueRow: FC<{ issue: Issue }> = ({ issue }) => {
-  const project = useRouteLoaderData("project") as ProjectWithAllData;
-  const btnRef = useRef<HTMLButtonElement>(null);
-
-  const columnsToSelect = project.board.boardColumns.filter((column) => {
-    return column.id !== issue.boardColumn?.id;
-  });
-
   return (
     <tr>
       <td>
@@ -28,31 +22,7 @@ const ProjectIssueRow: FC<{ issue: Issue }> = ({ issue }) => {
       <td>{issue.summary}</td>
       <td>{issue.issueType.name}</td>
       <td>
-        <Form method="PATCH">
-          <input hidden name="issueId" defaultValue={issue.id} type="text" />
-          <select
-            className="form-select"
-            style={selectClasses}
-            name="columnId"
-            onChange={() => {
-              btnRef.current!.click();
-            }}
-          >
-            <option defaultValue={issue.boardColumn ? issue.boardColumn.id : 0}>
-              {issue.boardColumn ? issue.boardColumn.name : "Not assigned"}
-            </option>
-            {columnsToSelect.map((column) => {
-              return (
-                <option key={column.id} value={column.id}>
-                  {column.name}
-                </option>
-              );
-            })}
-          </select>
-          <button hidden ref={btnRef}>
-            Submit
-          </button>
-        </Form>
+        <IssueTypeSelect issue={issue} />
       </td>
     </tr>
   );

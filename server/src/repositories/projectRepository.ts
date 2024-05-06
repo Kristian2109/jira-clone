@@ -41,7 +41,13 @@ export default class ProjectRepository {
       where: {
         id: projectId,
       },
-      relations: ["members", "board", "members.user", "issueTypes"],
+      relations: [
+        "members",
+        "board",
+        "members.user",
+        "issueTypes",
+        "board.boardColumns",
+      ],
     });
   }
 
