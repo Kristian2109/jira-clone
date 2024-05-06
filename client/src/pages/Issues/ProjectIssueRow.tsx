@@ -1,12 +1,7 @@
-import { FC, useRef } from "react";
-import { Issue, ProjectWithAllData } from "../../types/project";
-import { Form, Link, useRouteLoaderData } from "react-router-dom";
+import { FC } from "react";
+import { Issue } from "../../types/project";
+import { Link } from "react-router-dom";
 import IssueTypeSelect from "./IssueTypeSelect";
-
-const selectClasses = {
-  padding: "0.1rem 1.5rem 0.1rem 0.75rem",
-  fontSize: "0.8rem",
-};
 
 const ProjectIssueRow: FC<{ issue: Issue }> = ({ issue }) => {
   return (

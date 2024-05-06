@@ -10,13 +10,45 @@ import {
   fetchProjectIssues,
   getProjectIdFromParams,
 } from "../../utils/requests";
-import { Issue, ProjectType } from "../../types/project";
+import { Issue, ProjectWithAllData } from "../../types/project";
 import ProjectIssueRow from "./ProjectIssueRow";
 import { Link } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
 
 const IssuesPage = () => {
   const issues = useLoaderData() as Issue[];
-  const project = useRouteLoaderData("project") as ProjectType;
+  const project = useRouteLoaderData("project") as ProjectWithAllData;
+  const [filters, setFilters] = useState<{
+    boardColumnId: number;
+    issueTypeId: number;
+  }>({
+    boardColumnId: 0,
+    issueTypeId: 0,
+  });
+
+  const filteredIssues = issues
+    .filter(
+      (issue) =>
+        filters.boardColumnId === 0 ||
+        filters.boardColumnId === issue.boardColumn?.id ||
+        (filters.boardColumnId === -1 && !issue.boardColumn)
+    )
+    .filter(
+      (issue) =>
+        filters.issueTypeId === 0 || filters.issueTypeId === issue.issueType.id
+    );
+
+  const boardColumnsToSelect = project.board.boardColumns;
+  const issueTypesToSelect = project.issueTypes;
+
+  const handleChangeFilter = (event: ChangeEvent<HTMLSelectElement>) => {
+    const key = event.target.name;
+    const value = Number(event.target.value);
+    console.log(key, value);
+    setFilters((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
 
   return (
     <div className="m-3 text-start">
@@ -31,8 +63,48 @@ const IssuesPage = () => {
           </Link>
         </div>
       </div>
-      <div className="scrollable-issues">
+      <div className="d-flex justify-content-between mb-2">
         <h5>Board Issues</h5>
+        <div id="issue-filters" className="row">
+          <div className="col-auto small-font">
+            <label htmlFor="select-board-column">Board Column</label>
+            <select
+              className="form-select select-issue-type"
+              name="boardColumnId"
+              onChange={handleChangeFilter}
+              id="select-board-column"
+            >
+              <option value={0}>No Filter</option>
+              <option value={-1}>Not Assigned</option>
+              {boardColumnsToSelect.map((column) => {
+                return (
+                  <option key={column.id} value={column.id}>
+                    {column.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="col-auto small-font">
+            <label htmlFor="select-board-column">Issue Type</label>
+            <select
+              className="form-select select-issue-type"
+              name="issueTypeId"
+              onChange={handleChangeFilter}
+            >
+              <option value={0}>No Filter</option>
+              {issueTypesToSelect.map((issueType) => {
+                return (
+                  <option key={issueType.id} value={issueType.id}>
+                    {issueType.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="scrollable-issues pe-2">
         <table className="table" style={{ fontSize: "0.85rem" }}>
           <thead>
             <tr>
@@ -43,7 +115,7 @@ const IssuesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {issues.map((issue: Issue) => {
+            {filteredIssues.map((issue: Issue) => {
               return <ProjectIssueRow key={issue.id} issue={issue} />;
             })}
           </tbody>
