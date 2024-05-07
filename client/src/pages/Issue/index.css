@@ -4,14 +4,14 @@
 
 #fields-container {
   overflow-y: auto;
-  height: 65vh;
+  height: 63vh;
   width: 70wh;
   background-color: rgb(244, 243, 243);
   border-radius: 10px;
 }
 
 .issue-field {
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
   font-size: 0.9rem;
 }
 

@@ -1,7 +1,7 @@
 import { UserFields } from "./forms";
 import { Issue, IssueField, IssueType, ProjectType } from "./project";
 
-export type FieldContentCreate = {
+export type FieldContent = {
   content: string;
   issueFieldId: number;
 };
@@ -9,7 +9,7 @@ export type FieldContentCreate = {
 export type IssueCreate = {
   summary: string;
   issueTypeId: number;
-  fields: FieldContentCreate[];
+  fields: FieldContent[];
 };
 
 export type IssueFieldContent = {
@@ -28,4 +28,9 @@ export interface IssueWithFields extends Issue {
   issueType: IssueType;
   createdBy: UserFields;
   project: ProjectType;
+}
+
+export interface IssueUpdate {
+  summary: string;
+  fields: FieldContent[];
 }

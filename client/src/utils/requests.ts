@@ -1,6 +1,6 @@
 import { PROJECTS_URL, USER_ISSUES_URL, USER_PROJECTS_URL } from "../constants";
 import { HTMLFormMethod } from "../types/forms";
-import { IssueCreate, IssueWithFields } from "../types/issues";
+import { IssueCreate, IssueUpdate, IssueWithFields } from "../types/issues";
 import {
   CreateProject,
   Issue,
@@ -216,12 +216,26 @@ export const deleteBoardColumn = async ({
 
 export const getProjectIdFromParams = ({ params }: { params: Params }) => {
   const projectId = Number(params.projectId);
-
   if (!projectId) {
     throw new Error("Invalid project Id");
   }
 
   return projectId;
+};
+
+export const extractParam = ({
+  params,
+  param,
+}: {
+  params: Params;
+  param: string;
+}) => {
+  const result = Number(params[param]);
+  if (!result) {
+    throw new Error("Invalid project Id");
+  }
+
+  return result;
 };
 
 export const addIssueToBoard = async (params: {
@@ -255,5 +269,22 @@ export const addMember = async (projectId: number, userEmail: string) => {
   await authenticatedCreateRequest(addMemberUrl, {
     method: "POST",
     body: JSON.stringify({ userEmail }),
+  });
+};
+
+export const updateIssue = async ({
+  projectId,
+  issueId,
+  issue,
+}: {
+  projectId: number;
+  issueId: number;
+  issue: IssueUpdate;
+}) => {
+  const updateIssueUrl = `${PROJECTS_URL}/${projectId}/issues/${issueId}`;
+
+  await authenticatedCreateRequest(updateIssueUrl, {
+    method: "PATCH",
+    body: JSON.stringify(issue),
   });
 };

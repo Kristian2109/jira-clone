@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { createIssue, fetchIssueType } from "../../utils/requests";
 import "./index.css";
 import NormalInput from "../../components/generic/NormalInput";
-import { FieldContentCreate, IssueCreate } from "../../types/issues";
+import { FieldContent, IssueCreate } from "../../types/issues";
 
 const cssLabelStyles = { fontSize: "0.9rem" };
 
@@ -96,7 +96,7 @@ export const createIssueAction = async ({
   }
 
   const formData = await request.formData();
-  const issueFields: FieldContentCreate[] = [];
+  const issueFields: FieldContent[] = [];
   formData.forEach((value, key) => {
     const fieldId = Number(key);
 

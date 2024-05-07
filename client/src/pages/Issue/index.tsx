@@ -1,9 +1,15 @@
 import { FC } from "react";
 import "./index.css";
 import { Params, useLoaderData } from "react-router";
-import { IssueWithFields } from "../../types/issues";
-import { fetchIssue } from "../../utils/requests";
+import { FieldContent, IssueUpdate, IssueWithFields } from "../../types/issues";
+import {
+  extractParam,
+  fetchIssue,
+  getProjectIdFromParams,
+  updateIssue,
+} from "../../utils/requests";
 import { formatDate } from "../../utils/date";
+import { PROJECTS_URL } from "../../constants";
 
 const IssuePage: FC = () => {
   const issue = useLoaderData() as IssueWithFields;
@@ -63,4 +69,42 @@ export const issueLoader = async ({ params }: { params: Params }) => {
 
   const issue = await fetchIssue(projectId, issueId);
   return issue;
+};
+
+export const issueAction = async ({
+  params,
+  request,
+}: {
+  params: Params;
+  request: Request;
+}) => {
+  const formData = await request.formData();
+  const issueFields: FieldContent[] = [];
+
+  formData.forEach((value, key) => {
+    const fieldId = Number(key);
+
+    if (fieldId) {
+      issueFields.push({
+        content: value.toString(),
+        issueFieldId: fieldId,
+      });
+    }
+  });
+
+  const summary = formData.get("summary");
+
+  if (!summary) {
+    throw new Error("Summary needed to update the issue");
+  }
+
+  const issue: IssueUpdate = {
+    summary: summary.toString(),
+    fields: issueFields,
+  };
+
+  const projectId = extractParam({ params, param: "projectId" });
+  const issueId = extractParam({ params, param: "issueId" });
+
+  await updateIssue({ projectId, issueId, issue });
 };
