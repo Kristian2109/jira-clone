@@ -2,6 +2,7 @@ import { FC } from "react";
 import { BoardColumnWithIssues } from "../../types/board";
 import BoardIssue from "./BoardIssue";
 import { Form } from "react-router-dom";
+import DropArea from "./DropArea";
 
 const BoardColumnContainer: FC<{ column: BoardColumnWithIssues }> = ({
   column,
@@ -16,6 +17,7 @@ const BoardColumnContainer: FC<{ column: BoardColumnWithIssues }> = ({
         </Form>
       </div>
       <div className="scrollable-column ">
+        <DropArea columnId={column.id} />
         {column.issues.map((issue) => {
           return <BoardIssue issue={issue} />;
         })}

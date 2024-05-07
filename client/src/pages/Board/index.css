@@ -40,3 +40,11 @@
   font-size: 0.75rem;
   color: rgb(65, 160, 255);
 }
+
+.active-drop {
+  background-color: rgb(222, 222, 222);
+}
+
+.drop {
+  font-weight: 600;
+}

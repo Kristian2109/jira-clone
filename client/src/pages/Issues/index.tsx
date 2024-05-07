@@ -6,7 +6,7 @@ import {
 } from "react-router";
 import "./index.css";
 import {
-  addIssueToBoard,
+  addIssueToBoard as addIssueToBoardColumn,
   fetchProjectIssues,
   getProjectIdFromParams,
 } from "../../utils/requests";
@@ -106,6 +106,11 @@ export const issuesAction = async ({
     throw new Error("No column Id in params");
   }
 
-  await addIssueToBoard({ projectId, boardColumnId: columnId, issueId });
+  await addIssueToBoardColumn({ projectId, boardColumnId: columnId, issueId });
+
+  const nextPage = formData.get("nextPage");
+  if (nextPage && nextPage === "board") {
+    return redirect("../board");
+  }
   return redirect(".");
 };

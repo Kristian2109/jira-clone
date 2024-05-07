@@ -3,7 +3,6 @@ import "./index.css";
 import { Params, redirect, useLoaderData } from "react-router";
 import { FieldContent, IssueUpdate, IssueWithFields } from "../../types/issues";
 import { extractParam, fetchIssue, updateIssue } from "../../utils/requests";
-import { formatDate } from "../../utils/date";
 import { Form } from "react-router-dom";
 import PrimaryButton from "../../components/generic/PrimaryButton";
 import IssueFieldContentInput from "./IssueFieldContentInput";
@@ -23,7 +22,7 @@ const IssuePage: FC = () => {
       </div>
       <div id="fields-container" className="px-3 py-2">
         {issue.fields.map((field) => {
-          return <IssueFieldContentInput field={field} />;
+          return <IssueFieldContentInput field={field} key={field.id} />;
         })}
       </div>
     </Form>
