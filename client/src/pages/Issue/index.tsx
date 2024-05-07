@@ -1,23 +1,32 @@
 import { FC } from "react";
 import "./index.css";
-import { Params, useLoaderData } from "react-router";
+import { Params, redirect, useLoaderData } from "react-router";
 import { FieldContent, IssueUpdate, IssueWithFields } from "../../types/issues";
-import {
-  extractParam,
-  fetchIssue,
-  getProjectIdFromParams,
-  updateIssue,
-} from "../../utils/requests";
+import { extractParam, fetchIssue, updateIssue } from "../../utils/requests";
 import { formatDate } from "../../utils/date";
-import { PROJECTS_URL } from "../../constants";
+import { Form } from "react-router-dom";
+import PrimaryButton from "../../components/generic/PrimaryButton";
 
 const IssuePage: FC = () => {
   const issue = useLoaderData() as IssueWithFields;
   const formattedDate = formatDate(issue.createdAt);
+  const issueSummarySize = Math.min(issue.summary.length / 2, 40);
 
   return (
-    <div className="mt-4 mx-3 text-start">
-      <h4>{issue.summary}</h4>
+    <Form className="mt-2 mx-3 text-start" action="." method="PATCH">
+      <div className="issue-field">
+        <label htmlFor="summary" className="fw-semibold">
+          Summary
+        </label>
+        <input
+          type="text"
+          className="form-control border-2 fs-5"
+          style={{ width: `${issueSummarySize}rem` }}
+          id="summary"
+          name="summary"
+          defaultValue={issue.summary}
+        />
+      </div>
       <p className="mb-1">
         {issue.issueType.project?.name} &rarr; {issue.issueType.name} &rarr;{" "}
         <span className="fw-semibold issue-page-key">{issue.key}</span>
@@ -26,7 +35,10 @@ const IssuePage: FC = () => {
         Created at {formattedDate} by {issue.createdBy.displayName}
       </p>
       <div>
-        <h5 className="mb-2">Fields</h5>
+        <div className="d-flex justify-content-between mb-2">
+          <h5>Fields</h5>
+          <PrimaryButton>Save Issue</PrimaryButton>
+        </div>
         <div id="fields-container" className="px-3 py-2">
           {issue.fields.map((field) => {
             const fieldType =
@@ -45,15 +57,15 @@ const IssuePage: FC = () => {
                   className="form-control"
                   style={{ width: `${inputSize}rem` }}
                   id={`${field.id}`}
-                  name={`${field.id}`}
-                  value={field.content}
+                  name={`${field.issueField.id}`}
+                  defaultValue={field.content}
                 />
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+    </Form>
   );
 };
 
@@ -107,4 +119,5 @@ export const issueAction = async ({
   const issueId = extractParam({ params, param: "issueId" });
 
   await updateIssue({ projectId, issueId, issue });
+  return redirect(".");
 };

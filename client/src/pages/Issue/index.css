@@ -4,8 +4,8 @@
 
 #fields-container {
   overflow-y: auto;
-  height: 63vh;
-  width: 70wh;
+  height: 55vh;
+  width: 70vw;
   background-color: rgb(244, 243, 243);
   border-radius: 10px;
 }
