@@ -19,20 +19,22 @@ const ProjectMembersContainer = () => {
         </PrimaryButton>
       </div>
       <hr></hr>
-      <table className="table" style={{ fontSize: "0.85rem" }}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {project.members.map((member: ProjectMember) => {
-            return <ProjectMemberRow key={member.id} member={member} />;
-          })}
-        </tbody>
-      </table>
+      <div id="members">
+        <table className="table" style={{ fontSize: "0.85rem" }}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {project.members.map((member: ProjectMember) => {
+              return <ProjectMemberRow key={member.id} member={member} />;
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

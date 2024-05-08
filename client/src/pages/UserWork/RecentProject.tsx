@@ -6,7 +6,7 @@ const RecentProject: FC<{ project: ProjectType }> = ({ project }) => {
   const navigate = useNavigate();
 
   const redirectToProjectPage = () => {
-    navigate(`/projects/${project.id}`);
+    navigate(`/projects/${project.id}/details`);
   };
 
   let formattedDescription = project.description.slice(0, 50);

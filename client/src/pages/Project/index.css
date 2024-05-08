@@ -1,3 +1,14 @@
 .project-detail {
   font-size: 0.9rem;
+  margin: 0 auto;
+  padding: 0 auto;
+}
+
+.project-detail p {
+  margin: 0.25rem auto;
+}
+
+#members {
+  overflow-y: auto;
+  max-height: 45vh;
 }
