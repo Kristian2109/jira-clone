@@ -85,9 +85,11 @@ async function authenticatedCreateRequest(
   });
 
   if (!response.ok) {
-    const error = (await response.json()).error;
+    const resBody = await response.json();
+    const error = resBody.error;
+    console.log(resBody.error.message);
     if (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     } else {
       throw new Error("Error while loading data!");
     }

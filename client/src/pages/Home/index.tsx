@@ -1,13 +1,19 @@
 import { AuthOptionsContainer } from "./AuthOptionsContainer";
 import { setToken } from "../../utils/auth";
-import { redirect } from "react-router-dom";
+import { redirect, useActionData } from "react-router-dom";
 import HomeJiraImage from "./HomeJiraImage";
 import LoginModal from "./LoginModal";
 import { login } from "../../utils/requests";
+import ErrorPopUp from "../../components/generic/ErrorPopUp";
 
 const Home = () => {
+  const errorContext = useActionData() as { error: Error } | undefined;
+  console.log(errorContext);
   return (
     <div className="container home-content mb-5">
+      {errorContext && (
+        <ErrorPopUp key={Math.random()} message={errorContext.error.message} />
+      )}
       <h1 className="my-4">
         The best platform to manage you teams work according to agile
         methodologies
@@ -31,13 +37,19 @@ export async function loginAction(args: { params: any; request: Request }) {
   const password = data.get("password")?.toString();
 
   if (!email || !password) {
-    throw new Error("No email or password when login");
+    return {
+      error: Error("No email or password when login"),
+    };
   }
 
-  const jwtToken = await login({
-    email,
-    password,
-  });
-  setToken(jwtToken);
-  return redirect("/account");
+  try {
+    const jwtToken = await login({
+      email,
+      password,
+    });
+    setToken(jwtToken);
+    return redirect("/account");
+  } catch (error) {
+    return { error };
+  }
 }

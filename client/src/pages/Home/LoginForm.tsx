@@ -1,10 +1,25 @@
-import { Form } from "react-router-dom";
 import FloatingInput from "../../components/generic/FloatingInput";
-import { FC } from "react";
+import { FC, useContext, useRef } from "react";
+import GenericForm from "../../components/generic/GenericForm";
+import { AuthContext } from "../../store/auth-context";
 
-const LoginForm: FC<{ onLogin: () => void }> = ({ onLogin }) => {
+const LoginForm: FC = () => {
+  const modalRef = useRef<HTMLButtonElement>(null);
+  const { setAuthenticated } = useContext(AuthContext);
+
+  const handleLogin = () => {
+    setAuthenticated();
+    modalRef.current!.click();
+  };
+
   return (
-    <Form method="POST" onSubmit={onLogin}>
+    <GenericForm
+      method="POST"
+      action="."
+      id="login-form"
+      additionalClasses="w-100"
+      onSubmit={handleLogin}
+    >
       <div className="modal-body">
         <FloatingInput
           columnSize={12}
@@ -28,8 +43,17 @@ const LoginForm: FC<{ onLogin: () => void }> = ({ onLogin }) => {
         <button className="btn btn-primary" type="submit">
           Login
         </button>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          ref={modalRef}
+        >
+          Close
+        </button>
       </div>
-    </Form>
+    </GenericForm>
   );
 };
 

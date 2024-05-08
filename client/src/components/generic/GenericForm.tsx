@@ -8,6 +8,7 @@ const GenericForm: FC<{
   method: HTMLFormMethod;
   id: string;
   additionalClasses?: string;
+  onSubmit?: () => void;
   ref?: ForwardedRef<HTMLFormElement>;
 }> = forwardRef(
   (

@@ -41,31 +41,41 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
         action: loginAction,
+        errorElement: <ErrorPage />,
       },
       {
         path: "/register",
         element: <RegisterFormContainer />,
         action: registerAction,
+        errorElement: <ErrorPage />,
       },
       {
         path: "/account",
         element: <UserDetailsPage />,
         loader: authLoader,
+        errorElement: <ErrorPage />,
       },
-      { path: "/google/callback", element: <Callback /> },
+      {
+        path: "/google/callback",
+        element: <Callback />,
+        errorElement: <ErrorPage />,
+      },
       {
         path: "/your-work",
         element: <WorkPage />,
         loader: workPageLoader,
+        errorElement: <ErrorPage />,
       },
       {
         path: "/create-project",
         element: <CreateProjectPage />,
         action: createProjectAction,
+        errorElement: <ErrorPage />,
       },
       {
         path: "/projects/:projectId",
         element: <ProjectNavigation />,
+        errorElement: <ErrorPage />,
         loader: projectLoader,
         id: "project",
         children: [
@@ -74,11 +84,13 @@ const router = createBrowserRouter([
             element: <ProjectPage />,
             path: "details",
             action: projectAction,
+            errorElement: <ErrorPage />,
           },
           {
             path: "issues",
             element: <IssuesPage />,
             loader: projectIssuesLoader,
+            errorElement: <ErrorPage />,
             shouldRevalidate: () => {
               return true;
             },
@@ -88,18 +100,21 @@ const router = createBrowserRouter([
             path: "create-issue",
             element: <CreateIssuePage />,
             action: createIssueAction,
+            errorElement: <ErrorPage />,
           },
           {
             path: "issues/:issueId",
             element: <IssuePage />,
             loader: issueLoader,
             action: issueAction,
+            errorElement: <ErrorPage />,
           },
           {
             path: "board",
             element: <BoardPage />,
             loader: boardLoader,
             action: boardAction,
+            errorElement: <ErrorPage />,
           },
         ],
       },
@@ -108,16 +123,19 @@ const router = createBrowserRouter([
         element: <IssuesNavigation />,
         id: "issueTypes",
         loader: projectLoader,
+        errorElement: <ErrorPage />,
         children: [
           {
             path: ":issueTypeId",
             element: <IssueTypePage />,
+            errorElement: <ErrorPage />,
             loader: issueTypeLoader,
           },
           {
             path: "create",
             element: <CreateIssueTypePage />,
             action: createIssueTypeAction,
+            errorElement: <ErrorPage />,
           },
         ],
       },
