@@ -1,4 +1,9 @@
-import { PROJECTS_URL, USER_ISSUES_URL, USER_PROJECTS_URL } from "../constants";
+import {
+  LOGIN_URL,
+  PROJECTS_URL,
+  USER_ISSUES_URL,
+  USER_PROJECTS_URL,
+} from "../constants";
 import { HTMLFormMethod } from "../types/forms";
 import { IssueCreate, IssueUpdate, IssueWithFields } from "../types/issues";
 import {
@@ -39,6 +44,30 @@ async function authenticatedRequest<ReturnType>(
 
   const data = await response.json();
   return data?.data as ReturnType;
+}
+
+async function notAuthenticatedRequest(
+  url: string,
+  config?: { method: HTMLFormMethod; body?: string }
+) {
+  const response = await fetch(url, {
+    ...config,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const error = (await response.json()).error as { message: string };
+    if (error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("Error while loading data!");
+    }
+  }
+
+  const data = await response.json();
+  return data?.data;
 }
 
 async function authenticatedCreateRequest(
@@ -287,4 +316,22 @@ export const updateIssue = async ({
     method: "PATCH",
     body: JSON.stringify(issue),
   });
+};
+
+export const login = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const response = (await notAuthenticatedRequest(LOGIN_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  })) as any;
+
+  return response.jsonWebToken;
 };

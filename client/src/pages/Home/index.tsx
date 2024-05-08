@@ -1,10 +1,9 @@
-import axios from "axios";
 import { AuthOptionsContainer } from "./AuthOptionsContainer";
-import { LOGIN_URL } from "../../constants";
 import { setToken } from "../../utils/auth";
 import { redirect } from "react-router-dom";
 import HomeJiraImage from "./HomeJiraImage";
 import LoginModal from "./LoginModal";
+import { login } from "../../utils/requests";
 
 const Home = () => {
   return (
@@ -28,22 +27,17 @@ export default Home;
 
 export async function loginAction(args: { params: any; request: Request }) {
   const data = await args.request.formData();
-  const toSend = {
-    email: data.get("email"),
-    password: data.get("password"),
-  };
-  const response = await axios.post(LOGIN_URL, toSend);
+  const email = data.get("email")?.toString();
+  const password = data.get("password")?.toString();
 
-  if (response.status >= 399) {
-    const errorMessage = (await response.data).error;
-    throw new Error(errorMessage);
-  }
-  const responseData = await response.data;
-  const jwtToken = responseData.data?.jsonWebToken;
-  if (!jwtToken) {
-    console.log("No token!");
+  if (!email || !password) {
+    throw new Error("No email or password when login");
   }
 
+  const jwtToken = await login({
+    email,
+    password,
+  });
   setToken(jwtToken);
   return redirect("/account");
 }
