@@ -4,11 +4,15 @@ import { IssueFieldCreate } from "../../types/project";
 import { IssueTypeWithFields } from "../../types/issues";
 import IssueFieldsTable from "./IssueFieldsTable";
 import "./index.css";
+import ErrorPopUp from "../../components/generic/ErrorPopUp";
+import { useState } from "react";
 
 const IssueTypePage = () => {
   const issueType = useLoaderData() as IssueTypeWithFields;
   const params = useParams();
-  const setNavigate = useNavigate();
+  const navigate = useNavigate();
+  const [responseOnIssueTemplateSave, setResponseOnIssueTemplateSave] =
+    useState<string | null>(null);
 
   const handleAddFieldsToServer = (fields: IssueFieldCreate[]) => {
     fields.forEach((field) => {
@@ -18,13 +22,17 @@ const IssueTypePage = () => {
       }
       createIssueField(issueType.id, projectId, field);
     });
-    setNavigate(0);
+    setResponseOnIssueTemplateSave("OK");
+    navigate(".", { replace: true });
   };
 
   return (
     <div className="text-start p-4">
       <h3>{issueType.name}</h3>
       <p>{issueType.description}</p>
+      {responseOnIssueTemplateSave && (
+        <ErrorPopUp message="Issue Template Updated" />
+      )}
       <IssueFieldsTable
         issueFields={issueType.issueFields}
         onSaveFields={handleAddFieldsToServer}
@@ -36,7 +44,6 @@ const IssueTypePage = () => {
 export default IssueTypePage;
 
 export const issueTypeLoader = async ({ params }: { params: Params }) => {
-  console.log("loader");
   const issueTypeId = Number(params.issueTypeId);
   const projectId = Number(params.projectId);
 

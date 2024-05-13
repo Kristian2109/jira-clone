@@ -3,7 +3,6 @@ import "./ErrorPopUp.css";
 
 const ErrorPopUp: FC<{ message: string }> = ({ message }) => {
   const [shouldBeDisplayed, setShouldBeDisplayed] = useState(true);
-  console.log("rendered");
 
   return (
     <div

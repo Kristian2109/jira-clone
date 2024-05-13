@@ -32,7 +32,7 @@ const NavbarLinks = () => {
           <NavLink
             className={(props: { isActive: boolean }) => {
               return `nav-link fw-semibold  + ${
-                props.isActive ? "active" : ""
+                props.isActive ? "fw-bold" : ""
               }`;
             }}
             aria-current="page"

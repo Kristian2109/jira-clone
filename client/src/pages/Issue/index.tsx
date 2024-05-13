@@ -1,6 +1,6 @@
 import { FC } from "react";
 import "./index.css";
-import { Params, redirect, useLoaderData } from "react-router";
+import { Params, useActionData, useLoaderData } from "react-router";
 import { FieldContent, IssueUpdate, IssueWithFields } from "../../types/issues";
 import { extractParam, fetchIssue, updateIssue } from "../../utils/requests";
 import { Form } from "react-router-dom";
@@ -8,12 +8,15 @@ import PrimaryButton from "../../components/generic/PrimaryButton";
 import IssueFieldContentInput from "./IssueFieldContentInput";
 import IssueSummaryInput from "./IssueSummaryInput";
 import IssueDetails from "./IssueDetails";
+import ErrorPopUp from "../../components/generic/ErrorPopUp";
 
 const IssuePage: FC = () => {
   const issue = useLoaderData() as IssueWithFields;
+  const savedResponse = useActionData() as string;
 
   return (
     <Form className="mt-2 mx-3 text-start" action="." method="PATCH">
+      {savedResponse && <ErrorPopUp message="Issue Updated" />}
       <IssueSummaryInput summary={issue.summary} />
       <IssueDetails issue={issue} />
       <div className="d-flex justify-content-between mb-2">
@@ -79,5 +82,5 @@ export const issueAction = async ({
   const issueId = extractParam({ params, param: "issueId" });
 
   await updateIssue({ projectId, issueId, issue });
-  return redirect(".");
+  return "ОК";
 };
