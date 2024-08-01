@@ -87,6 +87,7 @@ async function authenticatedCreateRequest(
   if (!response.ok) {
     const resBody = await response.json();
     const error = resBody.error;
+    console.log("Error: ", error);
     console.log(resBody.error.message);
     if (error) {
       throw new Error(error.message);

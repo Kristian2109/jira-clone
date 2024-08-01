@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import GenericException from "../exceptions/genericException";
 import CustomError from "../exceptions/customError";
+import { ZodError } from "zod";
 
 export default class ErrorHandler {
   public static handleError(
@@ -21,6 +22,10 @@ export default class ErrorHandler {
         })
       );
       return res.status(err.statusCode).json({ error: err.errors });
+    } else if (err instanceof ZodError) {
+      const errorMessages = JSON.parse(err.message);
+      console.error(err);
+      return res.status(400).json({ error: errorMessages[0] });
     }
 
     console.error(err.message, "\n");

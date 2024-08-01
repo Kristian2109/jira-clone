@@ -15,12 +15,12 @@ const IssueTypePage = () => {
     useState<string | null>(null);
 
   const handleAddFieldsToServer = (fields: IssueFieldCreate[]) => {
-    fields.forEach((field) => {
+    fields.forEach(async (field) => {
       const projectId = Number(params.projectId);
       if (!projectId) {
         throw new Error("False project id in creating an issue field");
       }
-      createIssueField(issueType.id, projectId, field);
+      await createIssueField(issueType.id, projectId, field);
     });
     setResponseOnIssueTemplateSave("OK");
     navigate(".", { replace: true });

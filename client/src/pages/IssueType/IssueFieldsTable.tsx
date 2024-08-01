@@ -13,8 +13,8 @@ const IssueFieldsTable: FC<{
     setNewIssueFields((prev) => [...prev, issueField]);
   };
 
-  const handleSaveFields = () => {
-    onSaveFields(newIssueFields);
+  const handleSaveFields = async () => {
+    await onSaveFields(newIssueFields);
     setNewIssueFields([]);
   };
 

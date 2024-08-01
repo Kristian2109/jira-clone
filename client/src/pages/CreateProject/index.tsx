@@ -38,7 +38,7 @@ const CreateProjectPage = () => {
       />
       <div className="col col-12">
         <button className="btn btn-primary btn-lg mt-4" type="submit">
-          Register
+          Create
         </button>
       </div>
     </GenericForm>
